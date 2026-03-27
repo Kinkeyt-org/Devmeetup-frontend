@@ -1,3 +1,4 @@
+// AuthPage.jsx
 import { useState } from "react";
 import { login, signup } from "../api/auth";
 import { useNavigate } from "react-router-dom";
@@ -11,22 +12,19 @@ const GOOGLE_ICON = (
   </svg>
 );
 
-export default function AuthPage() {
+export default function Authform() {
   const navigate = useNavigate();
   const [mode, setMode] = useState("signin");
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(""); // Track API errors (419, 500, etc)
+  const [error, setError] = useState("");
 
-  // Form Fields
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
   const [forgotEmail, setForgotEmail] = useState("");
   const [forgotSent, setForgotSent] = useState(false);
-
-
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -35,15 +33,10 @@ export default function AuthPage() {
     try {
       const data = await login(email, password);
       console.log("Login Success:", data);
-      
-      // If your API returns a token, save it!
-      if (data.token) localStorage.setItem("token", data.token);
-      
       navigate("/dashboard");
     } catch (err) {
       console.error("Login Error:", err);
-      // Catch specific messages from Laravel or standard Axios errors
-      setError(err.response?.data?.message);
+      setError(err.response?.data?.message || err.message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -51,18 +44,16 @@ export default function AuthPage() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-
     setLoading(true);
     setError("");
     try {
-      // Sending password twice for password_confirmation
       const data = await signup(name, email, password, password);
       console.log("Signup Success:", data);
       setMode("signin");
       alert("Account created! Please sign in.");
     } catch (err) {
       console.error("Signup Error:", err);
-      setError(err.response?.data?.message);
+      setError(err.response?.data?.message || err.message || "Signup failed");
     } finally {
       setLoading(false);
     }
@@ -80,14 +71,12 @@ export default function AuthPage() {
           <span className="text-black font-bold text-lg">EventHub</span>
         </div>
 
-        {/* Global Error Display */}
         {error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl text-center font-medium">
             {error}
           </div>
         )}
 
-        {/* Forgot Password Mode */}
         {mode === "forgot" && (
           <div>
             <button onClick={() => { setMode("signin"); setForgotSent(false); setError(""); }} className="flex cursor-pointer items-center gap-2 hover:text-amber-400 text-sm mb-8 transition-colors text-neutral-600">
@@ -128,7 +117,6 @@ export default function AuthPage() {
           </div>
         )}
 
-        {/* Sign In Mode */}
         {mode === "signin" && (
           <>
             <div className="mb-8">
@@ -187,7 +175,6 @@ export default function AuthPage() {
           </>
         )}
 
-        {/* Sign Up Mode */}
         {mode === "signup" && (
           <>
             <div className="mb-8">
@@ -219,7 +206,6 @@ export default function AuthPage() {
                   className="w-full border border-neutral-300 rounded-xl px-4 py-3 text-black placeholder-neutral-400 text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/30 transition-all"
                 />
               </div>
-             
               <button disabled={loading} type="submit" className="w-full cursor-pointer bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 rounded-xl text-sm transition-all shadow-lg shadow-amber-400/20 mt-2 disabled:opacity-50">
                 {loading ? "Creating account..." : "Create account"}
               </button>
