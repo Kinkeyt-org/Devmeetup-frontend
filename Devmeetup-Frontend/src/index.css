@@ -1,7 +1,8 @@
 @import "tailwindcss";
 @font-face {
     font-family: Satoshi;
-    src: url(/public/fonts/Satoshi-Light.woff) format('woff');
+    src: url(/fonts/Satoshi-Light.woff) format('woff');
+    font-display: swap;
 }
 
 

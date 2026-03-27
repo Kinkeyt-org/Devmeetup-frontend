@@ -43,7 +43,7 @@ export default function AuthPage() {
     } catch (err) {
       console.error("Login Error:", err);
       // Catch specific messages from Laravel or standard Axios errors
-      setError(err.response?.data?.message || "Login failed. Check your credentials.");
+      setError(err.response?.data?.message);
     } finally {
       setLoading(false);
     }
@@ -56,13 +56,13 @@ export default function AuthPage() {
     setError("");
     try {
       // Sending password twice for password_confirmation
-      const data = await signup(name, email, password, password, role[0]);
+      const data = await signup(name, email, password, password);
       console.log("Signup Success:", data);
       setMode("signin");
       alert("Account created! Please sign in.");
     } catch (err) {
       console.error("Signup Error:", err);
-      setError(err.response?.data?.message || "Registration failed. Email might be taken.");
+      setError(err.response?.data?.message);
     } finally {
       setLoading(false);
     }
