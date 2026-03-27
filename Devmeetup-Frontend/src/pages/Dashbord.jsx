@@ -2,8 +2,8 @@ import React from 'react'
 
 const Dashbord = () => {
   return (
-    <div>
-        hi
+    <div className='flex justify-center'>
+        Hi
     </div>
   )
 }
