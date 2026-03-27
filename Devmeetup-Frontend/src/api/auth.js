@@ -1,12 +1,17 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || "https://decrescent-commemoratory-asuncion.ngrok-free.dev";
+// Base URL now points to your production backend
+const API_URL = import.meta.env.VITE_API_BASE_URL || "https://devmeetup.duckdns.org/api";
 
-// Axios instance that attaches Bearer token automatically
+// Axios instance that automatically attaches Bearer token
 const api = axios.create({
   baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
+// Attach token from localStorage if available
 api.interceptors.request.use(config => {
   const token = localStorage.getItem("token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
