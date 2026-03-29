@@ -37,6 +37,8 @@ export default function Authform() {
   const [forgotEmail, setForgotEmail] = useState("");
   const [forgotSent, setForgotSent] = useState(false);
 
+
+  // Handle sign in
   const handleSignIn = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -53,6 +55,7 @@ export default function Authform() {
     }
   };
 
+  // Handle sign up
   const handleSignUp = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -192,6 +195,7 @@ export default function Authform() {
             )}
           </div>
         )}
+
         {/* Sign in Form */}
         {mode === "signin" && (
           <>
@@ -204,9 +208,7 @@ export default function Authform() {
               </p>
             </div>
             <button
-              className="w-full flex items-center justify-center gap-3 cursor-pointer border border-neutral-200 hover:bg-neutral-50 rounded-xl py-3 text-sm font-medium transition-all duration-200 mb-5"
-              onClick={() => setColor("bg-pink-400")}
-            >
+              className="w-full active:bg-neutral-100/50 flex items-center justify-center gap-3 cursor-pointer border border-neutral-200 hover:bg-neutral-50 rounded-xl py-3 text-sm font-medium transition-all duration-200 mb-5">
               {GOOGLE_ICON}
               Continue with Google
             </button>
