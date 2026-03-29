@@ -1,14 +1,14 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import AuthForm from './pages/Authform'
-import Dashbord from './pages/Dashbord'
+import Dashboard from './pages/Dashboard'
 
 const App = () => {
   return (
     <Router>
-        <Routes className="">
+        <Routes>
             <Route path='/' element={<AuthForm />} />
-            <Route path='/dashboard' element={<Dashbord/>}></Route>
+            <Route path='/dashboard' element={<Dashboard/>}></Route>
         </Routes>
     </Router>
   )
