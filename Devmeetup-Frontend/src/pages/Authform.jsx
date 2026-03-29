@@ -3,6 +3,7 @@ import { useState } from "react";
 import { login, signup } from "../api/auth";
 import { useNavigate } from "react-router-dom";
 
+// Google icon as a React component
 const GOOGLE_ICON = (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -12,57 +13,63 @@ const GOOGLE_ICON = (
   </svg>
 );
 
+// Main authentication form component
 export default function Authform() {
-  const navigate = useNavigate();
-  const [mode, setMode] = useState("signin");
-  const [showPass, setShowPass] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const navigate = useNavigate(); // For programmatic navigation after login/signup
+  const [mode, setMode] = useState("signin"); // "signin", "signup", or "forgot"
+  const [showPass, setShowPass] = useState(false); // Toggle password visibility
+  const [loading, setLoading] = useState(false); // To indicate loading state during API calls
+  const [error, setError] = useState(""); // To store and display error messages
+  const[color, setColor] = useState("bg-pink/100"); 
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState(""); // Common email state for both sign in and sign up
+  const [password, setPassword] = useState(""); // Common password state for both sign in and sign up
+  const [name, setName] = useState(""); // Name state for sign up
 
-  const [forgotEmail, setForgotEmail] = useState("");
-  const [forgotSent, setForgotSent] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState(""); // Separate email state for forgot password flow
+  const [forgotSent, setForgotSent] = useState(false); // To track if forgot password email has been "sent"
 
-  const handleSignIn = async (e) => {
+  const handleSignIn = async (e) => { // Handle sign in form submission
     e.preventDefault();
     setLoading(true);
     setError("");
     try {
-      const data = await login(email, password);
+      const data = await login(email, password); // Call the login API
       console.log("Login Success:", data);
       navigate("/dashboard");
     } catch (err) {
       console.error("Login Error:", err);
-      setError(err.response?.data?.message || err.message || "Login failed");
+      setError(err.response?.data?.message || err.message || "Login failed"); // Set error message from response or fallback to generic message
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSignUp = async (e) => {
+  const handleSignUp = async (e) => { // Handle sign up form submission
     e.preventDefault();
     setLoading(true);
     setError("");
     try {
-      const data = await signup(name, email, password, password);
+      const data = await signup(name, email, password, password); // Call the signup API (assuming it requires name, email, password, and password confirmation)
       console.log("Signup Success:", data);
       setMode("signin");
       alert("Account created! Please sign in.");
     } catch (err) {
       console.error("Signup Error:", err);
-      setError(err.response?.data?.message || err.message || "Signup failed");
+      setError(err.response?.data?.message || err.message || "Signup failed"); // Set error message from response or fallback to generic message
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center font-[Satoshi] bg-white">
-      <div className="w-full max-w-md p-6">
-        <div className="flex items-center gap-2 mb-8 justify-center">
+    <div className="min-h-screen flex items-center justify-center font-[Satoshi] bg-white">  {/*Main container for the auth form, centered on the page  */}
+
+     
+      <div className="w-full max-w-md p-6"> {/* Card container with max width and padding */}
+
+        {/* Logo and title */}
+        <div className="flex items-center gap-2 mb-8 justify-center"> 
           <div className="w-8 h-8 rounded-lg bg-amber-400 flex items-center justify-center">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -71,13 +78,15 @@ export default function Authform() {
           <span className="text-black font-bold text-lg">EventHub</span>
         </div>
 
+        {/* Error message */}
         {error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl text-center font-medium">
             {error}
           </div>
         )}
 
-        {mode === "forgot" && (
+        {/* Forget content */}
+        {mode === "forgot" && ( 
           <div>
             <button onClick={() => { setMode("signin"); setForgotSent(false); setError(""); }} className="flex cursor-pointer items-center gap-2 hover:text-amber-400 text-sm mb-8 transition-colors text-neutral-600">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
@@ -117,13 +126,16 @@ export default function Authform() {
           </div>
         )}
 
+          {/* Sign in Form */}
         {mode === "signin" && (
           <>
             <div className="mb-8">
               <h2 className="text-black text-3xl font-bold mb-1">Welcome back</h2>
               <p className="text-neutral-500 text-sm">Sign in to your EventHub account</p>
             </div>
-            <button className="w-full flex items-center justify-center gap-3 cursor-pointer border border-neutral-200 hover:bg-neutral-50 rounded-xl py-3 text-sm font-medium transition-all duration-200 mb-5">
+            <button className="w-full flex items-center justify-center gap-3 cursor-pointer border border-neutral-200 hover:bg-neutral-50 rounded-xl py-3 text-sm font-medium transition-all duration-200 mb-5"
+              onClick={()=>setColor("bg-pink-400")}
+            >
               {GOOGLE_ICON}
               Continue with Google
             </button>
@@ -174,8 +186,8 @@ export default function Authform() {
             </p>
           </>
         )}
-
-        {mode === "signup" && (
+          {/* Sign up form */}
+        {mode === "signup" && ( 
           <>
             <div className="mb-8">
               <h2 className="text-black text-3xl font-bold mb-1">Join EventHub</h2>
