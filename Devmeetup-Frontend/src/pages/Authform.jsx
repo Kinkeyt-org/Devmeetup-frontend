@@ -36,6 +36,7 @@ export default function Authform() {
     try {
       const data = await login(email, password); // Call the login API
       console.log("Login Success:", data);
+      localStorage.setItem("token", data.token); // Store the token in localStorage for authenticated requests
       navigate("/dashboard");
     } catch (err) {
       console.error("Login Error:", err);
