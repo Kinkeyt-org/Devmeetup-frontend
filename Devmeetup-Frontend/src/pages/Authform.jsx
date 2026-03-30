@@ -92,7 +92,7 @@ export default function Authform() {
               />
             </svg>
           </div>
-          <span className="text-black font-bold text-lg">EventHub</span>
+          <span className="text-black font-bold  text-lg">EventHub</span>
         </div>
         {/* Error message */}
         {error && (
@@ -291,9 +291,37 @@ export default function Authform() {
               <button
                 disabled={loading}
                 type="submit"
-                className="w-full bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-black font-bold py-3 cursor-pointer rounded-xl text-sm transition-all duration-200 mt-2 shadow-lg shadow-amber-400/20 disabled:opacity-50"
+                className="w-full bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-black font-bold py-3 cursor-pointer rounded-xl text-sm transition-all duration-200 mt-2 shadow-lg shadow-amber-400/20 disabled:opacity-50 flex items-center justify-center"
               >
-                {loading ? "Signing in..." : "Sign in"}
+                {loading ? (
+                  <svg
+                    className="animate-spin h-5 w-5 text-black"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    {/* Background track circle - slightly more subtle */}
+                    <circle
+                      className="opacity-20"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                    ></circle>
+                    {/* The "Professional" Spinner Path: a smooth 90-degree arc with rounded caps */}
+                    <path
+                      className="opacity-90"
+                      fill="currentColor"
+                      d="M12 2a10 10 0 0 1 10 10"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                    ></path>
+                  </svg>
+                ) : (
+                  "Sign in"
+                )}
               </button>
             </form>
             <p className="text-center text-sm text-neutral-500 mt-6">

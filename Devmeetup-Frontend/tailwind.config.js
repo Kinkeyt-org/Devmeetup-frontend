@@ -2,7 +2,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        astooshi: ['Satoshi', 'sans-serif'],
+        satoshi: ['Satoshi', 'sans-serif'],
+        general: ['General Sans', 'sans-serif'],
       },
     },
   },
