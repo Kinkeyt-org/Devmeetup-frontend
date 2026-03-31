@@ -46,7 +46,7 @@ export default function Authform() {
     try {
       const data = await login(email, password);
       console.log("Login Success:", data);
-      navigate("/dashboard");
+      navigate("/home");
     } catch (err) {
       console.error("Login Error:", err);
       setError(err.response?.data?.message || err.message || "Login failed");
@@ -63,7 +63,7 @@ export default function Authform() {
     try {
       const data = await signup(name, email, password, password);
       console.log("Signup Success:", data);
-      navigate("/dashboard");
+      navigate("/home");
     } catch (err) {
       console.error("Signup Error:", err);
       setError(err.response?.data?.message || err.message || "Signup failed");
