@@ -1,12 +1,12 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
-import EventsPage from './EventsPage'
+import CreatePage from './CreatePage'
 
 const Home = () => {
   return (
     <div className='mx-auto w-full '>
         <Navbar/>
-        <EventsPage/>
+        <CreatePage/>
     </div>
   )
 }

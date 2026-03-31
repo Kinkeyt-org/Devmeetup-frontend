@@ -29,7 +29,7 @@ const EventsPage = () => {
   }
 
   return (
-    <div className="max-w-[1440px] mx-auto px-6 py-10 font-['Satoshi']">
+    <div className="px-6 py-10 font-['Satoshi']">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-2xl font-bold text-black">
           Upcoming Events <span className="text-gray-400 font-normal ml-2">({events.length})</span>
@@ -49,7 +49,7 @@ const EventsPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={`relative group overflow-hidden rounded-[2rem] border border-gray-100 bg-white shadow-sm hover:shadow-xl hover:border-amber-400 transition-all duration-500 ${
+              className={`relative group overflow-hidden rounded-4xl border border-gray-100 bg-white shadow-sm hover:shadow-xl hover:border-amber-400 transition-all duration-500 ${
                 isLarge ? "md:col-span-2 md:row-span-2" : isWide ? "md:col-span-2" : "col-span-1"
               }`}
             >
@@ -80,7 +80,7 @@ const EventsPage = () => {
                 <div className="mt-auto flex items-center justify-between pt-6 border-t border-gray-50">
                   <div className="flex flex-col">
                     <span className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Location</span>
-                    <span className="text-sm font-bold text-black truncate max-w-[150px]">
+                    <span className="text-sm font-bold text-black truncate max-w-37.5">
                       {event.location}
                     </span>
                   </div>

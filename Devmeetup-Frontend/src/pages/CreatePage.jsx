@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createEvent } from "../api/event"; 
 import { motion } from "framer-motion";
 
-const CreateEventPage = () => {
+const CreatePage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [eventType, setEventType] = useState("physical"); // "physical" or "virtual"
@@ -153,4 +153,4 @@ const CreateEventPage = () => {
   );
 };
 
-export default CreateEventPage;
+export default CreatePage;
