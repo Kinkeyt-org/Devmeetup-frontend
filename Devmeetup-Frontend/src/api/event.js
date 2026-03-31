@@ -10,7 +10,6 @@ const api = axios.create({
   },
 });
 
-// attach token
 api.interceptors.request.use(config => {
   const token = localStorage.getItem("token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
@@ -20,6 +19,7 @@ api.interceptors.request.use(config => {
 // EVENTS
 export const getEvents = async () => {
   const res = await api.get("/events");
+  // FIX: In your Postman success, events are under .data
   return res.data.data || [];
 };
 
@@ -29,6 +29,7 @@ export const getMyTickets = async () => {
 };
 
 export const bookEvent = async (eventId) => {
+  // FIX: Ensuring URL matches Postman's singular "event" route
   const res = await api.post(`/event/${eventId}/book`);
   return res.data;
 };
@@ -40,5 +41,6 @@ export const cancelEventTicket = async (ticketId) => {
 
 export const createEvent = async (payload) => {
   const res = await api.post("/events", payload);
-  return res.data;
+  // FIX: Postman shows single created event is under .details
+  return res.data.details || res.data;
 };
