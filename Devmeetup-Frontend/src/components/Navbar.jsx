@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // ADDED: useNavigate
 import { motion, AnimatePresence } from 'framer-motion';
+// ADDED: Import your logout function (adjust the path as needed for your folder structure)
+import { logout } from '../api/auth'; 
 
 // 1. EXTRACT ICONS: Keeps the main component incredibly clean and readable.
 const Icons = {
@@ -19,6 +21,7 @@ const Icons = {
 const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const navigate = useNavigate(); // ADDED: Hook for redirecting
 
   // 2. ROBUST DATA HANDLING: Fallbacks for empty auth states
   const user = { 
@@ -36,6 +39,21 @@ const Navbar = () => {
     { name: 'Settings', path: '/dashboard', icon: <Icons.Settings /> },
   ];
 
+  // ADDED: Logout Handler
+  const handleLogout = async () => {
+    try {
+      await logout(); // Calls your API and clears localStorage
+      setIsProfileOpen(false); // Close the dropdown
+      navigate('/login'); // Redirect to login page
+    } catch (error) {
+      console.error("Logout failed:", error);
+      // Even if the API call fails, your auth.js ensures the token is cleared locally.
+      // We still want to redirect them away from protected areas.
+      setIsProfileOpen(false);
+      navigate('/login');
+    }
+  };
+
   return (
     <nav className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 font-['Satoshi']">
       <div className="flex items-center justify-between h-20 px-4 md:px-8 gap-4">
@@ -47,7 +65,6 @@ const Navbar = () => {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              // FIXED: z-[60] instead of invalid z-60
               className="absolute inset-0 z-60 bg-white px-4 flex items-center gap-4 sm:hidden"
             >
               <div className="relative flex-1">
@@ -61,7 +78,6 @@ const Navbar = () => {
                   className="w-full py-3.5 pl-12 pr-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-amber-400 outline-none text-sm font-medium"
                 />
               </div>
-              {/* FIXED: Increased touch target for mobile accessibility */}
               <button 
                 onClick={() => setIsSearchOpen(false)} 
                 className="text-sm font-black text-gray-500 p-2 hover:bg-gray-50 rounded-xl transition-colors"
@@ -88,7 +104,7 @@ const Navbar = () => {
             <input
               type="text"
               className="w-full py-3 pl-11 pr-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-amber-500/10 focus:border-amber-400 outline-none transition-all text-sm"
-              placeholder="Search..."
+              placeholder="Search for events"
             />
           </div>
 
@@ -152,13 +168,11 @@ const Navbar = () => {
                   <div className="fixed inset-0 z-10" onClick={() => setIsProfileOpen(false)} />
                   
                   <motion.div
-                    // FIXED: transformOrigin makes it grow out from the button
                     style={{ originX: 1, originY: 0 }}
                     initial={{ opacity: 0, scale: 0.9, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: 10 }}
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    // FIXED: rounded-[2rem] instead of invalid rounded-4xl
                     className="absolute right-0 mt-3 w-64 bg-white border border-gray-100 rounded-4xl shadow-2xl z-20 overflow-hidden p-2"
                   >
                     {/* User Header */}
@@ -166,7 +180,6 @@ const Navbar = () => {
                       <p className="text-sm font-black text-gray-900 uppercase tracking-tighter truncate">
                         {displayName}
                       </p>
-                      {/* Only render email if it exists */}
                       {user.email && (
                         <p className="text-xs text-gray-500 truncate font-medium mt-0.5">{user.email}</p>
                       )}
@@ -188,7 +201,11 @@ const Navbar = () => {
                     ))}
 
                     <div className="mt-2 pt-2 border-t border-gray-50">
-                      <button className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-50 rounded-2xl transition-all">
+                      {/* ADDED: Attached handleLogout to the onClick event */}
+                      <button 
+                        onClick={handleLogout}
+                        className="w-full flex items-center cursor-pointer gap-3 px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-50 rounded-2xl transition-all"
+                      >
                         <Icons.LogOut />
                         Sign Out
                       </button>
