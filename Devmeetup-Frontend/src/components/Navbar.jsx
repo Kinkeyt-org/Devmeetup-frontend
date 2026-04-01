@@ -44,7 +44,7 @@ const Navbar = () => {
     try {
       await logout(); // Calls your API and clears localStorage
       setIsProfileOpen(false); // Close the dropdown
-      navigate('/login'); // Redirect to login page
+      navigate('/'); // Redirect to login page
     } catch (error) {
       console.error("Logout failed:", error);
       // Even if the API call fails, your auth.js ensures the token is cleared locally.

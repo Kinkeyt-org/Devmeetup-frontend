@@ -9,7 +9,7 @@ const App = () => {
   return (
     <Router>
         <Routes>
-            <Route path='/login' element={<AuthForm />} />
+            <Route path='/' element={<AuthForm />} />
             <Route path='/home' element={<Home/>} />
             <Route path='/events/create' element={<CreatePage/>} />
             
