@@ -70,7 +70,7 @@ const CreatePage = () => {
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.4, ease: "easeOut" }}
+          transition={{ duration: 0.1, ease: "easeOut" }}
           className="w-full max-w-xl bg-white p-6 md:p-10 rounded-[2.5rem] shadow-xl shadow-gray-200/50 border border-gray-100"
         >
           <div className="mb-8 text-center">
