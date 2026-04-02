@@ -1,178 +1,183 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { logout } from '../api/auth';
 
+// Premium Icon Set (Lucide-inspired)
 const Icons = {
-  ArrowLeft: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>,
-  User: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>,
-  Lock: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2zM9 11V7a3 3 0 016 0v4" /></svg>,
-  Bell: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>,
-  Globe: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>
+  Search: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
+  Bell: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>,
+  Plus: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14"/></svg>,
+  Settings: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>,
+  Ticket: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>,
+  LogOut: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>,
+  User: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+  ChevronDown: () => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
 };
 
-const Settings = () => {
-  const navigate = useNavigate();
-  const [activeSection, setActiveSection] = useState('account');
-  const [hasChanges, setHasChanges] = useState(false);
+const Navbar = () => {
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
 
-  const menuItems = [
-    { id: 'account', label: 'Account', icon: <Icons.User /> },
-    { id: 'security', label: 'Security', icon: <Icons.Lock /> },
-    { id: 'notifications', label: 'Notifications', icon: <Icons.Bell /> },
-    { id: 'language', label: 'Language & Region', icon: <Icons.Globe /> },
-  ];
+  // Handle scroll effect for Apple-style blur
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-  const handleInputChange = () => setHasChanges(true);
+  const user = { 
+    name: "Alex Doe", 
+    email: "alex.doe@icloud.com",
+    image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80" 
+  };
 
-  return (
-    <div className="min-h-screen bg-gray-50/50 font-['Satoshi'] pb-32">
-      {/* HEADER */}
-      <div className="max-w-6xl mx-auto px-4 pt-8 mb-10">
-        <button 
-          onClick={() => navigate('/home')}
-          className="group flex items-center gap-2 text-sm font-black text-gray-400 hover:text-gray-900 transition-colors mb-6"
-        >
-          <div className="p-2 rounded-xl bg-white border border-gray-100 group-hover:bg-amber-50 group-hover:border-amber-200 transition-all">
-            <Icons.ArrowLeft />
-          </div>
-          Back to Dashboard
-        </button>
-        <h1 className="text-4xl font-black text-gray-900 tracking-tight">Settings</h1>
-      </div>
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setIsProfileOpen(false);
+      navigate('/');
+    } catch (e) {
+      navigate('/');
+    }
+  };
 
-      <main className="max-w-6xl mx-auto px-4">
-        <div className="flex flex-col md:flex-row gap-8">
-          
-          {/* SIDEBAR NAVIGATION */}
-          <aside className="w-full md:w-64 space-y-2">
-            {menuItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setActiveSection(item.id)}
-                className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-black text-sm transition-all ${
-                  activeSection === item.id 
-                  ? "bg-gray-900 text-white shadow-lg shadow-gray-200" 
-                  : "text-gray-500 hover:bg-white hover:text-gray-900"
-                }`}
-              >
-                {item.icon}
-                {item.label}
-              </button>
-            ))}
-          </aside>
+  return (
+    <nav className={`sticky top-0 z-50 w-full transition-all duration-300 font-['Satoshi']
+      ${scrolled ? 'bg-white/70 backdrop-blur-md border-b border-gray-200/50 py-2' : 'bg-white py-4'}`}>
+      
+      <div className=" px-6 flex items-center justify-between gap-8">
+        
+        {/* LEFT: BRAND */}
+        <Link to="/" className="flex items-center gap-2 shrink-0">
+           <div className="w-8 h-8 rounded-lg bg-amber-400 flex items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>        
+        </Link>
 
-          {/* SETTINGS CONTENT AREA */}
-          <div className="flex-1">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeSection}
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-8 md:p-12"
-              >
-                {activeSection === 'account' && (
-                  <div className="space-y-8">
-                    <div>
-                      <h2 className="text-2xl font-black text-gray-900 mb-1">Account Information</h2>
-                      <p className="text-gray-500 font-medium text-sm">Update your personal details and public profile.</p>
-                    </div>
+        {/* CENTER: SEARCH BAR */}
+        <div className="flex-1 max-w-2xl ">
+          <div className="relative hidden md:flex  group">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400  transition-colors">
+              <Icons.Search />
+            </div>
+            <input
+              type="text"
+              placeholder="Search anything..."
+              className="w-full bg-gray-100/80 border  border-black/15 rounded-xl py-2.5 pl-12 pr-4 text-[15px] focus:outline-none focus:border-amber-400 focus:bg-gray-200/50 transition-all placeholder:text-gray-500 font-medium"
+            />
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
+              <kbd className="hidden lg:inline-flex h-5 items-center gap-1 rounded border border-gray-300 bg-white px-1.5 font-sans text-[10px] font-medium text-gray-400">
+                ⌘K
+              </kbd>
+            </div>
+          </div>
+        </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <label className="text-xs font-black uppercase tracking-widest text-gray-400 ml-1">Full Name</label>
-                        <input 
-                          type="text" 
-                          placeholder="Alex Thompson"
-                          onChange={handleInputChange}
-                          className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-amber-400/10 focus:border-amber-400 outline-none transition-all font-bold text-gray-900"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-xs font-black uppercase tracking-widest text-gray-400 ml-1">Email Address</label>
-                        <input 
-                          type="email" 
-                          placeholder="alex@nexus.com"
-                          onChange={handleInputChange}
-                          className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-amber-400/10 focus:border-amber-400 outline-none transition-all font-bold text-gray-900"
-                        />
-                      </div>
-                    </div>
+        {/* RIGHT: ACTIONS */}
+        <div className="flex items-center gap-1">
+          <button className="p-2.5 text-gray-600 cursor-pointer hover:bg-gray-100 rounded-full transition-all relative">
+            <Icons.Bell />
+            <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+          </button>
 
-                    <div className="space-y-2">
-                      <label className="text-xs font-black uppercase tracking-widest text-gray-400 ml-1">Bio</label>
-                      <textarea 
-                        rows="4"
-                        onChange={handleInputChange}
-                        placeholder="Tell us about yourself..."
-                        className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-amber-400/10 focus:border-amber-400 outline-none transition-all font-bold text-gray-900 resize-none"
-                      />
-                    </div>
-                  </div>
-                )}
+          {/* Desktop Create Button */}
+          <Link to="/events/create">
+            <button className="hidden sm:flex items-center gap-2 cursor-pointer bg-black text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-800 transition-all active:scale-95">
+              <Icons.Plus />
+              <span>Create</span>
+            </button>
+          </Link>
 
-                {activeSection === 'security' && (
-                  <div className="space-y-8">
-                    <div>
-                      <h2 className="text-2xl font-black text-gray-900 mb-1">Security Settings</h2>
-                      <p className="text-gray-500 font-medium text-sm">Manage your password and account security.</p>
-                    </div>
+          {/* Mobile Create Button
+          <Link to="/events/create">
+            <button className="md:hidden flex items-center gap-2 cursor-pointer bg-black text-white px-2 py-2 rounded-3xl text-sm  hover:bg-gray-800 transition-all active:scale-95">
+              <Icons.Plus />
+            </button>
+          </Link> */}
 
-                    <div className="p-6 bg-amber-50 rounded-3xl border border-amber-100 flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="p-3 bg-amber-400 text-gray-900 rounded-2xl"><Icons.Lock /></div>
-                        <div>
-                          <p className="font-black text-gray-900">Two-Factor Authentication</p>
-                          <p className="text-xs text-amber-700 font-bold">Highly recommended for organizers</p>
-                        </div>
-                      </div>
-                      <button className="px-5 py-2 bg-white text-gray-900 font-black text-xs rounded-xl shadow-sm border border-amber-200">Enable</button>
-                    </div>
+          {/* PROFILE DROPDOWN */}
+          <div className="relative ml-2">
+            <button 
+              onClick={() => setIsProfileOpen(!isProfileOpen)}
+              className="group flex items-center gap-2 p-1 pr-3 cursor-pointer rounded-full transition-all"
+            >
+              <div className="w-9 h-9 rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-gray-200 transition-all">
+                <img src={user.image} alt="Profile" className="w-full h-full object-cover" />
+              </div>
+              <div className="hidden lg:block text-left">
+                <Icons.ChevronDown />
+              </div>
+            </button>
 
-                    <button className="text-sm font-black text-amber-600 hover:text-amber-700 transition-colors ml-1">
-                      Change account password →
-                    </button>
-                  </div>
-                )}
-                
-                {/* Add other sections as needed */}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-      </main>
+            <AnimatePresence>
+              {isProfileOpen && (
+                <>
+                  <div className="fixed inset-0 z-10" onClick={() => setIsProfileOpen(false)} />
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ type: "spring", damping: 20, stiffness: 300 }}
+                    className="absolute right-0 mt-4 w-[320px] bg-white rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-20 border border-gray-100 overflow-hidden"
+                  >
+                    {/* Google-Style Account Header */}
+                    <div className="p-6 text-center border-b border-gray-50 bg-gray-50/50">
+                      <p className="text-xs font-bold text-gray-500 mb-4 tracking-widest uppercase">Personal Account</p>
+                      <div className="relative inline-block mb-3">
+                        <img src={user.image} className="w-20 h-20 rounded-full border-4 border-white shadow-sm mx-auto" alt="Avatar" />
+                        <div className="absolute bottom-0 right-0 p-1.5 bg-white rounded-full shadow-md border border-gray-100 cursor-pointer hover:bg-gray-50">
+                          <Icons.Settings />
+                        </div>
+                      </div>
+                      <h4 className="text-lg font-bold text-gray-900">{user.name}</h4>
+                      <p className="text-sm text-gray-500">{user.email}</p>
+                      
+                      <button className="mt-4 px-6 py-2 border border-gray-200 rounded-full text-sm font-semibold hover:bg-white transition-all">
+                        Manage Account
+                      </button>
+                    </div>
 
-      {/* FLOATING SAVE BAR */}
-      <AnimatePresence>
-        {hasChanges && (
-          <motion.div
-            initial={{ y: 100 }}
-            animate={{ y: 0 }}
-            exit={{ y: 100 }}
-            className="fixed bottom-8 left-1/2 -translate-x-1/2 w-full max-w-2xl px-4 z-50"
-          >
-            <div className="bg-gray-900 text-white p-4 rounded-3xl shadow-2xl flex items-center justify-between">
-              <p className="text-sm font-bold ml-4">You have unsaved changes</p>
-              <div className="flex gap-2">
-                <button 
-                  onClick={() => setHasChanges(false)}
-                  className="px-5 py-2.5 text-sm font-black text-gray-400 hover:text-white transition-colors"
-                >
-                  Discard
-                </button>
-                <button 
-                  onClick={() => setHasChanges(false)}
-                  className="px-6 py-2.5 bg-amber-400 text-gray-900 text-sm font-black rounded-2xl hover:bg-amber-300 transition-all shadow-lg shadow-amber-400/20"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
+                    {/* Menu Items */}
+                    <div className="p-2">
+                      <DropdownItem icon={<Icons.User />} label="View Profile" onClick={() => setIsProfileOpen(false)} />
+                      <DropdownItem icon={<Icons.Ticket />} label="Orders & Tickets" onClick={() => setIsProfileOpen(false)} />
+                      <DropdownItem icon={<Icons.Settings />} label="Display & Settings" onClick={() => setIsProfileOpen(false)} />
+                    </div>
+
+                    {/* Footer / Logout */}
+                    <div className="p-2 bg-gray-50 border-t border-gray-100">
+                      <button 
+                        onClick={handleLogout}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 rounded-2xl transition-colors"
+                      >
+                        <Icons.LogOut />
+                        Sign Out of Platform
+                      </button>
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
 };
 
-export default Settings;
+// Sub-component for clean dropdown items
+const DropdownItem = ({ icon, label, onClick }) => (
+  <button 
+    onClick={onClick}
+    className="w-full flex items-center gap-4 px-4 py-3 hover:bg-gray-100 rounded-2xl transition-all group"
+  >
+    <span className="text-gray-400 group-hover:text-black transition-colors">{icon}</span>
+    <span className="text-[15px] font-medium text-gray-700 group-hover:text-black transition-colors">{label}</span>
+  </button>
+);
+
+export default Navbar;
