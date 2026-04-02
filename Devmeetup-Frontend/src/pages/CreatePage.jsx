@@ -236,9 +236,13 @@ const CreatePage = () => {
             type="submit"
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full py-4 bg-black text-white rounded-2xl font-bold"
+            className="w-full py-4 bg-black text-white rounded-2xl font-bold flex items-center justify-center"
           >
-            {loading ? "Publishing..." : "Publish Event"}
+            {loading ? (
+              <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
+            ) : (
+              "Publish Event"
+            )}
           </motion.button>
 
         </div>

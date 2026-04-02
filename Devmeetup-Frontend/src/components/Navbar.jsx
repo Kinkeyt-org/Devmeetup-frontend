@@ -167,7 +167,7 @@ const Navbar = () => {
         <div 
           initial={{ y: 100 }}
           animate={{ y: 0 }}
-          className="bg-white  rounded-4xl p-3 flex items-center justify-around  border border-white/10"
+          className="bg-white  rounded-4xl p-3 flex items-center justify-between  border border-white/10"
         >
           <MobileNavItem to="/" icon={<Icons.Home />} active={location.pathname === "/"} />
           <MobileNavItem to="/search" icon={<Icons.Search />} active={location.pathname === "/search"} />
