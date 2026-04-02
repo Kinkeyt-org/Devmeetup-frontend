@@ -163,7 +163,7 @@ const Navbar = () => {
       </nav>
 
       {/* MOBILE FLOATING BOTTOM DOCK (Instagram/Apple Style) */}
-      <div className="md:hidden fixed bottom-6 left-0 right-0 z-50 px-6">
+      <div className="md:hidden fixed bottom-2 left-0 right-0 z-50 px-6">
         <div 
           initial={{ y: 100 }}
           animate={{ y: 0 }}
@@ -200,7 +200,7 @@ const DropdownItem = ({ icon, label }) => (
 
 const MobileNavItem = ({ to, icon, active }) => (
   <Link to={to} className="p-3 relative">
-    <span className={`transition-colors duration-300 ${active ? 'text-amber-400' : 'text-gray-400'}`}>
+    <span className={`transition-colors duration-300 ${active ? 'text-amber-400' : 'text-black/60'}`}>
       {icon}
     </span>
     {active && (
