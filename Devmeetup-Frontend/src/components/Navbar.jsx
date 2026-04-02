@@ -83,15 +83,22 @@ const Navbar = () => {
             <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
           </button>
 
-          <button className="hidden sm:flex items-center gap-2 cursor-pointer bg-black text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-800 transition-all active:scale-95">
-            <Icons.Plus />
-            <span><Link to="/events/create">Create</Link></span>
-          </button>
-          <button className="md:hidden flex items-center gap-2 cursor-pointer bg-black text-white px-2 py-2 rounded-3xl text-sm  hover:bg-gray-800 transition-all active:scale-95">
-            <Link to="/events/create"><Icons.Plus /></Link>
-          </button>
+          {/* Desktop Create Button */}
+          <Link to="/events/create">
+            <button className="hidden sm:flex items-center gap-2 cursor-pointer bg-black text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-800 transition-all active:scale-95">
+              <Icons.Plus />
+              <span>Create</span>
+            </button>
+          </Link>
 
-          {/* PROFILE DROPDOWN (Google/Premium Style) */}
+          {/* Mobile Create Button */}
+          <Link to="/events/create">
+            <button className="md:hidden flex items-center gap-2 cursor-pointer bg-black text-white px-2 py-2 rounded-3xl text-sm  hover:bg-gray-800 transition-all active:scale-95">
+              <Icons.Plus />
+            </button>
+          </Link>
+
+          {/* PROFILE DROPDOWN */}
           <div className="relative ml-2">
             <button 
               onClick={() => setIsProfileOpen(!isProfileOpen)}
