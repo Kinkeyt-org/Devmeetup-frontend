@@ -42,8 +42,8 @@ const Navbar = () => {
   return (
     <>
       {/* TOP NAVBAR (Desktop & Mobile Header) */}
-      <nav className={`sticky top-0 z-50 w-full transition-all duration-300 font-['Satoshi']
-        ${scrolled ? 'bg-white/70 backdrop-blur-md border-b border-gray-200/50 py-2' : 'bg-white py-4'}`}>
+      <nav className={`z-50 fixed   w-full transition-all duration-300 font-['Satoshi']
+        ${scrolled ? 'bg-white backdrop-blur-md py-2' : 'bg-white py-4'}`}>
           <div className=" px-6 flex items-center justify-between gap-8">
             {/* LEFT: BRAND */}
             <Link to="/" className="flex items-center gap-2 shrink-0">
@@ -167,7 +167,7 @@ const Navbar = () => {
         <div 
           initial={{ y: 100 }}
           animate={{ y: 0 }}
-          className="bg-white/10  rounded-4xl p-2 flex items-center justify-around  border border-white/10"
+          className="bg-white  rounded-4xl p-3 flex items-center justify-around  border border-white/10"
         >
           <MobileNavItem to="/" icon={<Icons.Home />} active={location.pathname === "/"} />
           <MobileNavItem to="/search" icon={<Icons.Search />} active={location.pathname === "/search"} />

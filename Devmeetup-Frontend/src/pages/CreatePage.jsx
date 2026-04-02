@@ -72,10 +72,10 @@ const CreatePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white font-['Satoshi'] text-gray-900 flex flex-col">
+    <div className="min-h-screen pt-15 bg-white font-['Satoshi'] text-gray-900 flex flex-col">
       
       {/* Header */}
-      <header className="sticky top-0 z-10 px-6 py-4 backdrop-blur bg-white/70 border-b border-gray-100">
+      <header className="sticky top-0 z-10 px-6 py-4 backdrop-blur bg-white/70">
         <button
           onClick={() => navigate(-1)}
           className="text-sm font-bold text-gray-600 hover:text-black"
@@ -96,9 +96,24 @@ const CreatePage = () => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <span className="text-gray-400 font-medium">
-                Upload cover image
-              </span>
+              <div className="flex flex-col items-center gap-2 text-gray-400 font-medium">
+                {/* Upload Icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-10 h-10"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12V4m0 0l-4 4m4-4l4 4"
+                  />
+                </svg>
+                <span>Upload cover image</span>
+              </div>
             )}
 
             <input

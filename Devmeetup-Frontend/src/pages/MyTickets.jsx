@@ -2,7 +2,7 @@ import React from 'react'
 
 const MyTickets = () => {
   return (
-    <div>
+    <div className='pt-20'>
         My Tickets come here
     </div>
   )
