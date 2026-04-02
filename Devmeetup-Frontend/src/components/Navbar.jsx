@@ -1,212 +1,153 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // ADDED: useNavigate
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-// ADDED: Import your logout function (adjust the path as needed for your folder structure)
-import { logout } from '../api/auth'; 
+import { logout } from '../api/auth';
 
-// 1. EXTRACT ICONS: Keeps the main component incredibly clean and readable.
+// Premium Icon Set (Lucide-inspired)
 const Icons = {
-  Menu: () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" /></svg>,
-  Search: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>,
-  Bell: () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>,
-  Plus: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>,
-  Profile: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-user-icon lucide-circle-user"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg>,
-  Ticket: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ticket-icon lucide-ticket"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>,
-  Settings: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-icon lucide-settings"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>,
-  Sun: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364-6.364l-1.414 1.414M6.05 17.95l-1.414 1.414M18.364 18.364l-1.414-1.414M6.05 6.05L4.636 4.636M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>,
-  Moon: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/></svg>,
-  LogOut: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out-icon lucide-log-out"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>};
+  Search: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
+  Bell: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>,
+  Plus: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14"/></svg>,
+  Settings: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>,
+  Ticket: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>,
+  LogOut: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>,
+  User: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+  ChevronDown: () => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+};
 
 const Navbar = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const navigate = useNavigate(); // ADDED: Hook for redirecting
+  const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
 
-  // 2. ROBUST DATA HANDLING: Fallbacks for empty auth states
+  // Handle scroll effect for Apple-style blur
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const user = { 
-    name: "", 
-    email: "",
-    image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" 
+    name: "Alex Doe", 
+    email: "alex.doe@icloud.com",
+    image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80" 
   };
-  
-  const displayName = user.name || "Guest User";
-  const userInitial = displayName.charAt(0).toUpperCase(); 
 
-  const profileActions = [
-    { name: 'My Profile', path: '/profile', icon: <Icons.Profile /> },
-    { name: 'My Tickets', path: '/my-tickets', icon: <Icons.Ticket /> },
-    { name: 'Settings', path: '/dashboard', icon: <Icons.Settings /> },
-  ];
-
-  // ADDED: Logout Handler
   const handleLogout = async () => {
     try {
-      await logout(); // Calls your API and clears localStorage
-      setIsProfileOpen(false); // Close the dropdown
-      navigate('/'); // Redirect to login page
-    } catch (error) {
-      console.error("Logout failed:", error);
-      // Even if the API call fails, your auth.js ensures the token is cleared locally.
-      // We still want to redirect them away from protected areas.
+      await logout();
       setIsProfileOpen(false);
+      navigate('/');
+    } catch (e) {
       navigate('/');
     }
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 font-['Satoshi']">
-      <div className="flex items-center justify-between h-20 px-4 md:px-8 gap-4">
+    <nav className={`sticky top-0 z-50 w-full transition-all duration-300 font-['Satoshi']
+      ${scrolled ? 'bg-white/70 backdrop-blur-md border-b border-gray-200/50 py-2' : 'bg-white py-4'}`}>
+      
+      <div className=" px-6 flex items-center justify-between gap-8">
         
-        {/* MOBILE SEARCH OVERLAY */}
-        <AnimatePresence>
-          {isSearchOpen && (
-            <motion.div 
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="absolute inset-0 z-60 bg-white px-4 flex items-center gap-4 sm:hidden"
-            >
-              <div className="relative flex-1">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-500">
-                  <Icons.Search />
-                </div>
-                <input
-                  autoFocus
-                  type="text"
-                  placeholder="Search events..."
-                  className="w-full py-3.5 pl-12 pr-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-amber-400 outline-none text-sm font-medium"
-                />
-              </div>
-              <button 
-                onClick={() => setIsSearchOpen(false)} 
-                className="text-sm font-black cursor-pointer text-gray-500 p-2 hover:bg-gray-50 rounded-xl transition-colors"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* LEFT: BRAND */}
+        <Link to="/" className="flex items-center gap-2 shrink-0">
+          <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+            <div className="w-3 h-3 bg-white rounded-full animate-pulse" />
+          </div>
+          <span className="text-xl font-black tracking-tight text-gray-900 hidden sm:block">PLATFORM.</span>
+        </Link>
 
-        {/* LEFT: MENU & SEARCH */}
-        <div className="flex items-center flex-1 gap-3 md:gap-6">
-          {!isSearchOpen && (
-            <button aria-label="Open menu" className="p-2.5 text-gray-900 hover:bg-gray-100 rounded-xl transition-colors shrink-0">
-              <Icons.Menu />
-            </button>
-          )}
-
-          {/* Desktop Search */}
-          <div className="relative w-full max-w-md hidden sm:block group">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-amber-500 transition-colors">
+        {/* CENTER: SEARCH BAR */}
+        <div className="flex-1 max-w-2xl hidden md:block">
+          <div className="relative group">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400  transition-colors">
               <Icons.Search />
             </div>
             <input
               type="text"
-              className="w-full py-3 pl-11 pr-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-amber-500/10 focus:border-amber-400 outline-none transition-all text-sm"
-              placeholder="Search for events"
+              placeholder="Search anything..."
+              className="w-full bg-gray-100/80 border border-black/15 rounded-xl py-2.5 pl-12 pr-4 text-[15px] focus:outline-none focus:border-amber-400 focus:bg-gray-200/50 transition-all placeholder:text-gray-500 font-medium"
             />
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
+              <kbd className="hidden lg:inline-flex h-5 items-center gap-1 rounded border border-gray-300 bg-white px-1.5 font-sans text-[10px] font-medium text-gray-400">
+                ⌘K
+              </kbd>
+            </div>
           </div>
-
-          {/* Mobile Search Toggle */}
-          {!isSearchOpen && (
-            <button aria-label="Open search" onClick={() => setIsSearchOpen(true)} className="sm:hidden p-2.5 text-gray-600 hover:bg-gray-100 rounded-xl">
-              <Icons.Search />
-            </button>
-          )}
         </div>
 
-        {/* RIGHT: ACTIONS & PROFILE */}
-        <div className="flex items-center gap-3 md:gap-5">
-          
-          <button aria-label="Notifications" className="relative p-2.5 text-gray-600 hover:bg-gray-50 border border-gray-100 cursor-pointer rounded-xl hidden xs:block transition-colors">
+        {/* RIGHT: ACTIONS */}
+        <div className="flex items-center gap-3">
+          <button className="p-2.5 text-gray-600 cursor-pointer hover:bg-gray-100 rounded-full transition-all relative">
             <Icons.Bell />
-            <span className="absolute top-2.5 right-2.5 w-2.5 h-2.5 bg-amber-500 border-2 border-white rounded-full"></span>
+            <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
           </button>
 
-          {/* Create Buttons */}
-          <Link to="/events/create" className="hidden md:block">
-            <motion.button whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className="px-6 py-3 font-bold cursor-pointer text-gray-900 bg-amber-400 rounded-2xl shadow-lg shadow-amber-400/20 hover:bg-amber-300 transition-all">
-              Create Event
-            </motion.button>
-          </Link>
-          <Link to="/events/create" className="block md:hidden">
-            <motion.button aria-label="Create Event" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className="p-3 font-bold cursor-pointer text-gray-900 bg-amber-400 rounded-[1.25rem] shadow-lg shadow-amber-400/20 hover:bg-amber-500 transition-all">
-               <Icons.Plus />
-            </motion.button>
-          </Link>
+          <button className="hidden sm:flex items-center gap-2 cursor-pointer bg-black text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-800 transition-all active:scale-95">
+            <Icons.Plus />
+            <span><Link to="/events/create">Create</Link></span>
+          </button>
+          <button className="md:hidden flex items-center gap-2 cursor-pointer bg-black text-white px-2 py-2 rounded-3xl text-sm  hover:bg-gray-800 transition-all active:scale-95">
+            <Link to="/events/create"><Icons.Plus /></Link>
+          </button>
 
-          {/* PROFILE DROPDOWN */}
-          <div className="relative">
-            <motion.button 
-              aria-expanded={isProfileOpen}
-              aria-haspopup="true"
+          {/* PROFILE DROPDOWN (Google/Premium Style) */}
+          <div className="relative ml-2">
+            <button 
               onClick={() => setIsProfileOpen(!isProfileOpen)}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center cursor-pointer gap-2 focus:outline-none shrink-0"
+              className="group flex items-center gap-2 p-1 pr-3 cursor-pointer rounded-full transition-all"
             >
-              <div className="w-10 h-10 md:w-11 md:h-11 rounded-full border-2 border-amber-400 p-0.5 shadow-sm transition-transform hover:scale-105">
-                <div className="w-full h-full rounded-full overflow-hidden bg-gray-100 flex items-center justify-center relative">
-                   <img 
-                    src={user.image} 
-                    alt={displayName} 
-                    className="w-full h-full object-cover"
-                    onError={(e) => { e.target.style.display = 'none'; }}
-                   />
-                   {/* Fallback Initial */}
-                   <span className="absolute inset-0 flex items-center justify-center font-black text-gray-400 bg-gray-50 text-sm">
-                    {userInitial}
-                   </span>
-                </div>
+              <div className="w-9 h-9 rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-gray-200 transition-all">
+                <img src={user.image} alt="Profile" className="w-full h-full object-cover" />
               </div>
-            </motion.button>
+              <div className="hidden lg:block text-left">
+                <Icons.ChevronDown />
+              </div>
+            </button>
 
             <AnimatePresence>
               {isProfileOpen && (
                 <>
-                  {/* Invisible backdrop */}
                   <div className="fixed inset-0 z-10" onClick={() => setIsProfileOpen(false)} />
-                  
                   <motion.div
-                    style={{ originX: 1, originY: 0 }}
-                    initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    className="absolute right-0 mt-3 w-64 bg-white border border-gray-100 rounded-4xl shadow-2xl z-20 overflow-hidden p-2"
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ type: "spring", damping: 20, stiffness: 300 }}
+                    className="absolute right-0 mt-4 w-[320px] bg-white rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-20 border border-gray-100 overflow-hidden"
                   >
-                    {/* User Header */}
-                    <div className="px-4 py-4 mb-2 bg-gray-50/80 rounded-3xl">
-                      <p className="text-sm font-black text-gray-900 uppercase tracking-tighter truncate">
-                        {displayName}
-                      </p>
-                      {user.email && (
-                        <p className="text-xs text-gray-500 truncate font-medium mt-0.5">{user.email}</p>
-                      )}
+                    {/* Google-Style Account Header */}
+                    <div className="p-6 text-center border-b border-gray-50 bg-gray-50/50">
+                      <p className="text-xs font-bold text-gray-500 mb-4 tracking-widest uppercase">Personal Account</p>
+                      <div className="relative inline-block mb-3">
+                        <img src={user.image} className="w-20 h-20 rounded-full border-4 border-white shadow-sm mx-auto" alt="Avatar" />
+                        <div className="absolute bottom-0 right-0 p-1.5 bg-white rounded-full shadow-md border border-gray-100 cursor-pointer hover:bg-gray-50">
+                          <Icons.Settings />
+                        </div>
+                      </div>
+                      <h4 className="text-lg font-bold text-gray-900">{user.name}</h4>
+                      <p className="text-sm text-gray-500">{user.email}</p>
+                      
+                      <button className="mt-4 px-6 py-2 border border-gray-200 rounded-full text-sm font-semibold hover:bg-white transition-all">
+                        Manage Account
+                      </button>
                     </div>
 
-                    {/* Actions */}
-                    {profileActions.map((action) => (
-                      <Link
-                        key={action.name}
-                        to={action.path}
-                        onClick={() => setIsProfileOpen(false)}
-                        className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-gray-600 hover:bg-amber-50 hover:text-amber-600 rounded-2xl transition-all group"
-                      >
-                        <span className="text-gray-400 group-hover:text-amber-500 transition-colors">
-                          {action.icon}
-                        </span>
-                        {action.name}
-                      </Link>
-                    ))}
+                    {/* Menu Items */}
+                    <div className="p-2">
+                      <DropdownItem icon={<Icons.User />} label="View Profile" onClick={() => setIsProfileOpen(false)} />
+                      <DropdownItem icon={<Icons.Ticket />} label="Orders & Tickets" onClick={() => setIsProfileOpen(false)} />
+                      <DropdownItem icon={<Icons.Settings />} label="Display & Settings" onClick={() => setIsProfileOpen(false)} />
+                    </div>
 
-                    <div className="mt-2 pt-2 border-t border-gray-50">
-                      {/* ADDED: Attached handleLogout to the onClick event */}
+                    {/* Footer / Logout */}
+                    <div className="p-2 bg-gray-50 border-t border-gray-100">
                       <button 
                         onClick={handleLogout}
-                        className="w-full flex items-center cursor-pointer gap-3 px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-50 rounded-2xl transition-all"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 rounded-2xl transition-colors"
                       >
                         <Icons.LogOut />
-                        Sign Out
+                        Sign Out of Platform
                       </button>
                     </div>
                   </motion.div>
@@ -219,5 +160,16 @@ const Navbar = () => {
     </nav>
   );
 };
+
+// Sub-component for clean dropdown items
+const DropdownItem = ({ icon, label, onClick }) => (
+  <button 
+    onClick={onClick}
+    className="w-full flex items-center gap-4 px-4 py-3 hover:bg-gray-100 rounded-2xl transition-all group"
+  >
+    <span className="text-gray-400 group-hover:text-black transition-colors">{icon}</span>
+    <span className="text-[15px] font-medium text-gray-700 group-hover:text-black transition-colors">{label}</span>
+  </button>
+);
 
 export default Navbar;
