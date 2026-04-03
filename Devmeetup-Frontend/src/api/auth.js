@@ -25,8 +25,8 @@ export const login = async (email, password) => {
 };
 
 // SIGNUP
-export const signup = async (name, email, password) => {
-  const res = await api.post("/register", { name, email, password });
+export const signup = async (name, email, password, password_confirmation) => {
+  const res = await api.post("/register", { name, email, password, password_confirmation });
   if (res.data.token) localStorage.setItem("token", res.data.token); //  ADDED — store token on signup too
   return res.data;
 };

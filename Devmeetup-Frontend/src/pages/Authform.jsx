@@ -20,6 +20,7 @@ export default function Authform() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [password_confirmation, setPassword_confirmation] = useState("");
   const [name, setName] = useState("");
 
   const [forgotEmail, setForgotEmail] = useState("");
@@ -49,7 +50,7 @@ export default function Authform() {
     setLoading(true);
     setError("");
     try {
-      const data = await signup(name, email, password, password);
+      const data = await signup(name, email, password, password_confirmation);
       // FIX: Store only the token string from the response
       if (data && data.token) {
         localStorage.setItem("token", data.token);
@@ -179,6 +180,10 @@ export default function Authform() {
               <div>
                 <label className="block text-xs text-neutral-400 mb-1.5 font-medium tracking-wide uppercase">Password</label>
                 <input type={showPass ? "text" : "password"} required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Min. 8 characters" className="w-full border border-neutral-300 rounded-xl px-4 py-3 text-black placeholder-neutral-400 text-sm focus:outline-none focus:border-amber-400 transition-all" />
+              </div>
+              <div>
+                <label className="block text-xs text-neutral-400 mb-1.5 font-medium tracking-wide uppercase">Password Confirmation</label>
+                <input type={showPass ? "text" : "password"} required value={password_confirmation} onChange={(e) => setPassword_confirmation(e.target.value)} placeholder="Min. 8 characters" className="w-full border border-neutral-300 rounded-xl px-4 py-3 text-black placeholder-neutral-400 text-sm focus:outline-none focus:border-amber-400 transition-all" />
               </div>
               <button disabled={loading} type="submit" className="w-full cursor-pointer bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 rounded-xl text-sm transition-all shadow-lg shadow-amber-400/20 mt-2 disabled:opacity-50">
                 {loading ? "Creating account..." : "Create account"}

@@ -10,6 +10,7 @@ const CreatePage = () => {
   const [pricingType, setPricingType] = useState("free");
   const [serverError, setServerError] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [showToast, setShowToast] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -31,7 +32,6 @@ const CreatePage = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     setFormData({ ...formData, image: file });
     setImagePreview(URL.createObjectURL(file));
   };
@@ -43,7 +43,6 @@ const CreatePage = () => {
 
     try {
       const payload = new FormData();
-
       payload.append("title", formData.title);
       payload.append("description", formData.description);
       payload.append("date", formData.date);
@@ -52,28 +51,42 @@ const CreatePage = () => {
       payload.append("eventType", eventType);
       payload.append("pricingType", pricingType);
 
-      if (pricingType === "paid") {
-        payload.append("price", Number(formData.price));
-      }
-
-      if (formData.image) {
-        payload.append("image", formData.image);
-      }
+      if (pricingType === "paid") payload.append("price", Number(formData.price));
+      if (formData.image) payload.append("image", formData.image);
 
       await createEvent(payload);
-      navigate("/home");
+
+      // Show toast instead of instant navigation
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+        navigate("/"); // Navigate after toast disappears
+      }, 2000);
+
     } catch (error) {
-      setServerError(
-        error.response?.data?.message || "Something went wrong."
-      );
+      setServerError(error.response?.data?.message || "Something went wrong.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen pt-15 bg-white font-['Satoshi'] text-gray-900 flex flex-col">
-      
+    <div className="min-h-screen pt-15 bg-white font-['Satoshi'] text-gray-900 flex flex-col relative">
+
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {showToast && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-black text-white px-6 py-3 rounded-2xl shadow-lg z-50 font-semibold"
+          >
+            🎉 Event created successfully!
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <header className="sticky top-0 z-10 px-6 py-4 backdrop-blur bg-white/70">
         <button
@@ -87,7 +100,7 @@ const CreatePage = () => {
       <main className="flex-1 flex justify-center px-4 pb-24">
         <div className="w-full max-w-xl space-y-6">
 
-          {/* IMAGE UPLOAD (IG STYLE) */}
+          {/* IMAGE UPLOAD */}
           <div className="relative w-full h-56 bg-gray-100 rounded-3xl overflow-hidden flex items-center justify-center">
             {imagePreview ? (
               <img
@@ -97,7 +110,6 @@ const CreatePage = () => {
               />
             ) : (
               <div className="flex flex-col items-center gap-2 text-gray-400 font-medium">
-                {/* Upload Icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-10 h-10"
@@ -143,7 +155,7 @@ const CreatePage = () => {
             className="w-full text-gray-600 outline-none resize-none"
           />
 
-          {/* EVENT TYPE TOGGLE */}
+          {/* EVENT TYPE */}
           <div className="flex p-1 bg-gray-100 rounded-xl">
             {["physical", "virtual"].map((type) => (
               <button
@@ -227,9 +239,7 @@ const CreatePage = () => {
           </div>
 
           {/* ERROR */}
-          {serverError && (
-            <p className="text-red-500 text-sm">{serverError}</p>
-          )}
+          {serverError && <p className="text-red-500 text-sm">{serverError}</p>}
 
           {/* SUBMIT */}
           <motion.button
@@ -244,7 +254,6 @@ const CreatePage = () => {
               "Publish Event"
             )}
           </motion.button>
-
         </div>
       </main>
     </div>
