@@ -46,10 +46,10 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen md:hidden bg-white font-['Satoshi'] pt-24 pb-32">
+    <div className="min-h-screen md:hidden bg-white font-['Satoshi'] pt-15 pb-32">
       <div className="max-w-2xl mx-auto px-4 lg:max-w-5xl lg:px-8">
         
-        {/* 1. DISCOVER STORIES (IG Style Featured) */}
+        {/* 1. DISCOVER STORIES (IG Style Featured)
         <section className="mb-10 overflow-x-auto no-scrollbar flex gap-5 pb-2">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div key={i} className="flex flex-col items-center gap-2 shrink-0 cursor-pointer">
@@ -61,7 +61,7 @@ const HomePage = () => {
               <span className="text-[11px] font-medium text-gray-500">Host_{i}</span>
             </div>
           ))}
-        </section>
+        </section> */}
 
         {/* 2. CATEGORY SELECTOR (Twitter Style Pills) */}
         <div className="sticky top-14 z-30 bg-white backdrop-blur-md py-4 mb-6 border-b border-gray-100 -mx-4 px-4">

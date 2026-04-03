@@ -119,7 +119,7 @@ const Navbar = () => {
                     </div>
                   </button>
                 ) : (
-                  <Link to="/login" className="text-sm font-bold px-4 py-2 hover:bg-gray-100 rounded-full transition-all">
+                  <Link to="/login" className="text-sm font-bold px-4 py-2 text-white bg-black rounded-full transition-all">
                     Sign In
                   </Link>
                 )}
@@ -152,7 +152,7 @@ const Navbar = () => {
                         </div>
 
                         {/* Menu Items */}
-                        <div className="p-2">
+                        <div className="hidden md:block p-2">
                           <DropdownItem icon={<Icons.User />} label="View Profile" onClick={() => setIsProfileOpen(false)} />
                           <DropdownItem icon={<Icons.Ticket />} label="Orders & Tickets" onClick={() => setIsProfileOpen(false)} />
                           <DropdownItem icon={<Icons.Settings />} label="Display & Settings" onClick={() => setIsProfileOpen(false)} />
@@ -178,7 +178,7 @@ const Navbar = () => {
       </nav>
 
       {/* MOBILE FLOATING BOTTOM DOCK */}
-      <div className="md:hidden fixed bottom-2 left-0 right-0 z-50 px-4">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 ">
         <div className="bg-white rounded-full p-2 flex items-center justify-between  shadow-lg">
           <MobileNavItem to="/" icon={<Icons.Home />} active={location.pathname === "/"} />
           <MobileNavItem to="/search" icon={<Icons.Search />} active={location.pathname === "/search"} />

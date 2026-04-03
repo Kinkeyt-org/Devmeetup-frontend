@@ -8,6 +8,7 @@ import Profile from './pages/Profile';
 import MyTickets from './pages/MyTickets';
 import Search from './pages/Search';
 import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const AppContent = () => {
   const location = useLocation();
@@ -21,12 +22,16 @@ const AppContent = () => {
 
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/events/create' element={<CreatePage />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/my-tickets' element={<MyTickets />} />
-        <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/search' element={<Search />} />
         <Route path='/login' element={<AuthForm />} />
+        <Route path='/search' element={<Search />} />
+
+        {/* Protected routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route path='/events/create' element={<CreatePage />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/my-tickets' element={<MyTickets />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+        </Route>
       </Routes>
     </>
   );
