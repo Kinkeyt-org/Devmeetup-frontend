@@ -163,7 +163,7 @@ const Navbar = () => {
       </nav>
 
       {/* MOBILE FLOATING BOTTOM DOCK (Instagram/Apple Style) */}
-      <div className="md:hidden fixed bottom-2 left-0 right-0 z-50 px-6">
+      <div className="md:hidden fixed bottom-2 left-0 right-0 z-50 ">
         <div 
           initial={{ y: 100 }}
           animate={{ y: 0 }}
