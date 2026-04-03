@@ -13,6 +13,7 @@ const Icons = {
   Ticket: () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>,
   LogOut: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>,
   User: () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+  Pencil:()=> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>,
   ChevronDown: () => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
 };
 
@@ -21,29 +22,45 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
-  const user = { 
-    name: "Alex Doe", 
-    email: "alex.doe@icloud.com",
-    image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80" 
-  };
+    // Sync user state from localStorage whenever the route changes
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        setUser(null);
+      }
+    } else {
+      setUser(null);
+    }
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [location]); // Trigger update on navigation
+
 
   const handleLogout = async () => {
-    try { await logout(); setIsProfileOpen(false); navigate('/login'); } 
-    catch (e) { navigate('/login'); }
+    try {
+      await logout();
+    } catch (e) {}
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null); // Clear local state immediately
+    setIsProfileOpen(false);
+    navigate('/login');
   };
 
   return (
     <>
       {/* TOP NAVBAR (Desktop & Mobile Header) */}
-      <nav className={`z-50 fixed   w-full transition-all duration-300 font-['Satoshi']
-        ${scrolled ? 'bg-white backdrop-blur-md py-2' : 'bg-white py-4'}`}>
+      <nav className={`z-50 fixed  w-full transition-all duration-300 font-['Satoshi']
+        ${scrolled ? 'bg-white  py-2 ' : 'bg-white py-4'}`}>
           <div className=" px-6 flex items-center justify-between gap-8">
             {/* LEFT: BRAND */}
             <Link to="/" className="flex items-center gap-2 shrink-0">
@@ -87,29 +104,28 @@ const Navbar = () => {
                 </button>
               </Link>
 
-              {/* Mobile Create Button
-              <Link to="/events/create">
-                <button className="md:hidden flex items-center gap-2 cursor-pointer bg-black text-white px-2 py-2 rounded-3xl text-sm hover:bg-gray-800 transition-all active:scale-95">
-                  <Icons.Plus />
-                </button>
-              </Link> */}
-
               {/* PROFILE DROPDOWN */}
               <div className="relative ml-2">
-                <button 
-                  onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  className="group flex items-center gap-2 p-1 pr-3 cursor-pointer rounded-full transition-all"
-                >
-                  <div className="w-9 h-9 rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-gray-200 transition-all">
-                    <img src={user.image} alt="Profile" className="w-full h-full object-cover" />
-                  </div>
-                  <div className="hidden lg:block text-left">
-                    <Icons.ChevronDown />
-                  </div>
-                </button>
+                {user ? (
+                  <button 
+                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                    className="group flex items-center gap-2 p-1 pr-3 cursor-pointer rounded-full transition-all"
+                  >
+                    <div className="w-9 h-9 rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-gray-200 transition-all">
+                      <img src={user?.image || "https://ui-avatars.com/api/?name=" + user?.name} alt="Profile" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="hidden lg:block text-left">
+                      <Icons.ChevronDown />
+                    </div>
+                  </button>
+                ) : (
+                  <Link to="/login" className="text-sm font-bold px-4 py-2 hover:bg-gray-100 rounded-full transition-all">
+                    Sign In
+                  </Link>
+                )}
 
                 <AnimatePresence>
-                  {isProfileOpen && (
+                  {isProfileOpen && user && (
                     <>
                       <div className="fixed inset-0 z-10" onClick={() => setIsProfileOpen(false)} />
                       <motion.div
@@ -121,15 +137,14 @@ const Navbar = () => {
                       >
                         {/* Google-Style Account Header */}
                         <div className="p-6 text-center border-b border-gray-50 bg-gray-50/50">
-                          <p className="text-xs font-bold text-gray-500 mb-4 tracking-widest uppercase">Personal Account</p>
                           <div className="relative inline-block mb-3">
-                            <img src={user.image} className="w-20 h-20 rounded-full border-4 border-white shadow-sm mx-auto" alt="Avatar" />
+                            <img src={user?.image || "https://ui-avatars.com/api/?name=" + user?.name} className="w-20 h-20 rounded-full border-4 border-white shadow-sm mx-auto" alt="Avatar" />
                             <div className="absolute bottom-0 right-0 p-1.5 bg-white rounded-full shadow-md border border-gray-100 cursor-pointer hover:bg-gray-50">
-                              <Icons.Settings />
+                              <Icons.Pencil />
                             </div>
                           </div>
-                          <h4 className="text-lg font-bold text-gray-900">{user.name}</h4>
-                          <p className="text-sm text-gray-500">{user.email}</p>
+                          <h4 className="text-lg font-bold text-gray-900">{user?.name || "Guest User"}</h4>
+                          <p className="text-sm text-gray-500">{user?.email || "No email provided"}</p>
                           
                           <button className="mt-4 px-6 py-2 border border-gray-200 rounded-full text-sm font-semibold hover:bg-white transition-all">
                             Manage Account
@@ -150,7 +165,7 @@ const Navbar = () => {
                             className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 rounded-2xl transition-colors"
                           >
                             <Icons.LogOut />
-                            Sign Out of Platform
+                            Sign Out 
                           </button>
                         </div>
                       </motion.div>
@@ -162,37 +177,31 @@ const Navbar = () => {
           </div>
       </nav>
 
-      {/* MOBILE FLOATING BOTTOM DOCK (Instagram/Apple Style) */}
-      <div className="md:hidden fixed bottom-2 left-0 right-0 z-50 ">
-        <div 
-          initial={{ y: 100 }}
-          animate={{ y: 0 }}
-          className="bg-white  rounded-4xl p-3 flex items-center justify-between  border border-white/10"
-        >
+      {/* MOBILE FLOATING BOTTOM DOCK */}
+      <div className="md:hidden fixed bottom-2 left-0 right-0 z-50 px-4">
+        <div className="bg-white rounded-full p-2 flex items-center justify-between  shadow-lg">
           <MobileNavItem to="/" icon={<Icons.Home />} active={location.pathname === "/"} />
           <MobileNavItem to="/search" icon={<Icons.Search />} active={location.pathname === "/search"} />
           
-          {/* Floating Create Button */}
-          <Link to="/events/create" className="relative -top-2">
+          <Link to="/events/create" className="relative -top-4">
             <motion.div 
               whileTap={{ scale: 0.9 }}
-              className="w-14 h-14 bg-amber-400 rounded-full flex items-center justify-center  border-black"
+              className="w-14 h-14 bg-amber-400 rounded-full flex items-center justify-center shadow-lg border-4 border-white"
             >
               <Icons.Plus />
             </motion.div>
           </Link>
 
           <MobileNavItem to="/my-tickets" icon={<Icons.Ticket />} active={location.pathname === "/my-tickets"} />
-          <MobileNavItem to="/profile" icon={<Icons.User />} active={location.pathname === "/profile"} />
+          <MobileNavItem to={user ? "/profile" : "/login"} icon={<Icons.User />} active={location.pathname === "/profile"} />
         </div>
       </div>
     </>
   );
 };
 
-// Sub-components for cleaner code
-const DropdownItem = ({ icon, label }) => (
-  <button className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100 rounded-2xl transition-all group cursor-pointer">
+const DropdownItem = ({ icon, label, onClick }) => (
+  <button onClick={onClick} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100 rounded-2xl transition-all group cursor-pointer">
     <span className="text-gray-400 group-hover:text-black transition-colors">{icon}</span>
     <span className="text-[15px] font-semibold text-gray-700">{label}</span>
   </button>
@@ -206,7 +215,7 @@ const MobileNavItem = ({ to, icon, active }) => (
     {active && (
       <motion.div 
         layoutId="activeDot"
-        className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-amber-400 rounded-full"
+        className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-amber-400 rounded-full"
       />
     )}
   </Link>

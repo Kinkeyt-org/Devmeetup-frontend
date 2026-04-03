@@ -34,7 +34,8 @@ export default function Authform() {
       // FIX: Store only the token string from the response
       if (data && data.token) {
         localStorage.setItem("token", data.token);
-        navigate("/home");
+        localStorage.setItem("user", JSON.stringify(data.user)); // Store user info for later use
+        navigate("/");
       }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
@@ -52,7 +53,8 @@ export default function Authform() {
       // FIX: Store only the token string from the response
       if (data && data.token) {
         localStorage.setItem("token", data.token);
-        navigate("/home");
+        localStorage.setItem("user", JSON.stringify(data.user)); // Store user info for later use
+        navigate("/");
       }
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
