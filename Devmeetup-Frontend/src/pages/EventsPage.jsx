@@ -5,14 +5,16 @@ import { getEvents, bookEvent } from '../api/event';
 const EventsPage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [bookingId, setBookingId] = useState(null); // Track which event is being booked
+  const [bookingId, setBookingId] = useState(null);
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const data = await getEvents();
-        setEvents(data);
+        const response = await getEvents();
+        // Postman shows the list is inside a 'data' array
+        const eventList = response.data || response; 
+        setEvents(eventList);
       } catch (error) {
         console.error("Error fetching events:", error);
         showToast("Failed to load events", "error");
@@ -31,9 +33,11 @@ const EventsPage = () => {
   const handleBookEvent = async (eventId) => {
     setBookingId(eventId);
     try {
+      // Backend route: /api/event/{id}/book
       const response = await bookEvent(eventId);
       showToast(response.message || "Ticket booked successfully! 🎉");
     } catch (error) {
+      // Handle the 422 or other errors from backend
       const errorMsg = error.response?.data?.message || "Booking failed. Try again.";
       showToast(errorMsg, "error");
     } finally {
@@ -84,10 +88,9 @@ const EventsPage = () => {
             const isLarge = index === 0 || index === 4;
             const isWide = index === 3 || index === 7;
             
-            // Format price based on backend 'is_free' status
-            const priceLabel = event.is_free === 1 || event.is_free === "1" 
-              ? "FREE" 
-              : `₦${Number(event.price).toLocaleString()}`;
+            // Postman: uses 'is_free' (boolean/int) and 'price' (string)
+            const isFree = event.is_free === true || event.is_free === 1 || event.is_free === "1";
+            const priceLabel = isFree ? "FREE" : `₦${parseFloat(event.price).toLocaleString()}`;
 
             return (
               <motion.div
@@ -100,13 +103,13 @@ const EventsPage = () => {
                   isLarge ? "md:col-span-2 md:row-span-2" : isWide ? "md:col-span-2" : "col-span-1"
                 }`}
               >
-                {/* Banner Image Rendering */}
-                {event.banner_url && (
+                {/* Banner: Uses 'banner' key from Postman response */}
+                {event.banner && (
                   <div className="absolute inset-0 z-0">
                     <img 
-                      src={event.banner_url} 
+                      src={event.banner} 
                       alt="" 
-                      className="w-full h-full object-cover opacity-10 group-hover:opacity-20 transition-opacity duration-500"
+                      className="w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity duration-500"
                     />
                   </div>
                 )}
@@ -115,7 +118,7 @@ const EventsPage = () => {
                 <div className="absolute top-6 left-6 z-20 flex gap-2">
                   <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm ${
                     event.location?.toLowerCase().includes('http') 
-                    ? "bg-blue-500 text-white" 
+                    ? "bg-blue-600 text-white" 
                     : "bg-black text-white"
                   }`}>
                     {event.location?.toLowerCase().includes('http') ? "Virtual" : "Physical"}
@@ -129,7 +132,7 @@ const EventsPage = () => {
                 <div className="relative z-10 flex-1 flex flex-col p-8">
                   <div className="flex-1">
                     <p className="text-amber-600 font-black text-sm mb-3 tracking-tighter uppercase">
-                      {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      {event.date}
                     </p>
                     <h3 className={`font-black text-black leading-[1.1] mb-4 group-hover:text-amber-600 transition-colors ${
                       isLarge ? "text-5xl" : "text-2xl"
