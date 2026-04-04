@@ -12,9 +12,9 @@ const EventsPage = () => {
     const fetchEvents = async () => {
       try {
         const response = await getEvents();
-        // Postman shows the list is inside a 'data' array
-        const eventList = response.data || response; 
-        setEvents(eventList);
+        // The API returns the array inside response.data.data or response.data
+        const eventList = response.data || response;
+        setEvents(Array.isArray(eventList) ? eventList : []);
       } catch (error) {
         console.error("Error fetching events:", error);
         showToast("Failed to load events", "error");
@@ -33,11 +33,9 @@ const EventsPage = () => {
   const handleBookEvent = async (eventId) => {
     setBookingId(eventId);
     try {
-      // Backend route: /api/event/{id}/book
       const response = await bookEvent(eventId);
       showToast(response.message || "Ticket booked successfully! 🎉");
     } catch (error) {
-      // Handle the 422 or other errors from backend
       const errorMsg = error.response?.data?.message || "Booking failed. Try again.";
       showToast(errorMsg, "error");
     } finally {
@@ -55,7 +53,6 @@ const EventsPage = () => {
 
   return (
     <div className="px-6 py-10 font-['Satoshi'] max-w-7xl mx-auto">
-      {/* Toast Notification */}
       <AnimatePresence>
         {toast.show && (
           <motion.div
@@ -88,9 +85,10 @@ const EventsPage = () => {
             const isLarge = index === 0 || index === 4;
             const isWide = index === 3 || index === 7;
             
-            // Postman: uses 'is_free' (boolean/int) and 'price' (string)
+            // Logic based on your JSON example
             const isFree = event.is_free === true || event.is_free === 1 || event.is_free === "1";
             const priceLabel = isFree ? "FREE" : `₦${parseFloat(event.price).toLocaleString()}`;
+            const isSoldOut = event.is_sold_out === true;
 
             return (
               <motion.div
@@ -103,7 +101,6 @@ const EventsPage = () => {
                   isLarge ? "md:col-span-2 md:row-span-2" : isWide ? "md:col-span-2" : "col-span-1"
                 }`}
               >
-                {/* Banner: Uses 'banner' key from Postman response */}
                 {event.banner && (
                   <div className="absolute inset-0 z-0">
                     <img 
@@ -114,7 +111,6 @@ const EventsPage = () => {
                   </div>
                 )}
 
-                {/* Badges */}
                 <div className="absolute top-6 left-6 z-20 flex gap-2">
                   <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm ${
                     event.location?.toLowerCase().includes('http') 
@@ -124,15 +120,14 @@ const EventsPage = () => {
                     {event.location?.toLowerCase().includes('http') ? "Virtual" : "Physical"}
                   </span>
                   <span className="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-amber-400 text-black shadow-sm">
-                    {priceLabel}
+                    {isSoldOut ? "SOLD OUT" : priceLabel}
                   </span>
                 </div>
 
-                {/* Card Body */}
                 <div className="relative z-10 flex-1 flex flex-col p-8">
                   <div className="flex-1">
                     <p className="text-amber-600 font-black text-sm mb-3 tracking-tighter uppercase">
-                      {event.date}
+                      {event.event_date_human || event.event_date}
                     </p>
                     <h3 className={`font-black text-black leading-[1.1] mb-4 group-hover:text-amber-600 transition-colors ${
                       isLarge ? "text-5xl" : "text-2xl"
@@ -144,10 +139,14 @@ const EventsPage = () => {
                     </p>
                   </div>
 
-                  {/* Footer */}
                   <div className="mt-auto flex items-center justify-between pt-6 border-t border-gray-100/50">
                     <div className="flex flex-col overflow-hidden mr-4">
-                      <span className="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1">Venue</span>
+                      <span className="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1 flex items-center gap-1">
+                        Venue 
+                        <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M21 3L3 10.53v.98l6.84 2.65L12.48 21h.98L21 3z" />
+                        </svg>
+                      </span>
                       <span className="text-sm font-bold text-black truncate italic">
                         {event.location}
                       </span>
@@ -155,13 +154,17 @@ const EventsPage = () => {
                     
                     <button 
                       onClick={() => handleBookEvent(event.id)}
-                      disabled={bookingId === event.id}
-                      className="relative flex-shrink-0 w-14 h-14 bg-gray-900 group-hover:bg-amber-400 rounded-2xl transition-all duration-300 flex items-center justify-center overflow-hidden shadow-lg hover:scale-110 active:scale-95 disabled:bg-gray-200"
+                      disabled={bookingId === event.id || isSoldOut}
+                      className={`relative flex-shrink-0 w-14 h-14 rounded-2xl transition-all duration-300 flex items-center justify-center overflow-hidden shadow-lg hover:scale-110 active:scale-95 ${
+                        isSoldOut 
+                        ? "bg-gray-200 cursor-not-allowed" 
+                        : "bg-gray-900 group-hover:bg-amber-400"
+                      }`}
                     >
                       {bookingId === event.id ? (
                         <div className="w-5 h-5 border-2 border-white border-t-transparent animate-spin rounded-full" />
                       ) : (
-                        <svg className="w-6 h-6 text-white group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className={`w-6 h-6 ${isSoldOut ? "text-gray-400" : "text-white group-hover:text-black"} transition-colors`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4" />
                         </svg>
                       )}
