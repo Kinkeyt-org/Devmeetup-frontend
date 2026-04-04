@@ -136,7 +136,7 @@ const Navbar = () => {
                     className="group flex items-center gap-2 p-1 pr-3 cursor-pointer rounded-full transition-all"
                   >
                     <div className="w-9 h-9 rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-gray-200 transition-all">
-                      <img src={user?.image || "https://ui-avatars.com/api/?name=" + user?.name} alt="Profile" className="w-full h-full object-cover" />
+                      <img src={user?.avatar || "https://ui-avatars.com/api/?name=" + user?.name} alt="Profile" className="w-full h-full object-cover" />
                     </div>
                     <div className="hidden lg:block text-left">
                       <Icons.ChevronDown />

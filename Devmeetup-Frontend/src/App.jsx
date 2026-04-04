@@ -8,7 +8,7 @@ import Profile from './pages/Profile';
 import MyTickets from './pages/MyTickets';
 import Search from './pages/Search';
 import Navbar from './components/Navbar';
-import ProfileEdit from './pages/ProfileEdit';
+
 // import ProtectedRoute from './components/ProtectedRoute';
 
 const AppContent = () => {
@@ -30,7 +30,7 @@ const AppContent = () => {
           <Route path='/profile' element={<Profile />} />
           <Route path='/my-tickets' element={<MyTickets />} />
           <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/profile/edit' element={<ProfileEdit />} />
+          
         {/* Protected routes
         <Route element={<ProtectedRoute />}>
         </Route> */}
