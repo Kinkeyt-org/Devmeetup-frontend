@@ -31,13 +31,11 @@ export const getMyTickets = async () => {
   return res.data.data || [];
 };
 
-export const bookEvent = async (eventId) => {
-  /**
-   * FIX for 422 Error: 
-   * Many APIs return 422 if a POST request has an empty body but expects 
-   * JSON headers. Providing an empty object {} ensures the request is valid.
-   */
-  const res = await api.post(`/event/${eventId}/book`, {});
+export const bookEvent = async (eventId, number = 1) => {
+  const res = await api.post(`/event/${eventId}/book`, {
+    number,
+  });
+
   return res.data;
 };
 

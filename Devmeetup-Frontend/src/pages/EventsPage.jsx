@@ -31,13 +31,14 @@ const EventsPage = () => {
   };
 
   const handleBookEvent = async (eventId) => {
-    setBookingId(eventId);
+  setBookingId(eventId);
+
     try {
-      const response = await bookEvent(eventId);
-      showToast(response.message || "Ticket booked successfully! 🎉");
+      const response = await bookEvent(eventId, 1); // pass quantity
+      showToast(response.message || "Booked!");
     } catch (error) {
-      const errorMsg = error.response?.data?.message || "Booking failed. Try again.";
-      showToast(errorMsg, "error");
+      console.log(error.response?.data); // always log this
+      showToast(error.response?.data?.message || "Booking failed", "error");
     } finally {
       setBookingId(null);
     }
@@ -52,14 +53,16 @@ const EventsPage = () => {
   }
 
   return (
-    <div className="px-6 py-10 font-['Satoshi'] max-w-7xl mx-auto">
+    <div className="px-6 py-12 font-['Satoshi'] max-w-7xl mx-auto">
+
+      {/* Toast */}
       <AnimatePresence>
         {toast.show && (
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-2xl shadow-2xl font-bold text-white ${
+            exit={{ opacity: 0, y: 40 }}
+            className={`fixed bottom-10 left-1/2 -translate-x-1/2 px-6 py-3 rounded-xl text-white font-bold shadow-xl z-50 ${
               toast.type === "error" ? "bg-red-500" : "bg-black"
             }`}
           >
@@ -68,107 +71,120 @@ const EventsPage = () => {
         )}
       </AnimatePresence>
 
-      <div className="flex items-center justify-between mb-10">
-        <h2 className="text-3xl font-black text-black tracking-tight">
-          Upcoming Events 
-          <span className="text-gray-300 font-medium ml-3 text-xl">({events.length})</span>
+      {/* Header */}
+      <div className="mb-12">
+        <h2 className="text-4xl font-black tracking-tight">
+          Discover Events
         </h2>
+        <p className="text-gray-400 mt-2">
+          {events.length} events available
+        </p>
       </div>
 
       {events.length === 0 ? (
-        <div className="text-center py-20 bg-gray-50 rounded-4xl border-2 border-dashed border-gray-200">
-          <p className="text-gray-400 font-bold">No events found. Check back later!</p>
+        <div className="text-center py-20 text-gray-400 font-semibold">
+          No events available
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[350px]">
-          {events.map((event, index) => {
-            const isLarge = index === 0 || index === 4;
-            const isWide = index === 3 || index === 7;
-            
-            // Logic based on your JSON example
-            const isFree = event.is_free === true || event.is_free === 1 || event.is_free === "1";
-            const priceLabel = isFree ? "FREE" : `₦${parseFloat(event.price).toLocaleString()}`;
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          {events.map((event) => {
+            const isFree =
+              event.is_free === 1 ||
+              event.is_free === "1" ||
+              event.is_free === true;
+
+            const priceLabel = isFree
+              ? "Free"
+              : `₦${Number(event.price || 0).toLocaleString()}`;
+
+            const isVirtual = event.location?.toLowerCase().includes("http");
             const isSoldOut = event.is_sold_out === true;
 
             return (
               <motion.div
-                key={event.id || index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                className={`relative group overflow-hidden rounded-[2.5rem] border border-gray-100 bg-white shadow-sm hover:shadow-2xl hover:border-amber-400 transition-all duration-500 flex flex-col ${
-                  isLarge ? "md:col-span-2 md:row-span-2" : isWide ? "md:col-span-2" : "col-span-1"
-                }`}
+                key={event.id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-3xl overflow-hidden border bg-white shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
               >
-                {event.banner && (
-                  <div className="absolute inset-0 z-0">
-                    <img 
-                      src={event.banner} 
-                      alt="" 
-                      className="w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity duration-500"
+                
+                {/* 🔥 Banner */}
+                <div className="h-48 w-full bg-gray-100">
+                  {event.banner ? (
+                    <img
+                      src={event.banner}
+                      alt=""
+                      className="w-full h-full object-cover"
                     />
-                  </div>
-                )}
-
-                <div className="absolute top-6 left-6 z-20 flex gap-2">
-                  <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm ${
-                    event.location?.toLowerCase().includes('http') 
-                    ? "bg-blue-600 text-white" 
-                    : "bg-black text-white"
-                  }`}>
-                    {event.location?.toLowerCase().includes('http') ? "Virtual" : "Physical"}
-                  </span>
-                  <span className="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-amber-400 text-black shadow-sm">
-                    {isSoldOut ? "SOLD OUT" : priceLabel}
-                  </span>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-300">
+                      No Image
+                    </div>
+                  )}
                 </div>
 
-                <div className="relative z-10 flex-1 flex flex-col p-8">
-                  <div className="flex-1">
-                    <p className="text-amber-600 font-black text-sm mb-3 tracking-tighter uppercase">
-                      {event.event_date_human || event.event_date}
+                {/* 🔥 Content */}
+                <div className="p-5 flex flex-col flex-1">
+
+                  {/* Type */}
+                  <span className={`text-xs font-bold uppercase w-fit px-3 py-1 rounded-full mb-3 ${
+                    isVirtual ? "bg-blue-100 text-blue-600" : "bg-gray-900 text-white"
+                  }`}>
+                    {isVirtual ? "Virtual Event" : "Physical Event"}
+                  </span>
+
+                  {/* Title */}
+                  <h3 className="text-xl font-black leading-tight mb-2">
+                    {event.title}
+                  </h3>
+
+                  {/* Date */}
+                  <p className="text-sm text-gray-500 mb-3">
+                    {event.event_date_human || event.event_date}
+                  </p>
+
+                  {/* Location */}
+                  <div className="mb-4">
+                    <p className="text-xs text-gray-400 uppercase mb-1">
+                      {isVirtual ? "Link" : "Venue"}
                     </p>
-                    <h3 className={`font-black text-black leading-[1.1] mb-4 group-hover:text-amber-600 transition-colors ${
-                      isLarge ? "text-5xl" : "text-2xl"
-                    }`}>
-                      {event.title}
-                    </h3>
-                    <p className={`text-gray-500 font-medium leading-relaxed line-clamp-3 ${isLarge ? "text-lg max-w-md" : "text-sm"}`}>
-                      {event.description}
+                    <p className="text-sm font-semibold truncate">
+                      {event.location}
                     </p>
                   </div>
 
-                  <div className="mt-auto flex items-center justify-between pt-6 border-t border-gray-100/50">
-                    <div className="flex flex-col overflow-hidden mr-4">
-                      <span className="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1 flex items-center gap-1">
-                        Venue 
-                        <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M21 3L3 10.53v.98l6.84 2.65L12.48 21h.98L21 3z" />
-                        </svg>
-                      </span>
-                      <span className="text-sm font-bold text-black truncate italic">
-                        {event.location}
-                      </span>
+                  {/* Spacer */}
+                  <div className="flex-1" />
+
+                  {/* 🔥 Ticket Section */}
+                  <div className="flex items-center justify-between pt-4 border-t">
+
+                    {/* Price */}
+                    <div>
+                      <p className="text-xs text-gray-400">Price</p>
+                      <p className="text-lg font-bold">
+                        {isSoldOut ? "Sold Out" : priceLabel}
+                      </p>
                     </div>
-                    
-                    <button 
+
+                    {/* CTA */}
+                    <button
                       onClick={() => handleBookEvent(event.id)}
                       disabled={bookingId === event.id || isSoldOut}
-                      className={`relative flex-shrink-0 w-14 h-14 rounded-2xl transition-all duration-300 flex items-center justify-center overflow-hidden shadow-lg hover:scale-110 active:scale-95 ${
-                        isSoldOut 
-                        ? "bg-gray-200 cursor-not-allowed" 
-                        : "bg-gray-900 group-hover:bg-amber-400"
+                      className={`px-5 py-2.5 rounded-xl font-bold text-sm transition ${
+                        isSoldOut
+                          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                          : "bg-black text-white hover:bg-amber-400 hover:text-black"
                       }`}
                     >
-                      {bookingId === event.id ? (
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent animate-spin rounded-full" />
-                      ) : (
-                        <svg className={`w-6 h-6 ${isSoldOut ? "text-gray-400" : "text-white group-hover:text-black"} transition-colors`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4" />
-                        </svg>
-                      )}
+                      {bookingId === event.id
+                        ? "Booking..."
+                        : isSoldOut
+                        ? "Unavailable"
+                        : "Get Ticket"}
                     </button>
+
                   </div>
                 </div>
               </motion.div>
