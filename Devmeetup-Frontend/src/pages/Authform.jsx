@@ -185,8 +185,8 @@ export default function Authform() {
                 <label className="block text-xs text-neutral-400 mb-1.5 font-medium tracking-wide uppercase">Password Confirmation</label>
                 <input type={showPass ? "text" : "password"} required value={password_confirmation} onChange={(e) => setPassword_confirmation(e.target.value)} placeholder="Min. 8 characters" className="w-full border border-neutral-300 rounded-xl px-4 py-3 text-black placeholder-neutral-400 text-sm focus:outline-none focus:border-amber-400 transition-all" />
               </div>
-              <button disabled={loading} type="submit" className="w-full cursor-pointer bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 rounded-xl text-sm transition-all shadow-lg shadow-amber-400/20 mt-2 disabled:opacity-50">
-                {loading ? "Creating account..." : "Create account"}
+              <button disabled={loading} type="submit" className="w-full cursor-pointer bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 rounded-xl text-sm transition-all shadow-lg shadow-amber-400/20 mt-2 disabled:opacity-50 flex items-center justify-center">
+                {loading ? <div className="animate-spin h-5 w-5 border-2 border-black border-t-transparent rounded-full" />  : "Create account"}
               </button>
             </form>
             <p className="text-center text-sm text-neutral-500 mt-5">

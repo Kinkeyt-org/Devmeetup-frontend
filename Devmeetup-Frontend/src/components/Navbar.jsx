@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { logout } from '../api/auth';
+import { useRef } from 'react';
+import { updateProfile } from '../api/user';
 
 // Premium Icon Set
 const Icons = {
@@ -18,6 +20,7 @@ const Icons = {
 };
 
 const Navbar = () => {
+  const fileInputRef = useRef(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
@@ -55,6 +58,27 @@ const Navbar = () => {
     setIsProfileOpen(false);
     navigate('/login');
   };
+
+  const handleImageChange = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("profile_picture", file);
+
+  try {
+    const res = await updateProfile(formData);
+
+    // update localStorage + state instantly
+    localStorage.setItem("user", JSON.stringify(res.user));
+    setUser(res.user);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+  
+
 
   return (
     <>
@@ -138,10 +162,21 @@ const Navbar = () => {
                         {/* Google-Style Account Header */}
                         <div className="p-6 text-center border-b border-gray-50 bg-gray-50/50">
                           <div className="relative inline-block mb-3">
-                            <img src={user?.image || "https://ui-avatars.com/api/?name=" + user?.name} className="w-20 h-20 rounded-full border-4 border-white shadow-sm mx-auto" alt="Avatar" />
-                            <div className="absolute bottom-0 right-0 p-1.5 bg-white rounded-full shadow-md border border-gray-100 cursor-pointer hover:bg-gray-50">
+                            <img src={user?.avatar || "https://ui-avatars.com/api/?name=" + user?.name} className="w-20 h-20 rounded-full border-4 border-white shadow-sm mx-auto" alt="Avatar" />
+                           <button
+                              onClick={() => fileInputRef.current.click()}
+                              className="absolute bottom-0 right-0 p-1.5 bg-white rounded-full shadow-md border border-gray-100 cursor-pointer hover:bg-gray-50"
+                            >
                               <Icons.Pencil />
-                            </div>
+                            </button>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              ref={fileInputRef}
+                              onChange={handleImageChange}
+                              className="hidden"
+                            />
+                            
                           </div>
                           <h4 className="text-lg font-bold text-gray-900">{user?.name || "Guest User"}</h4>
                           <p className="text-sm text-gray-500">{user?.email || "No email provided"}</p>

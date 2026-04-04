@@ -8,7 +8,8 @@ import Profile from './pages/Profile';
 import MyTickets from './pages/MyTickets';
 import Search from './pages/Search';
 import Navbar from './components/Navbar';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProfileEdit from './pages/ProfileEdit';
+// import ProtectedRoute from './components/ProtectedRoute';
 
 const AppContent = () => {
   const location = useLocation();
@@ -25,13 +26,14 @@ const AppContent = () => {
         <Route path='/login' element={<AuthForm />} />
         <Route path='/search' element={<Search />} />
 
-        {/* Protected routes */}
-        <Route element={<ProtectedRoute />}>
           <Route path='/events/create' element={<CreatePage />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/my-tickets' element={<MyTickets />} />
           <Route path='/dashboard' element={<Dashboard />} />
-        </Route>
+          <Route path='/profile/edit' element={<ProfileEdit />} />
+        {/* Protected routes
+        <Route element={<ProtectedRoute />}>
+        </Route> */}
       </Routes>
     </>
   );

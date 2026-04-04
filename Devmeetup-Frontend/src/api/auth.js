@@ -21,6 +21,8 @@ api.interceptors.request.use(config => {
 export const login = async (email, password) => {
   const res = await api.post("/login", { email, password });
   if (res.data.token) localStorage.setItem("token", res.data.token);
+  
+  localStorage.setItem("user", JSON.stringify(res.data.user)); // Store user data for profile display
   return res.data;
 };
 
