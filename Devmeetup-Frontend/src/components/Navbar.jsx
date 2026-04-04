@@ -69,9 +69,12 @@ const Navbar = () => {
   try {
     const res = await updateProfile(formData);
 
+    const updatedUser = res.data || res.user;
+
     // update localStorage + state instantly
     localStorage.setItem("user", JSON.stringify(res.user));
-    setUser(res.user);
+    setUser(updatedUser);
+    console.log(res);
   } catch (err) {
     console.error(err);
   }
