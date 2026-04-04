@@ -14,7 +14,7 @@ api.interceptors.request.use(config => {
 });
 
 export const updateProfile = async (formData) => {
-  const res = await api.post("/profile/update", formData, {
+  const res = await api.post("/profile/updwate", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

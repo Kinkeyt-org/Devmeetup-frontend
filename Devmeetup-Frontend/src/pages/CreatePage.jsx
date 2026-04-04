@@ -46,25 +46,40 @@ const CreatePage = () => {
       payload.append("title", formData.title);
       payload.append("description", formData.description);
       payload.append("date", formData.date);
-      payload.append("capacity", Number(formData.capacity));
+      payload.append("capacity", formData.capacity);
       payload.append("location", formData.location);
-      payload.append("eventType", eventType);
-      payload.append("pricingType", pricingType);
 
-      if (pricingType === "paid") payload.append("price", Number(formData.price));
-      if (formData.image) payload.append("image", formData.image);
+      // FIX: Backend expects 'is_free' as 1 (True/Free) or 0 (False/Paid)
+      const isFreeValue = pricingType === "free" ? "1" : "0";
+      payload.append("is_free", isFreeValue);
+
+      if (pricingType === "paid") {
+        payload.append("price", formData.price);
+      }
+
+      // FIX: Backend uses the key 'banner' for the event image
+      if (formData.image) {
+        payload.append("banner", formData.image);
+      }
 
       await createEvent(payload);
 
-      // Show toast instead of instant navigation
       setShowToast(true);
       setTimeout(() => {
         setShowToast(false);
-        navigate("/"); // Navigate after toast disappears
+        navigate("/"); 
       }, 2000);
 
     } catch (error) {
-      setServerError(error.response?.data?.message || "Something went wrong.");
+      // Logic to extract specific validation errors or general messages
+      const errorMsg = error.response?.data?.message || "Something went wrong.";
+      const validationErrors = error.response?.data?.errors;
+      
+      if (validationErrors) {
+        setServerError(Object.values(validationErrors).flat()[0]);
+      } else {
+        setServerError(errorMsg);
+      }
     } finally {
       setLoading(false);
     }
@@ -98,10 +113,10 @@ const CreatePage = () => {
       </header>
 
       <main className="flex-1 flex justify-center px-4 pb-24">
-        <div className="w-full max-w-xl space-y-6">
+        <form onSubmit={handleSubmit} className="w-full max-w-xl space-y-6">
 
           {/* IMAGE UPLOAD */}
-          <div className="relative w-full h-56 bg-gray-100 rounded-3xl overflow-hidden flex items-center justify-center">
+          <div className="relative w-full h-56 bg-gray-100 rounded-3xl overflow-hidden flex items-center justify-center border-2 border-dashed border-gray-200 hover:border-gray-400 transition-colors">
             {imagePreview ? (
               <img
                 src={imagePreview}
@@ -138,15 +153,17 @@ const CreatePage = () => {
 
           {/* TITLE */}
           <input
+            required
             name="title"
             value={formData.title}
             onChange={handleChange}
             placeholder="Event title..."
-            className="w-full text-2xl font-bold outline-none"
+            className="w-full text-2xl font-bold outline-none border-b border-transparent focus:border-gray-200 pb-2"
           />
 
           {/* DESCRIPTION */}
           <textarea
+            required
             name="description"
             value={formData.description}
             onChange={handleChange}
@@ -155,15 +172,15 @@ const CreatePage = () => {
             className="w-full text-gray-600 outline-none resize-none"
           />
 
-          {/* EVENT TYPE */}
+          {/* EVENT TYPE (Front-end only context) */}
           <div className="flex p-1 bg-gray-100 rounded-xl">
             {["physical", "virtual"].map((type) => (
               <button
                 key={type}
                 type="button"
                 onClick={() => setEventType(type)}
-                className={`flex-1 py-2 rounded-lg font-semibold ${
-                  eventType === type ? "bg-white shadow" : "text-gray-500"
+                className={`flex-1 py-2 rounded-lg font-semibold capitalize transition-all ${
+                  eventType === type ? "bg-white shadow text-black" : "text-gray-500"
                 }`}
               >
                 {type}
@@ -173,34 +190,38 @@ const CreatePage = () => {
 
           {/* LOCATION */}
           <input
+            required
             name="location"
             value={formData.location}
             onChange={handleChange}
             placeholder={
               eventType === "physical"
                 ? "Venue (e.g. Eko Hotel)"
-                : "Meeting link"
+                : "Meeting link (Zoom, Meet, etc.)"
             }
-            className="w-full p-3 bg-gray-100 rounded-xl outline-none"
+            className="w-full p-3 bg-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-gray-200"
           />
 
           {/* DATE + CAPACITY */}
           <div className="grid grid-cols-2 gap-3">
             <input
+              required
               type="date"
               name="date"
               min={today}
               value={formData.date}
               onChange={handleChange}
-              className="p-3 bg-gray-100 rounded-xl"
+              className="p-3 bg-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-gray-200"
             />
             <input
+              required
               type="number"
               name="capacity"
+              min="1"
               placeholder="Capacity"
               value={formData.capacity}
               onChange={handleChange}
-              className="p-3 bg-gray-100 rounded-xl"
+              className="p-3 bg-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-gray-200"
             />
           </div>
 
@@ -212,8 +233,8 @@ const CreatePage = () => {
                   key={type}
                   type="button"
                   onClick={() => setPricingType(type)}
-                  className={`flex-1 py-2 rounded-lg font-semibold ${
-                    pricingType === type ? "bg-white shadow" : "text-gray-500"
+                  className={`flex-1 py-2 rounded-lg font-semibold capitalize transition-all ${
+                    pricingType === type ? "bg-white shadow text-black" : "text-gray-500"
                   }`}
                 >
                   {type}
@@ -224,29 +245,40 @@ const CreatePage = () => {
             <AnimatePresence>
               {pricingType === "paid" && (
                 <motion.input
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  required
                   type="number"
                   name="price"
+                  min="0"
+                  step="0.01"
                   placeholder="Enter price (₦)"
                   value={formData.price}
                   onChange={handleChange}
-                  className="w-full p-3 bg-gray-100 rounded-xl"
+                  className="w-full p-3 bg-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-gray-200 overflow-hidden"
                 />
               )}
             </AnimatePresence>
           </div>
 
-          {/* ERROR */}
-          {serverError && <p className="text-red-500 text-sm">{serverError}</p>}
+          {/* ERROR DISPLAY */}
+          {serverError && (
+            <motion.p 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              className="text-red-500 text-sm font-medium bg-red-50 p-3 rounded-lg"
+            >
+              ⚠️ {serverError}
+            </motion.p>
+          )}
 
-          {/* SUBMIT */}
+          {/* SUBMIT BUTTON */}
           <motion.button
+            whileTap={{ scale: 0.98 }}
             type="submit"
-            onClick={handleSubmit}
             disabled={loading}
-            className="w-full py-4 bg-black text-white rounded-2xl font-bold flex items-center justify-center"
+            className="w-full py-4 bg-black text-white rounded-2xl font-bold flex items-center justify-center disabled:bg-gray-400 transition-colors"
           >
             {loading ? (
               <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
@@ -254,7 +286,7 @@ const CreatePage = () => {
               "Publish Event"
             )}
           </motion.button>
-        </div>
+        </form>
       </main>
     </div>
   );

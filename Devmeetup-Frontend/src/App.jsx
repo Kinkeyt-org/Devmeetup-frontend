@@ -8,6 +8,7 @@ import Profile from './pages/Profile';
 import MyTickets from './pages/MyTickets';
 import Search from './pages/Search';
 import Navbar from './components/Navbar';
+import EventsPage from './pages/EventsPage';
 
 // import ProtectedRoute from './components/ProtectedRoute';
 
@@ -23,6 +24,7 @@ const AppContent = () => {
 
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/events' element={<EventsPage/>}/>
         <Route path='/login' element={<AuthForm />} />
         <Route path='/search' element={<Search />} />
 
