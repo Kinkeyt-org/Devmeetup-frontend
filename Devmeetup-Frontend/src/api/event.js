@@ -1,28 +1,28 @@
 import axios from "axios";
 
-//  Base URL should be consistent with Postman's API endpoint
 const API_URL = import.meta.env.VITE_API_BASE_URL || "https://devmeetup.duckdns.org/api";
 
-// Create an axios instance with default headers why? To ensure all requests have the correct content type and accept headers, which can help prevent issues with API responses and ensure proper communication with the backend.
 const api = axios.create({
   baseURL: API_URL,
   headers: {
+    // Content-Type here is a default; axios overrides it for FormData automatically
     "Content-Type": "application/json",
     "Accept": "application/json",
   },
 });
 
-// attach token to every request if available, ensuring authenticated requests to protected endpoints
+// Attach token to every request
 api.interceptors.request.use(config => {
   const token = localStorage.getItem("token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
-// EVENTS
+// --- EVENTS ---
+
 export const getEvents = async () => {
   const res = await api.get("/events");
-  // FIX: In your Postman success, events are under .data
+  // Per Postman: the array is nested in .data.data
   return res.data.data || [];
 };
 
@@ -32,8 +32,12 @@ export const getMyTickets = async () => {
 };
 
 export const bookEvent = async (eventId) => {
-  // FIX: Ensuring URL matches Postman's singular "event" route
-  const res = await api.post(`/event/${eventId}/book`);
+  /**
+   * FIX for 422 Error: 
+   * Many APIs return 422 if a POST request has an empty body but expects 
+   * JSON headers. Providing an empty object {} ensures the request is valid.
+   */
+  const res = await api.post(`/event/${eventId}/book`, {});
   return res.data;
 };
 
@@ -43,14 +47,23 @@ export const cancelEventTicket = async (ticketId) => {
 };
 
 export const createEvent = async (payload) => {
-  //  Ensuring URL matches Postman's singular "event" route and handling both JSON and FormData payloads
-  const res = await api.post("/events", payload, {
-    //  Dynamically set Content-Type based on payload type to handle both JSON and FormData correctly
-    headers:{
-      //  If payload is FormData, set to multipart/form-data, otherwise default to application/json
-      "Content-Type": payload instanceof FormData ? "multipart/form-data" : "application/json",
-    }
-  });
-  //  Postman shows single created event is under .details
-  return res.data.details || res.data;
+  /**
+   * FIX for 413/CORS Error:
+   * Note: If payload is FormData, DO NOT manually set "Content-Type". 
+   * If you set it to "multipart/form-data" manually, the "boundary" 
+   * string (which the server needs to parse the file) will be missing.
+   * Axios handles this automatically if you leave the header out for FormData.
+   */
+  const config = {};
+  if (!(payload instanceof FormData)) {
+    config.headers = { "Content-Type": "application/json" };
+  } else {
+    // Deleting the default application/json to let the browser set the boundary
+    config.headers = { "Content-Type": undefined };
+  }
+
+  const res = await api.post("/events", payload, config);
+
+  // Per Postman: success responses use .details or .data
+  return res.data.details || res.data.data || res.data;
 };

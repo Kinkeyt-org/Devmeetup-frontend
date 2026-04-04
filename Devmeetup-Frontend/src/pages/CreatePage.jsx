@@ -32,6 +32,12 @@ const CreatePage = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    //Check file size (limit to 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      setServerError("Image size should be less than 2MB.");
+      return;
+    }
     setFormData({ ...formData, image: file });
     setImagePreview(URL.createObjectURL(file));
   };
@@ -72,7 +78,7 @@ const CreatePage = () => {
 
     } catch (error) {
       // Logic to extract specific validation errors or general messages
-      const errorMsg = error.response?.data?.message || "Something went wrong.";
+      const errorMsg = error.response?.data?.message || "Check your Image size (< 2MB) or fields";
       const validationErrors = error.response?.data?.errors;
       
       if (validationErrors) {
