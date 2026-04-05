@@ -55,7 +55,7 @@ const CreatePage = () => {
       payload.append("capacity", formData.capacity);
       payload.append("location", formData.location);
 
-      // FIX: Backend expects 'is_free' as 1 (True/Free) or 0 (False/Paid)
+      // Backend expects 'is_free' as 1 (True/Free) or 0 (False/Paid)
       const isFreeValue = pricingType === "free" ? "1" : "0";
       payload.append("is_free", isFreeValue);
 
@@ -74,7 +74,7 @@ const CreatePage = () => {
       setShowToast(true);
       setTimeout(() => {
         setShowToast(false);
-        navigate("/events"); 
+        navigate("/"); 
       }, 2000);
 
     } catch (error) {

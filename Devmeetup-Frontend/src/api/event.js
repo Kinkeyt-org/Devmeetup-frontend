@@ -20,14 +20,9 @@ api.interceptors.request.use(config => {
 
 // --- EVENTS ---
 
-export const getEvents = async (page = 1) => {
-  const res = await api.get(`/events?page=${page}`, {
-    params: {
-    t: new Date().getTime() // prevent caching
-  }
-  });
+export const getEvents = async () => {
+  const res = await api.get("/events");
   // Per Postman: the array is nested in .data.data
-  
   return res.data.data || [];
 };
 
@@ -36,8 +31,10 @@ export const getMyTickets = async () => {
   return res.data.data || [];
 };
 
-export const bookEvent = async (eventId) => {
-  const res = await api.post(`/event/${eventId}/book`);
+export const bookEvent = async (eventId, number = 1) => {
+  const res = await api.post(`/event/${eventId}/book`, {
+    number,
+  });
 
   return res.data;
 };
