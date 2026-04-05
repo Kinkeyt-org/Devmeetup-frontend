@@ -20,8 +20,8 @@ api.interceptors.request.use(config => {
 
 // --- EVENTS ---
 
-export const getEvents = async () => {
-  const res = await api.get("/events", {
+export const getEvents = async (page = 1) => {
+  const res = await api.get(`/events?page=${page}`, {
     params: {
     t: new Date().getTime() // prevent caching
   }
@@ -36,10 +36,8 @@ export const getMyTickets = async () => {
   return res.data.data || [];
 };
 
-export const bookEvent = async (eventId, number = 1) => {
-  const res = await api.post(`/event/${eventId}/book`, {
-    number,
-  });
+export const bookEvent = async (eventId) => {
+  const res = await api.post(`/event/${eventId}/book`);
 
   return res.data;
 };
