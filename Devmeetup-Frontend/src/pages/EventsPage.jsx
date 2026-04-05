@@ -12,9 +12,19 @@ const EventsPage = () => {
     const fetchEvents = async () => {
       try {
         const response = await getEvents();
-        // The API returns the array inside response.data.data or response.data
-        const eventList = response.data || response;
-        setEvents(Array.isArray(eventList) ? eventList : []);
+        console.log("Raw API Response:", response); // Helpful for debugging!
+
+        // Aggressively hunt for the array inside Laravel's pagination wrappers
+        let eventList = [];
+        if (Array.isArray(response)) {
+          eventList = response;
+        } else if (response?.data && Array.isArray(response.data)) {
+          eventList = response.data;
+        } else if (response?.data?.data && Array.isArray(response.data.data)) {
+          eventList = response.data.data;
+        }
+
+        setEvents(eventList);
       } catch (error) {
         console.error("Error fetching events:", error);
         showToast("Failed to load events", "error");
@@ -141,7 +151,7 @@ const EventsPage = () => {
 
                   {/* Date */}
                   <p className="text-sm text-gray-500 mb-3">
-                    {event.event_date_human || event.event_date}
+                    {event.event_date_human || event.event_date || event.event_date}
                   </p>
 
                   {/* Location */}

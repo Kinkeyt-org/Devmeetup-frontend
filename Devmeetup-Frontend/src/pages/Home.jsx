@@ -376,7 +376,7 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen md:hidden bg-white font-['Satoshi'] pt-15 pb-32">
+    <div className="min-h-screen md:hidden npm  bg-white font-['Satoshi'] pt-15 pb-32">
       <div className="max-w-2xl mx-auto px-4 lg:max-w-5xl lg:px-8">
         
         {/* 1. DISCOVER STORIES (IG Style Featured)
@@ -394,7 +394,7 @@ const HomePage = () => {
         </section> */}
 
         {/* 2. CATEGORY SELECTOR (Twitter Style Pills) */}
-        <div className="sticky top-14 z-30 bg-white backdrop-blur-md py-4 mb-6 border-b border-gray-100 -mx-4 px-4">
+        <div className="sticky cursor-pointer top-14 z-30 bg-white backdrop-blur-md py-4 mb-6 border-b border-gray-100 -mx-4 px-4">
           <div className="flex gap-2 overflow-x-auto no-scrollbar">
             {categories.map((cat) => (
               <button
@@ -442,44 +442,44 @@ const HomePage = () => {
                     className="w-full h-full object-cover" 
                     alt={event.title} 
                 />
-                <div className="absolute top-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-white text-[11px] font-bold">
+                <div className="absolute top-4 right-4 px-3 py-1 bg-black/80 backdrop-blur-md rounded-full text-white text-xs ">
                     {event.price}
                 </div>
                 </div>
 
                 {/* Actions */}
                 <div className="p-4">
-                <div className="flex items-center justify-between mb-4">
+                  {/* <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-4">
-                    <button className="hover:text-red-500 transition-colors"><Heart size={24} /></button>
-                    <button className="hover:text-amber-500 transition-colors"><Share2 size={22} /></button>
+                      <button className="hover:text-red-500 transition-colors"><Heart size={24} /></button>
+                      <button className="hover:text-amber-500 transition-colors"><Share2 size={22} /></button>
                     </div>
                     <button className="hover:text-black transition-colors"><Bookmark size={24} /></button>
-                </div>
+                  </div> */}
 
-                <div className="space-y-1">
-                    <p className="text-xs font-black text-amber-500 uppercase tracking-tighter">{event.date} • UPCOMING</p>
-                    <h3 className="text-xl font-bold leading-tight text-gray-900">{event.title}</h3>
-                    <div className="flex items-center gap-2 pt-2">
-                    <div className="flex -space-x-2">
-                        {[1,2,3].map(i => (
-                        <img key={i} src={`https://i.pravatar.cc/100?img=${i+10}`} className="w-6 h-6 rounded-full border-2 border-white" alt="" />
-                        ))}
-                    </div>
-                    <span className="text-[12px] text-gray-500 font-medium">Joined by {event.attendees} people</span>
-                    </div>
-                </div>
+                  <div className="space-y-1">
+                      <p className="text-xs font-bold text-black/50 uppercase ">{event.date} • UPCOMING</p>
+                      <h3 className="text-xl font-bold leading-tight text-gray-900">{event.title}</h3>
+                      <div className="flex items-center gap-2 pt-2">
+                      <div className="flex -space-x-2">
+                          {[1,2,3].map(i => (
+                          <img key={i} src={`https://i.pravatar.cc/100?img=${i+10}`} className="w-6 h-6 rounded-full border-2 border-white" alt="" />
+                          ))}
+                      </div>
+                      <span className="text-[12px] text-gray-500 font-medium">Joined by {event.attendees} people</span>
+                      </div>
+                  </div>
 
-                <button className="w-full mt-5 py-3 bg-black text-white rounded-xl font-bold text-sm hover:bg-black active:scale-[0.98] transition-all">
-                    Get Ticket
-                </button>
+                  <button className="w-full mt-5 py-3 bg-black cursor-pointer text-white rounded-xl font-bold text-sm hover:bg-black active:scale-[0.98] transition-all">
+                      Get Ticket
+                  </button>
                 </div>
             </div>
             ))}
             
           </div>
 
-          {/* SIDEBAR (Desktop Only - Twitter Style Trends) */}
+          {/* SIDEBAR (Desktop Only - Twitter Style Trends)
           <div className="hidden lg:block space-y-6">
             <div className="bg-white rounded-3xl p-6 border border-gray-100 sticky top-28">
               <h3 className="text-lg font-bold mb-4">Trending in Enugu</h3>
@@ -494,7 +494,7 @@ const HomePage = () => {
               </div>
               <button className="mt-6 text-amber-500 text-sm font-bold hover:underline">Show more</button>
             </div>
-          </div>
+          </div> */}
         </div>
 
       </div>

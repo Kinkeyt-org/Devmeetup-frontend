@@ -99,7 +99,7 @@ export default function Authform() {
                     <label className="block text-xs text-neutral-400 mb-1.5 font-medium tracking-wide uppercase">Email address</label>
                     <input type="email" required value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} placeholder="you@example.com" className="w-full border border-neutral-700 rounded-xl px-4 py-3 text-black placeholder-neutral-600 text-sm focus:outline-none focus:border-amber-400 transition-all" />
                   </div>
-                  <button type="submit" className="w-full bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 rounded-xl text-sm transition-all mt-2">Send reset link</button>
+                  <button type="submit" className="w-full bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 rounded-xl text-sm cursor-pointer transition-all mt-2">Send reset link</button>
                 </form>
               </>
             ) : (
@@ -111,7 +111,7 @@ export default function Authform() {
                 </div>
                 <h3 className="text-black font-bold text-lg mb-2">Check your inbox</h3>
                 <p className="text-neutral-500 text-sm">We sent a reset link to <span className="text-amber-400 font-medium">{forgotEmail}</span></p>
-                <button onClick={() => { setMode("signin"); setForgotSent(false); }} className="mt-6 text-sm text-amber-400 hover:text-amber-300 underline underline-offset-4 transition-colors">Back to sign in</button>
+                <button onClick={() => { setMode("signin"); setForgotSent(false); }} className="mt-6 text-sm text-amber-400 hover:text-amber-300 underline underline-offset-4 cursor-pointer  transition-colors">Back to sign in</button>
               </div>
             )}
           </div>
@@ -123,7 +123,7 @@ export default function Authform() {
               <h2 className="text-black text-3xl font-bold mb-1">Welcome back</h2>
               <p className="text-neutral-500 text-sm">Sign in to your EventHub account</p>
             </div>
-            <button className="w-full active:bg-neutral-100/50 flex items-center justify-center gap-3 cursor-pointer border border-neutral-200 hover:bg-neutral-50 rounded-xl py-3 text-sm font-medium transition-all mb-5">
+            <button className="w-full active:bg-neutral-100/50 active:scale-101 flex items-center justify-center gap-3 cursor-pointer border border-neutral-200 hover:bg-neutral-50 rounded-xl py-3 text-sm font-medium transition-all mb-5">
               {GOOGLE_ICON} Continue with Google
             </button>
             <div className="flex items-center gap-3 mb-5">

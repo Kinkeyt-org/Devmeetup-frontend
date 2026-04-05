@@ -78,7 +78,7 @@ const CreatePage = () => {
 
     } catch (error) {
       // Logic to extract specific validation errors or general messages
-      const errorMsg = error.response?.data?.message || "Check your Image size (< 2MB) or fields";
+      const errorMsg = error.response?.data?.message || "Something went wrong, try again.";
       const validationErrors = error.response?.data?.errors;
       
       if (validationErrors) {
