@@ -21,8 +21,13 @@ api.interceptors.request.use(config => {
 // --- EVENTS ---
 
 export const getEvents = async () => {
-  const res = await api.get("/events");
+  const res = await api.get("/events", {
+    params: {
+    t: new Date().getTime() // prevent caching
+  }
+  });
   // Per Postman: the array is nested in .data.data
+  
   return res.data.data || [];
 };
 

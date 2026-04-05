@@ -9,12 +9,22 @@ const EventsPage = () => {
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
   useEffect(() => {
-   const fetchEvents = async () => {
+    const fetchEvents = async () => {
       try {
-        const events = await getEvents(); // already array
-        console.log("EVENTS:", events);
+        const response = await getEvents();
+        console.log("Raw API Response:", response); // Helpful for debugging!
 
-        setEvents(events);
+        // Aggressively hunt for the array inside Laravel's pagination wrappers
+        let eventList = [];
+        if (Array.isArray(response)) {
+          eventList = response;
+        } else if (response?.data && Array.isArray(response.data)) {
+          eventList = response.data;
+        } else if (response?.data?.data && Array.isArray(response.data.data)) {
+          eventList = response.data.data;
+        }
+
+        setEvents(eventList);
       } catch (error) {
         console.error("Error fetching events:", error);
         showToast("Failed to load events", "error");

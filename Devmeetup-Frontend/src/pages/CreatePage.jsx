@@ -68,7 +68,8 @@ const CreatePage = () => {
         payload.append("banner", formData.image);
       }
 
-      await createEvent(payload);
+     const result = await createEvent(payload);
+     console.log("Create Result:", result);
 
       setShowToast(true);
       setTimeout(() => {
