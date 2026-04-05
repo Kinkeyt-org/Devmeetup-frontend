@@ -379,19 +379,7 @@ const HomePage = () => {
     <div className="min-h-screen md:hidden npm  bg-white font-['Satoshi'] pt-15 pb-32">
       <div className="max-w-2xl mx-auto px-4 lg:max-w-5xl lg:px-8">
         
-        {/* 1. DISCOVER STORIES (IG Style Featured)
-        <section className="mb-10 overflow-x-auto no-scrollbar flex gap-5 pb-2">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="flex flex-col items-center gap-2 shrink-0 cursor-pointer">
-              <div className="w-16 h-16 rounded-full p-0.5 bg-linear-to-tr from-amber-400 to-orange-500">
-                <div className="w-full h-full rounded-full border-2 border-white overflow-hidden bg-gray-200">
-                  <img src={`https://i.pravatar.cc/150?u=${i}`} alt="user" />
-                </div>
-              </div>
-              <span className="text-[11px] font-medium text-gray-500">Host_{i}</span>
-            </div>
-          ))}
-        </section> */}
+
 
         {/* 2. CATEGORY SELECTOR (Twitter Style Pills) */}
         <div className="sticky cursor-pointer top-14 z-30 bg-white backdrop-blur-md py-4 mb-6 border-b border-gray-100 -mx-4 px-4">

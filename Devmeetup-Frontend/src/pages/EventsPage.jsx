@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getEvents, bookEvent } from '../api/event';
+import { MoreHorizontal } from 'lucide-react';
 
 const EventsPage = () => {
   const [events, setEvents] = useState([]);
@@ -8,46 +9,59 @@ const EventsPage = () => {
   const [bookingId, setBookingId] = useState(null);
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await getEvents();
-        console.log("Raw API Response:", response); // Helpful for debugging!
-
-        // Aggressively hunt for the array inside Laravel's pagination wrappers
-        let eventList = [];
-        if (Array.isArray(response)) {
-          eventList = response;
-        } else if (response?.data && Array.isArray(response.data)) {
-          eventList = response.data;
-        } else if (response?.data?.data && Array.isArray(response.data.data)) {
-          eventList = response.data.data;
-        }
-
-        setEvents(eventList);
-      } catch (error) {
-        console.error("Error fetching events:", error);
-        showToast("Failed to load events", "error");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchEvents();
-  }, []);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   const showToast = (message, type = "success") => {
     setToast({ show: true, message, type });
     setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
   };
 
+  // 🔥 FETCH EVENTS WITH PAGINATION
+  const fetchEvents = async (pageNumber = 1) => {
+    try {
+      const response = await getEvents(pageNumber);
+
+      console.log("Full API Response:", response);
+
+      const newEvents = response?.data || [];
+
+      setEvents(prev =>
+        pageNumber === 1 ? newEvents : [...prev, ...newEvents]
+      );
+
+      // pagination check
+      if (response?.meta) {
+        setHasMore(response.meta.current_page < response.meta.last_page);
+      } else {
+        setHasMore(false);
+      }
+
+    } catch (error) {
+      console.error(error);
+      showToast("Failed to load events", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents(1);
+  }, []);
+
+  const handleLoadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchEvents(nextPage);
+  };
+
   const handleBookEvent = async (eventId) => {
-  setBookingId(eventId);
+    setBookingId(eventId);
 
     try {
-      const response = await bookEvent(eventId, 1); // pass quantity
-      showToast(response.message || "Booked!");
+      const res = await bookEvent(eventId, 1);
+      showToast(res.message || "Booked!");
     } catch (error) {
-      console.log(error.response?.data); // always log this
       showToast(error.response?.data?.message || "Booking failed", "error");
     } finally {
       setBookingId(null);
@@ -57,15 +71,15 @@ const EventsPage = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
+        <div className="animate-spin h-10 w-10 border-2 border-black border-t-transparent rounded-full"></div>
       </div>
     );
   }
 
   return (
-    <div className="px-6 py-12 font-['Satoshi'] max-w-7xl mx-auto">
+    <div className="min-h-screen bg-white font-['Satoshi'] pt-15 pb-32">
 
-      {/* Toast */}
+      {/* TOAST */}
       <AnimatePresence>
         {toast.show && (
           <motion.div
@@ -81,127 +95,86 @@ const EventsPage = () => {
         )}
       </AnimatePresence>
 
-      {/* Header */}
-      <div className="mb-12">
-        <h2 className="text-4xl font-black tracking-tight">
-          Discover Events
-        </h2>
-        <p className="text-gray-400 mt-2">
-          {events.length} events available
-        </p>
-      </div>
+      <div className="max-w-2xl mx-auto px-4 space-y-8">
 
-      {events.length === 0 ? (
-        <div className="text-center py-20 text-gray-400 font-semibold">
-          No events available
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {events.map((event) => {
+          const isFree =
+            event.is_free === 1 ||
+            event.is_free === "1" ||
+            event.is_free === true;
 
-          {events.map((event) => {
-            const isFree =
-              event.is_free === 1 ||
-              event.is_free === "1" ||
-              event.is_free === true;
+          const priceLabel = isFree
+            ? "Free"
+            : `₦${Number(event.price || 0).toLocaleString()}`;
 
-            const priceLabel = isFree
-              ? "Free"
-              : `₦${Number(event.price || 0).toLocaleString()}`;
-
-            const isVirtual = event.location?.toLowerCase().includes("http");
-            const isSoldOut = event.is_sold_out === true;
-
-            return (
-              <motion.div
-                key={event.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded-3xl overflow-hidden border bg-white shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
-              >
-                
-                {/* 🔥 Banner */}
-                <div className="h-48 w-full bg-gray-100">
-                  {event.banner ? (
-                    <img
-                      src={event.banner}
-                      alt=""
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-300">
-                      No Image
-                    </div>
-                  )}
-                </div>
-
-                {/* 🔥 Content */}
-                <div className="p-5 flex flex-col flex-1">
-
-                  {/* Type */}
-                  <span className={`text-xs font-bold uppercase w-fit px-3 py-1 rounded-full mb-3 ${
-                    isVirtual ? "bg-blue-100 text-blue-600" : "bg-gray-900 text-white"
-                  }`}>
-                    {isVirtual ? "Virtual Event" : "Physical Event"}
-                  </span>
-
-                  {/* Title */}
-                  <h3 className="text-xl font-black leading-tight mb-2">
-                    {event.title}
-                  </h3>
-
-                  {/* Date */}
-                  <p className="text-sm text-gray-500 mb-3">
-                    {event.event_date_human || event.event_date || event.event_date}
+          return (
+            <motion.div
+              key={event.id}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+            >
+              {/* HEADER */}
+              <div className="p-4 flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-bold text-gray-900">
+                    {event.organizer_name || "Organizer"}
+                  </h4>
+                  <p className="text-[11px] text-gray-500 font-medium">
+                    {event.location}
                   </p>
-
-                  {/* Location */}
-                  <div className="mb-4">
-                    <p className="text-xs text-gray-400 uppercase mb-1">
-                      {isVirtual ? "Link" : "Venue"}
-                    </p>
-                    <p className="text-sm font-semibold truncate">
-                      {event.location}
-                    </p>
-                  </div>
-
-                  {/* Spacer */}
-                  <div className="flex-1" />
-
-                  {/* 🔥 Ticket Section */}
-                  <div className="flex items-center justify-between pt-4 border-t">
-
-                    {/* Price */}
-                    <div>
-                      <p className="text-xs text-gray-400">Price</p>
-                      <p className="text-lg font-bold">
-                        {isSoldOut ? "Sold Out" : priceLabel}
-                      </p>
-                    </div>
-
-                    {/* CTA */}
-                    <button
-                      onClick={() => handleBookEvent(event.id)}
-                      disabled={bookingId === event.id || isSoldOut}
-                      className={`px-5 py-2.5 rounded-xl font-bold text-sm transition ${
-                        isSoldOut
-                          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                          : "bg-black text-white hover:bg-amber-400 hover:text-black"
-                      }`}
-                    >
-                      {bookingId === event.id
-                        ? "Booking..."
-                        : isSoldOut
-                        ? "Unavailable"
-                        : "Get Ticket"}
-                    </button>
-
-                  </div>
                 </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      )}
+
+                <MoreHorizontal size={20} className="text-gray-400" />
+              </div>
+
+              {/* IMAGE */}
+              <div className="aspect-video bg-gray-100">
+                {event.banner ? (
+                  <img
+                    src={event.banner}
+                    className="w-full h-full object-cover"
+                    alt=""
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-gray-400">
+                    No Image
+                  </div>
+                )}
+              </div>
+
+              {/* CONTENT */}
+              <div className="p-4">
+                <p className="text-xs font-bold text-black/50 uppercase">
+                  {event.event_date_human || event.event_date}
+                </p>
+
+                <h3 className="text-xl font-bold mt-1">
+                  {event.title}
+                </h3>
+
+                <button
+                  onClick={() => handleBookEvent(event.id)}
+                  disabled={bookingId === event.id}
+                  className="w-full mt-5 py-3 bg-black text-white rounded-xl font-bold text-sm hover:bg-amber-400 hover:text-black transition-all"
+                >
+                  {bookingId === event.id ? "Booking..." : priceLabel}
+                </button>
+              </div>
+            </motion.div>
+          );
+        })}
+
+        {/* LOAD MORE */}
+        {hasMore && (
+          <button
+            onClick={handleLoadMore}
+            className="w-full py-3 bg-gray-100 rounded-xl font-bold"
+          >
+            Load More
+          </button>
+        )}
+      </div>
     </div>
   );
 };
