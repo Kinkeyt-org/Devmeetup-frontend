@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getEvents, bookEvent } from '../api/event';
+import { useLocation } from 'react-router-dom';
 
 const EventsPage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [bookingId, setBookingId] = useState(null);
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
+  const location = useLocation();
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -33,7 +35,7 @@ const EventsPage = () => {
       }
     };
     fetchEvents();
-  }, []);
+  }, [location.key]); // refetch when coming back to this page
 
   const showToast = (message, type = "success") => {
     setToast({ show: true, message, type });

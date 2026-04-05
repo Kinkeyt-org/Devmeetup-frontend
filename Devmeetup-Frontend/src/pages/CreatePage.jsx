@@ -74,7 +74,7 @@ const CreatePage = () => {
       setShowToast(true);
       setTimeout(() => {
         setShowToast(false);
-        navigate("/"); 
+        navigate("/events"); 
       }, 2000);
 
     } catch (error) {
