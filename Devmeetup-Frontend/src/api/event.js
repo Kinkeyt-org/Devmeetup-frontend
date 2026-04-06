@@ -66,18 +66,21 @@ export const createEvent = async (payload) => {
   return res.data.details || res.data.data || res.data;
 };
 
-//Update zevent for organizers only
+//Update event for organizers only
 export const updateEvent = async (eventId, payload) => {
-  const config = {};
+  const config = {
+    headers: { "Content-Type": undefined }
+  };
 
-  if (!(payload instanceof FormData)) {
-    config.headers = { "Content-Type": "application/json" };
-  } else {
-    config.headers = { "Content-Type": undefined };
+  if (payload instanceof FormData) {
+    // TRICK: Send as POST but tell Laravel it is a PUT
+    payload.append("_method", "PUT");
+    const res = await api.post(`/events/${eventId}`, payload, config);
+    return res.data;
   }
 
-  const res = await api.put(`/events/${eventId}`, payload, config);
-
+  // Standard JSON update
+  const res = await api.put(`/events/${eventId}`, payload);
   return res.data;
 };
 

@@ -20,17 +20,17 @@ const Profile = () => {
   }, []);
 
   const fetchMyEvents = async (userId) => {
-    try {
-      const events = await getEvents();
-      const filtered = events.filter(e => e.organizer_id === userId);
-      setMyEvents(filtered);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  try {
+    const events = await getEvents();
+    // Use optional chaining because some events might have null organizers
+    const filtered = events.filter(e => e.organizer?.id === userId); 
+    setMyEvents(filtered);
+  } catch (err) {
+    console.error("Fetch Error:", err);
+  } finally {
+    setLoading(false);
+  }
+};
   // --- HANDLE PROFILE UPDATE (PHOTO) ---
   const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
@@ -121,7 +121,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white text-[#1d1d1f] pt-24 px-6">
+    <div className="min-h-screen bg-white text-[#1d1d1f] pt-24 px-6 font-['Satoshi'] antialiased">
       <div className="max-w-5xl mx-auto">
 
         {/* --- USER INFO --- */}
