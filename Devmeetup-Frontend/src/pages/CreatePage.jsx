@@ -59,7 +59,9 @@ const CreatePage = () => {
       payload.append("location", formData.location);
 
       
-     
+     tags.forEach((tag, index) => {
+        payload.append(`tags[${index}]`, tag);
+      });
 
       // Backend expects 'is_free' as 1 (True/Free) or 0 (False/Paid)
       const isFreeValue = pricingType === "free" ? "1" : "0";

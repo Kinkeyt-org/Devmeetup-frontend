@@ -31,7 +31,7 @@ const ExploreEvents = () => {
 
   const SkeletonCard = () => (
     <div className="animate-pulse">
-      <div className="aspect-[16/10] md:aspect-[4/5] bg-neutral-200 rounded-[2.5rem] mb-4"></div>
+      <div className="aspect-16/10 md:aspect-4/5 bg-neutral-200 rounded-[2.5rem] mb-4"></div>
       <div className="flex justify-between items-center px-2">
         <div className="h-3 w-24 bg-neutral-200 rounded-full"></div>
         <div className="w-8 h-8 bg-neutral-200 rounded-full"></div>
@@ -86,9 +86,9 @@ const ExploreEvents = () => {
                   transition={{ duration: 0.3 }}
                   className="group cursor-pointer"
                 >
-                  <div className="aspect-[16/10] md:aspect-[4/5] bg-neutral-100 rounded-[2.5rem] mb-4 overflow-hidden relative shadow-sm border border-neutral-100">
+                  <div className="aspect-16/10 md:aspect-4/5 bg-neutral-100 rounded-[2.5rem] mb-4 overflow-hidden relative shadow-sm border border-neutral-100">
                     <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black shadow-sm z-10">
-                      {event.is_free === "1" ? "Free" : `₦${event.price}`}
+                      {event.is_free || event.is_free === 1 || event.is_free === "1" ? "Free" : `₦${event.price || 0}`}
                     </div>
 
                     <img
@@ -126,7 +126,7 @@ const ExploreEvents = () => {
                         )}
                       </div>
 
-                      <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-tighter">
+                      <p className="text-[10px] font-bold text-neutral-700 uppercase ">
                         {event.event_date_human || event.event_date}
                       </p>
                     </div>
