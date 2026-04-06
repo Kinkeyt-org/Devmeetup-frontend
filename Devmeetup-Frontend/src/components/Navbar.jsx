@@ -111,8 +111,8 @@ const Navbar = () => {
                           <p className="text-xs text-neutral-400 font-medium">{user?.email}</p>
                         </div>
                         <div className="p-2">
-                          <DropdownItem icon={<Icons.User />} label="My Profile" />
-                          <DropdownItem icon={<Icons.Ticket />} label="Tickets" />
+                          <DropdownItem icon={<Icons.User />} label="My Profile" className= "hidden md:block" />
+                          <DropdownItem icon={<Icons.Ticket />} label="Tickets" className= "hidden md:block"/>
                           <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 text-red-500 rounded-2xl transition-all font-bold text-[14px]">
                             <Icons.LogOut /> Sign Out
                           </button>
@@ -132,8 +132,8 @@ const Navbar = () => {
       </nav>
 
       {/* MOBILE DOCK (Floating Island Style) */}
-      <div className="md:hidden fixed bottom-6 left-0 right-0 z-[100] px-6">
-        <div className="bg-black/90 backdrop-blur-2xl rounded-[2.5rem] p-2 flex items-center justify-between shadow-[0_10px_40px_rgba(0,0,0,0.3)]">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-100 ">
+        <div className="bg-white rounded-[2.5rem] p-2 flex items-center justify-between shadow-[0_10px_40px_rgba(0,0,0,0.3)]">
           <MobileNavItem to="/" icon={<Icons.Home />} active={location.pathname === "/"} />
           <MobileNavItem to="/search" icon={<Icons.Search />} active={location.pathname === "/search"} />
           
