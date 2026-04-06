@@ -25,7 +25,7 @@ const ExploreEvents = () => {
       
       {/* HEADER & FILTERS */}
       <div className="sticky top-0 z-40 bg-white  border-b border-neutral-100 pt-24 pb-4 px-6">
-        <div className="max-w-6xl md:pt-10 mx-auto">
+        <div className="max-w-6xl md:pt-10   mx-auto">
           
 
           {/* Category Pills */}
