@@ -90,7 +90,7 @@ const ExploreEvents = () => {
               {filteredEvents.map((event) => (
                 <div key={event.id} className="group cursor-pointer">
                   
-                  <div className="aspect-[16/10] md:aspect-[4/5] bg-neutral-100 rounded-[2.5rem] mb-4 overflow-hidden relative shadow-sm border border-neutral-100">
+                  <div className="aspect-16/10 md:aspect-4/5 bg-neutral-100 rounded-[2.5rem] mb-4 overflow-hidden relative shadow-sm border border-neutral-100">
                     
                     <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black shadow-sm z-10">
                       {event.price || "Free"}
@@ -102,15 +102,15 @@ const ExploreEvents = () => {
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
 
-                    <div className="absolute bottom-6 left-6 text-white">
-                      <p className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1">
-                        {event.location}
-                      </p>
+                    <div className="absolute bottom-3 left-6 text-white">
                       <h3 className="text-xl font-bold leading-tight tracking-tight">
                         {event.title}
                       </h3>
+                      <p className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1">
+                        {event.location}
+                      </p>
                     </div>
 
                   </div>
@@ -133,7 +133,7 @@ const ExploreEvents = () => {
           </motion.div>
         )}
 
-        {/* ❌ Empty State */}
+        {/* Empty State */}
         {!loading && filteredEvents.length === 0 && (
           <div className="py-40 text-center">
             <h3 className="text-2xl font-bold text-neutral-300 italic">
