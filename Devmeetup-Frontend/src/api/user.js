@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || "https://devmeetup.duckdns.org/api";
+const API_URL = import.meta.env.VITE_API_BASE_URL || "https://devmeetup.duckdns.org";
 
 const api = axios.create({
   baseURL: API_URL,
