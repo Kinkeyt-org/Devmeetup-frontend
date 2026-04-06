@@ -124,21 +124,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="max-w-5xl mx-auto py-10 px-6 md:px-0 border-t border-neutral-100 flex flex-col md:flex-row justify-between items-center gap-6">
-        <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-black rounded flex items-center justify-center">
-                <div className="w-2 h-2 bg-white rounded-full"></div>
-            </div>
-            <span className="font-black tracking-tighter">EVENTHUB</span>
-        </div>
-        <div className="flex gap-8 text-[11px] font-black uppercase tracking-widest text-neutral-400">
-          <a href="#" className="hover:text-black">Twitter</a>
-          <a href="#" className="hover:text-black">Instagram</a>
-          <a href="#" className="hover:text-black">Privacy</a>
-        </div>
-        <p className="text-[10px] text-neutral-300 font-medium tracking-tight">© 2026 Crafted with Passion.</p>
-      </footer>
+    
     </div>
   );
 };

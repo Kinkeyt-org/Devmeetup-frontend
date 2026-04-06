@@ -48,8 +48,8 @@ const Navbar = () => {
       {/* DESKTOP NAVBAR */}
       <nav className={`fixed top-0 w-full z-100 transition-all duration-500 font-['Satoshi'] 
         ${scrolled ? 'py-0' : 'py-0'}`}>
-        <div className={`max-w-7xl mx-auto flex items-center justify-between transition-all duration-500 p-2 px-4 rounded-4xl
-          ${scrolled ? 'bg-white/80 backdrop-blur-xl  ' : 'bg-transparent'}`}>
+        <div className={`max-w-7xl mx-auto flex items-center justify-between transition-all duration-500 p-2 px-4 
+          ${scrolled ? 'bg-white  ' : ''}`}>
           
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 hover:opacity-70 transition-opacity">
@@ -110,13 +110,13 @@ const Navbar = () => {
                           <h4 className="font-bold text-neutral-900">{user?.name}</h4>
                           <p className="text-xs text-neutral-400 font-medium">{user?.email}</p>
                         </div>
-                        <div className="p-2">
-                          <DropdownItem icon={<Icons.User />} label="My Profile" className= "hidden md:block" />
-                          <DropdownItem icon={<Icons.Ticket />} label="Tickets" className= "hidden md:block"/>
+                        <div className="p-2 hidden md:block">
+                          <DropdownItem icon={<Icons.User />} label="My Profile"  />
+                          <DropdownItem icon={<Icons.Ticket />} label="Tickets" />
+                        </div>
                           <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 text-red-500 rounded-2xl transition-all font-bold text-[14px]">
                             <Icons.LogOut /> Sign Out
                           </button>
-                        </div>
                       </motion.div>
                     </>
                   )}
@@ -133,7 +133,7 @@ const Navbar = () => {
 
       {/* MOBILE DOCK (Floating Island Style) */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-100 ">
-        <div className="bg-white rounded-[2.5rem] p-2 flex items-center justify-between shadow-[0_10px_40px_rgba(0,0,0,0.3)]">
+        <div className="bg-white  p-2 flex items-center justify-between ">
           <MobileNavItem to="/" icon={<Icons.Home />} active={location.pathname === "/"} />
           <MobileNavItem to="/search" icon={<Icons.Search />} active={location.pathname === "/search"} />
           
@@ -161,7 +161,7 @@ const DropdownItem = ({ icon, label }) => (
 
 const MobileNavItem = ({ to, icon, active }) => (
   <Link to={to} className="p-3 transition-all">
-    <span className={`${active ? 'text-amber-400 scale-110' : 'text-neutral-400'} transition-all inline-block`}>
+    <span className={`${active ? 'text-black scale-110' : 'text-neutral-400'} transition-all inline-block`}>
       {icon}
     </span>
   </Link>
