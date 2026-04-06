@@ -4,6 +4,9 @@ import { createEvent } from "../api/event";
 import { motion, AnimatePresence } from "framer-motion";
 
 const CreatePage = () => {
+  const [tags, setTags] = useState([]);
+  const PREDEFINED_TAGS = ["Technology", "Design", "Business", "Workshops", "Lifestyle", "Music"];
+  const TAG_LIMIT = 5;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [eventType, setEventType] = useState("physical");
@@ -55,6 +58,9 @@ const CreatePage = () => {
       payload.append("capacity", formData.capacity);
       payload.append("location", formData.location);
 
+      
+     
+
       // Backend expects 'is_free' as 1 (True/Free) or 0 (False/Paid)
       const isFreeValue = pricingType === "free" ? "1" : "0";
       payload.append("is_free", isFreeValue);
@@ -89,6 +95,22 @@ const CreatePage = () => {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const toggleTag = (tag) => {
+    setServerError(""); // Clear errors when they interact
+    
+    if (tags.includes(tag)) {
+      // Remove if already selected
+      setTags(tags.filter((t) => t !== tag));
+    } else {
+      // Add if under limit
+      if (tags.length < TAG_LIMIT) {
+        setTags([...tags, tag]);
+      } else {
+        setServerError(`You can only select up to ${TAG_LIMIT} tags.`);
+      }
     }
   };
 
@@ -279,6 +301,36 @@ const CreatePage = () => {
               ⚠️ {serverError}
             </motion.p>
           )}
+
+          {/* TAGS SECTION */}
+        
+          <div className="space-y-3">
+            <div className="flex justify-between items-end">
+              <label className="text-sm font-bold text-gray-700">Event Category</label>
+              <span className="text-xs text-gray-400">{tags.length} / {TAG_LIMIT} selected</span>
+            </div>
+            
+            <div className="flex flex-wrap gap-2">
+              {PREDEFINED_TAGS.map((tag) => {
+                const isSelected = tags.includes(tag);
+                return (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => toggleTag(tag)}
+                    className={`px-5 py-2 rounded-xl text-sm font-semibold transition-all border-2 ${
+                      isSelected
+                        ? "bg-black border-black text-white shadow-md"
+                        : "bg-white border-gray-100 text-gray-500 hover:border-gray-300"
+                    }`}
+                  >
+                    {tag}
+                    {isSelected && <span className="ml-2">✕</span>}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
           {/* SUBMIT BUTTON */}
           <motion.button

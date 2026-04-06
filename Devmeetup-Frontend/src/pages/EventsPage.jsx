@@ -7,7 +7,7 @@ const ExploreEvents = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const categories = ['All', 'Music', 'Technology', 'Design', 'Business', 'Lifestyle'];
+  const categories = ['All', 'Tech', 'Design', 'Business', 'Music', 'Lifestyle'];
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -24,9 +24,10 @@ const ExploreEvents = () => {
     fetchEvents();
   }, []);
 
+  // Filter based on tags
   const filteredEvents = activeCategory === 'All'
     ? events
-    : events.filter(e => e.category === activeCategory);
+    : events.filter(e => e.tags?.includes(activeCategory));
 
   const SkeletonCard = () => (
     <div className="animate-pulse">
@@ -37,15 +38,6 @@ const ExploreEvents = () => {
       </div>
     </div>
   );
-
-  // ✅ Format date nicely
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    return new Date(dateString).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    });
-  };
 
   return (
     <div className="min-h-screen bg-white font-['Satoshi'] antialiased">
@@ -96,7 +88,7 @@ const ExploreEvents = () => {
                 >
                   <div className="aspect-[16/10] md:aspect-[4/5] bg-neutral-100 rounded-[2.5rem] mb-4 overflow-hidden relative shadow-sm border border-neutral-100">
                     <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black shadow-sm z-10">
-                      {event.price || "Free"}
+                      {event.is_free === "1" ? "Free" : `₦${event.price}`}
                     </div>
 
                     <img
@@ -117,10 +109,27 @@ const ExploreEvents = () => {
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center px-2">
-                    <p className="text-[10px] font-black text-amber-500 uppercase tracking-widest">
-                      {event.category || "General"} • {formatDate(event.date)}
-                    </p>
+                  {/* TAGS + DATE */}
+                  <div className="flex justify-between items-start px-2">
+                    <div className="space-y-1">
+                      <div className="flex gap-2">
+                        {event.tags && event.tags.length > 0 ? (
+                          event.tags.slice(0, 2).map((tag, i) => (
+                            <p key={i} className="text-[10px] font-black text-amber-500 uppercase tracking-widest">
+                              {tag} {i === 0 && event.tags.length > 1 ? "•" : ""}
+                            </p>
+                          ))
+                        ) : (
+                          <p className="text-[10px] font-black text-amber-500 uppercase tracking-widest">
+                            General
+                          </p>
+                        )}
+                      </div>
+
+                      <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-tighter">
+                        {event.event_date_human || event.event_date}
+                      </p>
+                    </div>
 
                     <div className="w-8 h-8 rounded-full bg-neutral-50 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
