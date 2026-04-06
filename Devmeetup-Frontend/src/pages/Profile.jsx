@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { updateProfile, getEvents, deleteEvent } from "../api/event"; // adjust path if needed
+import {  getEvents, deleteEvent } from "../api/event";
+import {updateProfile} from "../api/user" // adjust path if needed
 
 const Profile = () => {
   const [user, setUser] = useState(null);
