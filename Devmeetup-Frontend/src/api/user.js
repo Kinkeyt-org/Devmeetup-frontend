@@ -15,12 +15,29 @@ api.interceptors.request.use(config => {
 
 // --- USER PROFILE ---
 export const updateProfile = async (payload) => {
-  let config = {};
+  const config = {
+    headers: {
+      "Accept": "application/json",
+    }
+  };
+
   if (payload instanceof FormData) {
-    // If updating a photo, we use multipart
-    config.headers = { "Content-Type": undefined };
+    // 1. Let the browser set the multipart/form-data boundary automatically
+    config.headers["Content-Type"] = undefined;
+
+    /**
+     * 2. METHOD SPOOFING: 
+     * Many backends (Laravel/PHP) cannot read files on a PATCH request.
+     * We send it as a POST but add the '_method' field so the 
+     * server handles it as a PATCH.
+     */
+    payload.append("_method", "PATCH");
+
+    const res = await api.post("/update", payload, config);
+    return res.data;
   }
-  
-  const res = await api.patch("/update", payload, config); //
+
+  // If it's just a regular JSON update (no files), standard PATCH works fine
+  const res = await api.patch("/update", payload);
   return res.data;
 };
