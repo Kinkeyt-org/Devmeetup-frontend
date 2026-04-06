@@ -9,7 +9,6 @@ const ExploreEvents = () => {
 
   const categories = ['All', 'Music', 'Technology', 'Design', 'Business', 'Lifestyle'];
 
-  // 🔥 Fetch real events
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -25,29 +24,34 @@ const ExploreEvents = () => {
     fetchEvents();
   }, []);
 
-  // Filter logic
   const filteredEvents = activeCategory === 'All'
     ? events
     : events.filter(e => e.category === activeCategory);
 
   const SkeletonCard = () => (
-  <div className="animate-pulse">
-    <div className="aspect-16/10 md:aspect-4/5 bg-neutral-200 rounded-[2.5rem] mb-4"></div>
-    
-    <div className="flex justify-between items-center px-2">
-      <div className="h-3 w-24 bg-neutral-200 rounded-full"></div>
-      <div className="w-8 h-8 bg-neutral-200 rounded-full"></div>
+    <div className="animate-pulse">
+      <div className="aspect-[16/10] md:aspect-[4/5] bg-neutral-200 rounded-[2.5rem] mb-4"></div>
+      <div className="flex justify-between items-center px-2">
+        <div className="h-3 w-24 bg-neutral-200 rounded-full"></div>
+        <div className="w-8 h-8 bg-neutral-200 rounded-full"></div>
+      </div>
     </div>
-  </div>
-);
+  );
+
+  // ✅ Format date nicely
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-white font-['Satoshi'] antialiased">
-
       {/* HEADER */}
       <div className="sticky top-0 z-40 bg-white border-b border-neutral-100 pt-24 pb-4 px-6">
         <div className="max-w-6xl md:pt-10 mx-auto">
-
           <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
             {categories.map((cat) => (
               <button
@@ -63,16 +67,14 @@ const ExploreEvents = () => {
               </button>
             ))}
           </div>
-
         </div>
       </div>
 
       {/* EVENTS */}
       <section className="max-w-6xl mx-auto py-10 px-6">
-
         {/* Loading State */}
         {loading && (
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {Array.from({ length: 6 }).map((_, i) => (
               <SkeletonCard key={i} />
             ))}
@@ -80,18 +82,19 @@ const ExploreEvents = () => {
         )}
 
         {!loading && (
-          <motion.div
-            layout
-            
-
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            <AnimatePresence mode='popLayout'>
+          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <AnimatePresence>
               {filteredEvents.map((event) => (
-                <div key={event.id} className="group cursor-pointer">
-                  
-                  <div className="aspect-16/10 md:aspect-4/5 bg-neutral-100 rounded-[2.5rem] mb-4 overflow-hidden relative shadow-sm border border-neutral-100">
-                    
+                <motion.div
+                  key={event.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                  className="group cursor-pointer"
+                >
+                  <div className="aspect-[16/10] md:aspect-[4/5] bg-neutral-100 rounded-[2.5rem] mb-4 overflow-hidden relative shadow-sm border border-neutral-100">
                     <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black shadow-sm z-10">
                       {event.price || "Free"}
                     </div>
@@ -112,12 +115,11 @@ const ExploreEvents = () => {
                         {event.location}
                       </p>
                     </div>
-
                   </div>
 
                   <div className="flex justify-between items-center px-2">
                     <p className="text-[10px] font-black text-amber-500 uppercase tracking-widest">
-                      {event.category} • {event.date}
+                      {event.category || "General"} • {formatDate(event.date)}
                     </p>
 
                     <div className="w-8 h-8 rounded-full bg-neutral-50 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
@@ -126,8 +128,7 @@ const ExploreEvents = () => {
                       </svg>
                     </div>
                   </div>
-
-                </div>
+                </motion.div>
               ))}
             </AnimatePresence>
           </motion.div>
@@ -141,7 +142,6 @@ const ExploreEvents = () => {
             </h3>
           </div>
         )}
-
       </section>
     </div>
   );
