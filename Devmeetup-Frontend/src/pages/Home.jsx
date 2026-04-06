@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
   const featuredEvents = [
     { 
       id: 1, 
@@ -43,7 +45,9 @@ const Home = () => {
               Find your next inspiration in one seamless hub.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <button className="w-full sm:w-auto px-10 py-4 bg-black text-white rounded-full font-bold hover:scale-[1.02] active:scale-95 transition-all">
+              <button 
+                onClick={()=> navigate("/events")}
+                className="w-full sm:w-auto px-10 py-4 bg-black text-white rounded-full font-bold hover:scale-[1.02] active:scale-95 transition-all">
                 Explore Events
               </button>
               <button className="w-full sm:w-auto px-10 py-4 bg-white border border-neutral-200 rounded-full font-bold hover:bg-neutral-50 transition-all">
@@ -52,13 +56,13 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="relative group overflow-hidden rounded-[2rem] md:rounded-[3rem] shadow-2xl mx-[-8px] md:mx-0">
+          <div className="relative group overflow-hidden rounded-4xl md:rounded-[3rem] shadow-2xl -mx-2 md:mx-0">
             <img 
               src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=1600&auto=format&fit=crop" 
               alt="Vibrant event crowd" 
-              className="w-full h-[350px] md:h-[650px] object-cover transform group-hover:scale-105 transition-transform duration-1000"
+              className="w-full h-87.5 md:h-162.5 object-cover transform group-hover:scale-105 transition-transform duration-1000"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
             <div className="absolute bottom-8 left-8 text-white">
                 <p className="text-xs font-bold uppercase tracking-[0.3em] mb-2 opacity-80">Featured Experience</p>
                 <h2 className="text-3xl md:text-5xl font-bold italic tracking-tighter">Summer Rave Lagos '26</h2>

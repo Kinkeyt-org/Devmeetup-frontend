@@ -48,7 +48,7 @@ const Navbar = () => {
       {/* DESKTOP NAVBAR */}
       <nav className={`fixed top-0 w-full z-100 transition-all duration-500 font-['Satoshi'] 
         ${scrolled ? 'py-0' : 'py-0'}`}>
-        <div className={`max-w-7xl mx-auto flex items-center justify-between transition-all duration-500 p-2 px-4 
+        <div className={`  flex items-center justify-between md:justify-around transition-all duration-500 p-2 px-4 
           ${scrolled ? 'bg-white  ' : ''}`}>
           
           {/* Logo */}
@@ -114,9 +114,9 @@ const Navbar = () => {
                           <DropdownItem icon={<Icons.User />} label="My Profile"  />
                           <DropdownItem icon={<Icons.Ticket />} label="Tickets" />
                         </div>
-                          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 text-red-500 rounded-2xl transition-all font-bold text-[14px]">
-                            <Icons.LogOut /> Sign Out
-                          </button>
+                        <button onClick={handleLogout} className="w-full flex items-center justify-center gap-3 px-4 py-3 hover:bg-red-50 text-red-500 rounded-2xl transition-all font-bold text-[14px]">
+                          <Icons.LogOut /> Sign Out
+                        </button>
                       </motion.div>
                     </>
                   )}
