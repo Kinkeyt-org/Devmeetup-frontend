@@ -85,8 +85,8 @@ const Home = () => {
 
         <div className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible px-6 md:px-0 no-scrollbar snap-x snap-mandatory">
           {featuredEvents.map((event) => (
-            <div key={event.id} className="min-w-[280px] md:min-w-0 group cursor-pointer snap-start">
-              <div className="aspect-[4/5] bg-neutral-100 rounded-[2rem] mb-4 overflow-hidden relative shadow-sm">
+            <div key={event.id} className="min-w-70 md:min-w-0 group cursor-pointer snap-start">
+              <div className="aspect-4/5 bg-neutral-100 rounded-4xl mb-4 overflow-hidden relative shadow-sm">
                 {/* Price Tag */}
                 <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black shadow-sm z-10">
                    {event.price}
