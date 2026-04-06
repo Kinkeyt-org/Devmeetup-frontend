@@ -25,14 +25,14 @@ const ExploreEvents = () => {
     fetchEvents();
   }, []);
 
-  // 🔥 Filter logic
+  // Filter logic
   const filteredEvents = activeCategory === 'All'
     ? events
     : events.filter(e => e.category === activeCategory);
 
   const SkeletonCard = () => (
   <div className="animate-pulse">
-    <div className="aspect-[16/10] md:aspect-[4/5] bg-neutral-200 rounded-[2.5rem] mb-4"></div>
+    <div className="aspect-16/10 md:aspect-4/5 bg-neutral-200 rounded-[2.5rem] mb-4"></div>
     
     <div className="flex justify-between items-center px-2">
       <div className="h-3 w-24 bg-neutral-200 rounded-full"></div>

@@ -13,15 +13,14 @@ api.interceptors.request.use(config => {
   return config;
 });
 
-export const updateProfile = async (formData) => {
-  const res = await api.post("/profile/update", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-
-  //  update local user
-  localStorage.setItem("user", JSON.stringify(res.data.user));
-
+// --- USER PROFILE ---
+export const updateProfile = async (payload) => {
+  let config = {};
+  if (payload instanceof FormData) {
+    // If updating a photo, we use multipart
+    config.headers = { "Content-Type": undefined };
+  }
+  
+  const res = await api.patch("/update", payload, config); //
   return res.data;
 };

@@ -65,3 +65,24 @@ export const createEvent = async (payload) => {
   // Per Postman: success responses use .details or .data
   return res.data.details || res.data.data || res.data;
 };
+
+//Update zevent for organizers only
+export const updateEvent = async (eventId, payload) => {
+  const config = {};
+
+  if (!(payload instanceof FormData)) {
+    config.headers = { "Content-Type": "application/json" };
+  } else {
+    config.headers = { "Content-Type": undefined };
+  }
+
+  const res = await api.put(`/events/${eventId}`, payload, config);
+
+  return res.data;
+};
+
+// Delete event for organizers only
+export const deleteEvent = async (eventId) => {
+  const res = await api.delete(`/events/${eventId}`);
+  return res.data;
+};
