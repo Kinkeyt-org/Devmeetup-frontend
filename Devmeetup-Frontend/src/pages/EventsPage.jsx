@@ -86,6 +86,7 @@ const ExploreEvents = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
+                  onClick={() => navigate(`/events/${event.id}`)}
                   className="group cursor-pointer"
                 >
                   <div className="aspect-16/10 md:aspect-4/5 bg-neutral-100 rounded-[2.5rem] mb-4 overflow-hidden relative shadow-sm border border-neutral-100">
