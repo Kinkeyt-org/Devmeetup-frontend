@@ -26,9 +26,9 @@ export const getEvents = async () => {
   return res.data.data || [];
 };
 //get specific event details
-export const getEventDetails = async (eventId) => {
-  const res = await api.get(`/events/${eventId}`);
-  return res.data.data?.details ||res.data.event || res.data.data || null;
+export const getEventDetails = async (id) => {
+  const res = await api.get(`/events/${id}`);
+  return  res.data.data;
 };
 
 export const getMyTickets = async () => {
@@ -36,12 +36,14 @@ export const getMyTickets = async () => {
   return res.data.data || [];
 };
 
-export const bookEvent = async (eventId, number = 1) => {
-  const res = await api.post(`/event/${eventId}/book`, {
-    number,
-  });
+export const bookEvent = async (eventId) => {
+  const res = await api.post(`/event/${eventId}/book`);
 
-  return res.data;
+  return {
+    message: res.data.message,
+    tickets: res.data["ticket-details"],
+    capacityLeft: res.data["capacity-left"],
+  };
 };
 
 export const cancelEventTicket = async (ticketId) => {
@@ -49,26 +51,10 @@ export const cancelEventTicket = async (ticketId) => {
   return res.data;
 };
 
+// Create event
 export const createEvent = async (payload) => {
-  /**
-   * FIX for 413/CORS Error:
-   * Note: If payload is FormData, DO NOT manually set "Content-Type". 
-   * If you set it to "multipart/form-data" manually, the "boundary" 
-   * string (which the server needs to parse the file) will be missing.
-   * Axios handles this automatically if you leave the header out for FormData.
-   */
-  const config = {};
-  if (!(payload instanceof FormData)) {
-    config.headers = { "Content-Type": "application/json" };
-  } else {
-    // Deleting the default application/json to let the browser set the boundary
-    config.headers = { "Content-Type": undefined };
-  }
-
-  const res = await api.post("/events", payload, config);
-
-  // Per Postman: success responses use .details or .data
-  return res.data.details || res.data.data || res.data;
+  const res = await api.post("/events", payload);
+  return res.data.data;
 };
 
 //Update event for organizers only
