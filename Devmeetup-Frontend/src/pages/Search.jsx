@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoMdSearch } from "react-icons/io";
 import Fuse from "fuse.js";
-import { getEvents } from "../api/event";
+import { getEvents } from "../api/event"; // your real API
 
 const Search = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
+    // Fetch events from your API
     const fetchEvents = async () => {
       try {
         const data = await getEvents();
@@ -21,17 +23,22 @@ const Search = () => {
     fetchEvents();
   }, []);
 
-  // Use useMemo to compute suggestions without triggering setState inside useEffect
-  const suggestions = useMemo(() => {
-    if (!query) return [];
+  // Setup Fuse.js
+  const fuse = new Fuse(events, {
+    keys: ["title", "category", "location"],
+    threshold: 0.3, // adjust sensitivity
+  });
 
-    const fuse = new Fuse(events, {
-      keys: ["title", "category", "location"],
-      threshold: 0.3,
-    });
+  // Update suggestions dynamically
+  useEffect(() => {
+    if (!query) {
+      setSuggestions([]);
+      return;
+    }
 
-    return fuse.search(query).map(r => r.item).slice(0, 5); // top 5 suggestions
-  }, [query, events]);
+    const results = fuse.search(query).map(r => r.item);
+    setSuggestions(results.slice(0, 5)); // top 5 suggestions
+  }, [query, fuse]);
 
   return (
     <div className="min-h-screen bg-white font-['Satoshi']">
@@ -39,6 +46,8 @@ const Search = () => {
       {/* SEARCH HEADER */}
       <div className="sticky top-0 z-40 bg-white pt-5 pb-4 px-4 border-b border-neutral-100">
         <div className="flex items-center gap-3">
+
+          {/* Search Input */}
           <div className="flex-1 relative">
             <div className="flex items-center bg-neutral-100 rounded-full px-4 py-3">
               <IoMdSearch className="text-neutral-400 text-xl mr-2" />
