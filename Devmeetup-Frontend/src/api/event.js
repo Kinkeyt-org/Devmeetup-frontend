@@ -28,7 +28,7 @@ export const getEvents = async () => {
 //get specific event details
 export const getEventDetails = async (eventId) => {
   const res = await api.get(`/events/${eventId}`);
-  return res.data.data || null;
+  return res.data.event || res.data.data || null;
 };
 
 export const getMyTickets = async () => {
