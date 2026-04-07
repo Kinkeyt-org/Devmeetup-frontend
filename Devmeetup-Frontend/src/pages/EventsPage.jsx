@@ -81,7 +81,6 @@ const ExploreEvents = () => {
               {filteredEvents.map((event) => (
                 <motion.div
                   key={event.id}
-                  onClick={()=>{navigate}}
                   layout
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -134,7 +133,9 @@ const ExploreEvents = () => {
                       </p>
                     </div>
 
-                    <div className="w-8 h-8 rounded-full bg-neutral-50 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
+                    <div 
+                      onClick={()=>{navigate(`/events/${event.id}`)}}
+                      className="w-8 h-8 rounded-full bg-neutral-50 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                         <path d="M7 17l9-9M7 8h9v9"/>
                       </svg>
