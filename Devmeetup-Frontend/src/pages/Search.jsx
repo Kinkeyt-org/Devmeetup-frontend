@@ -1,41 +1,37 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { IoMdSearch } from "react-icons/io";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { getEvents } from "../api/event"; // make sure this fetches real events
+import { IoMdSearch } from "react-icons/io";
+import Fuse from "fuse.js";
+import { getEvents } from "../api/event";
 
 const Search = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
-  const [allEvents, setAllEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [events, setEvents] = useState([]);
 
-  // Fetch real events
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const data = await getEvents();
-        setAllEvents(data || []);
+        setEvents(data);
       } catch (err) {
         console.error("Failed to fetch events:", err);
-        setAllEvents([]);
-      } finally {
-        setLoading(false);
       }
     };
     fetchEvents();
   }, []);
 
-  // Safe filtering to prevent undefined errors
-  const filteredEvents =
-    query.trim() === ""
-      ? []
-      : allEvents.filter(
-          (event) =>
-            (event.title?.toLowerCase() || "").includes(query.toLowerCase()) ||
-            (event.location?.toLowerCase() || "").includes(query.toLowerCase()) ||
-            (event.category?.toLowerCase() || "").includes(query.toLowerCase())
-        );
+  // Use useMemo to compute suggestions without triggering setState inside useEffect
+  const suggestions = useMemo(() => {
+    if (!query) return [];
+
+    const fuse = new Fuse(events, {
+      keys: ["title", "category", "location"],
+      threshold: 0.3,
+    });
+
+    return fuse.search(query).map(r => r.item).slice(0, 5); // top 5 suggestions
+  }, [query, events]);
 
   return (
     <div className="min-h-screen bg-white font-['Satoshi']">
@@ -43,16 +39,35 @@ const Search = () => {
       {/* SEARCH HEADER */}
       <div className="sticky top-0 z-40 bg-white pt-5 pb-4 px-4 border-b border-neutral-100">
         <div className="flex items-center gap-3">
-          <div className="flex-1 flex items-center bg-neutral-100 rounded-full px-4 py-3">
-            <IoMdSearch className="text-neutral-400 text-xl mr-2" />
-            <input
-              type="text"
-              placeholder="Search events, location..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="bg-transparent outline-none w-full text-sm"
-            />
+          <div className="flex-1 relative">
+            <div className="flex items-center bg-neutral-100 rounded-full px-4 py-3">
+              <IoMdSearch className="text-neutral-400 text-xl mr-2" />
+              <input
+                type="text"
+                placeholder="Search events, location..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="bg-transparent outline-none w-full text-sm"
+              />
+            </div>
+
+            {/* Suggestions Dropdown */}
+            {suggestions.length > 0 && (
+              <div className="absolute top-full left-0 w-full mt-1 bg-white shadow-lg rounded-xl z-50 max-h-60 overflow-auto">
+                {suggestions.map(event => (
+                  <div
+                    key={event.id}
+                    className="px-4 py-3 cursor-pointer hover:bg-gray-100"
+                    onClick={() => navigate(`/events/${event.id}`)}
+                  >
+                    <p className="font-semibold">{event.title}</p>
+                    <p className="text-xs text-gray-500">{event.category} • {event.location}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
+
           <button
             onClick={() => navigate(-1)}
             className="text-sm font-semibold text-black"
@@ -62,77 +77,18 @@ const Search = () => {
         </div>
       </div>
 
-      {/* RESULTS */}
-      <section className="px-4 py-6">
-        {loading ? (
-          <div className="py-32 text-center text-neutral-400">Loading events...</div>
-        ) : (
-          <motion.div layout className="space-y-6">
-            <AnimatePresence>
-              {filteredEvents.map((event) => (
-                <motion.div
-                  key={event.id}
-                  layout
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 30 }}
-                  transition={{ duration: 0.3 }}
-                  className="group cursor-pointer"
-                  onClick={() => navigate(`/events/${event.id}`)}
-                >
-                  {/* Card */}
-                  <div className="relative rounded-3xl overflow-hidden h-52 bg-neutral-100 shadow-sm">
-                    <img
-                      src={event.banner || event.image}
-                      alt={event.title || "Event"}
-                      className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black">
-                      {event.is_free || event.price === "Free" ? "Free" : `₦${event.price || 0}`}
-                    </div>
-                    <div className="absolute bottom-4 left-4 text-white">
-                      <p className="text-[10px] uppercase font-black opacity-80">
-                        {event.location || "Unknown Location"}
-                      </p>
-                      <h3 className="text-lg font-bold leading-tight">
-                        {event.title || "Untitled Event"}
-                      </h3>
-                    </div>
-                  </div>
-
-                  {/* Bottom Row */}
-                  <div className="flex justify-between items-center mt-2 px-1">
-                    <p className="text-[10px] font-black text-amber-500 uppercase">
-                      {event.category || "General"} • {event.event_date_human || event.date || "TBD"}
-                    </p>
-                    <div className="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center group-hover:bg-black group-hover:text-white transition">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                        <path d="M7 17l9-9M7 8h9v9"/>
-                      </svg>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-
-            {/* EMPTY STATE */}
-            {query.trim() !== "" && filteredEvents.length === 0 && (
-              <div className="py-32 text-center">
-                <h3 className="text-xl font-bold text-neutral-300">No results found.</h3>
-              </div>
-            )}
-
-            {query.trim() === "" && (
-              <div className="py-32 text-center">
-                <h3 className="text-lg font-semibold text-neutral-400">
-                  Start typing to search events
-                </h3>
-              </div>
-            )}
-          </motion.div>
-        )}
-      </section>
+      {/* EMPTY STATE */}
+      <div className="py-32 text-center">
+        {!query ? (
+          <h3 className="text-lg font-semibold text-neutral-400">
+            Start typing to search events
+          </h3>
+        ) : suggestions.length === 0 ? (
+          <h3 className="text-xl font-bold text-neutral-300">
+            No results found.
+          </h3>
+        ) : null}
+      </div>
     </div>
   );
 };
