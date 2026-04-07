@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { getEvents } from '../api/event'; // adjust path if needed
 
 const ExploreEvents = () => {
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('All');
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -79,6 +81,7 @@ const ExploreEvents = () => {
               {filteredEvents.map((event) => (
                 <motion.div
                   key={event.id}
+                  onClick={()=>{navigate}}
                   layout
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}

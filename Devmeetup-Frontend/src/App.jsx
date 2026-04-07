@@ -9,6 +9,7 @@ import MyTickets from './pages/MyTickets';
 import Search from './pages/Search';
 import Navbar from './components/Navbar';
 import EventsPage from './pages/EventsPage';
+import EventDetails from './pages/EventDetails';
 
 // import ProtectedRoute from './components/ProtectedRoute';
 
@@ -32,6 +33,7 @@ const AppContent = () => {
           <Route path='/profile' element={<Profile />} />
           <Route path='/my-tickets' element={<MyTickets />} />
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/events/:id' element={<EventDetails />} />
           
         {/* Protected routes
         <Route element={<ProtectedRoute />}>

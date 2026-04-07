@@ -25,6 +25,11 @@ export const getEvents = async () => {
   // Per Postman: the array is nested in .data.data
   return res.data.data || [];
 };
+//get specific event details
+export const getEventDetails = async (eventId) => {
+  const res = await api.get(`/events/${eventId}`);
+  return res.data.data || null;
+};
 
 export const getMyTickets = async () => {
   const res = await api.get("/my-tickets");
