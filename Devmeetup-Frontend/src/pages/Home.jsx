@@ -11,7 +11,7 @@ const Home = () => {
   const [specialLoading, setSpecialLoading] = useState(true);
 
   useEffect(() => {
-    
+
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
@@ -53,7 +53,7 @@ const Home = () => {
       return;
     }
 
-    navigate("/create");
+    navigate("/events/create");
   };
 
   return (
