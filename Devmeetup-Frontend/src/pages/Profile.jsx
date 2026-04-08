@@ -73,10 +73,9 @@ const Profile = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white max-w-md mx-auto font-sans text-gray-900 pb-10">
+    <div className="min-h-screen bg-white max-w-md mx-auto font-['Satoshi] text-gray-900 pb-10">
       {/* Header */}
-      <div className="px-6 pt-8 pb-4">
-        <h1 className="text-3xl font-bold mb-6">Profile</h1>
+      <div className="px-6 pt-15 pb-4">
         
         <div className="flex items-center gap-4 mb-8">
           <div className="relative">
