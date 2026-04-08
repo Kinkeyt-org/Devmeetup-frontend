@@ -7,6 +7,7 @@ const Home = () => {
   const [featuredEvents, setFeaturedEvents] = useState([]);
   const [speecialEvents, setSpecialEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [specialLoading, setSpecialLoading] = useState(true);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -25,6 +26,8 @@ const Home = () => {
         setSpecialEvents(data.slice(3, 4)); // Only 1 special event for homepage
       } catch (err) {
         console.error("Failed to fetch special events:", err);
+      } finally {
+        setSpecialLoading(false);
       }
     };
 
@@ -62,13 +65,31 @@ const Home = () => {
 
           {/*` Special Featured Event */}
           <div className="relative group overflow-hidden rounded-4xl md:rounded-[3rem] shadow-2xl -mx-2 md:mx-0">
-            {speecialEvents.length > 0 ? ( // Just show the first one for now
-              <img 
-                src={speecialEvents[0].banner || speecialEvents[0].image || "https://via.placeholder.com/1200x600"}
-                alt={speecialEvents[0].title}
-                className="w-full h-87.5 md:h-162.5 object-cover transform group-hover:scale-105 transition-transform duration-1000"
-              />
-            ) : null}
+            <div className="relative group overflow-hidden rounded-4xl md:rounded-[3rem] shadow-2xl -mx-2 md:mx-0">
+
+              {specialLoading ? (
+                <div className="w-full h-87.5 md:h-162.5 bg-neutral-200 animate-pulse rounded-4xl" />
+              ) : speecialEvents.length > 0 ? (
+                <img 
+                  src={speecialEvents[0].banner || speecialEvents[0].image || "https://via.placeholder.com/1200x600"}
+                  alt={speecialEvents[0].title}
+                  className="w-full h-87.5 md:h-162.5 object-cover transform group-hover:scale-105 transition-transform duration-1000"
+                />
+              ) : null}
+
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
+
+              {!specialLoading && speecialEvents.length > 0 && (
+                <div className="absolute bottom-8 left-8 text-white">
+                  <p className="text-xs font-bold uppercase tracking-[0.3em] mb-2 opacity-80">
+                    Featured Experience
+                  </p>
+                  <h2 className="text-3xl md:text-5xl font-bold italic tracking-tighter">
+                    {speecialEvents[0].title}
+                  </h2>
+                </div>
+              )}
+            </div>
             <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
             {speecialEvents.length > 0 && (
               <div className="absolute bottom-8 left-8 text-white">
@@ -96,7 +117,15 @@ const Home = () => {
 
         <div className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible px-6 md:px-0 no-scrollbar snap-x snap-mandatory">
           {loading ? (
-            <p className="px-6 text-neutral-400">Loading events...</p>
+            [...Array(3)].map((_, i) => (
+              <div key={i} className="min-w-70 md:min-w-0 animate-pulse">
+                <div className="aspect-4/5 bg-neutral-200 rounded-4xl mb-4" />
+                <div className="px-1 space-y-2">
+                  <div className="h-3 bg-neutral-200 rounded w-1/2" />
+                  <div className="h-5 bg-neutral-200 rounded w-3/4" />
+                </div>
+              </div>
+            ))
           ) : (
             featuredEvents.map((event) => (
               <div 
