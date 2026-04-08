@@ -1,106 +1,170 @@
-import React, { useEffect, useState } from "react";
-import { getEvents } from "../api/event";
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronRight, Plus, Loader2 } from 'lucide-react';
+import { updateProfile } from '../api/user'; // Adjust path as needed
 
 const Profile = () => {
   const [user, setUser] = useState(null);
-  const [myEvents, setMyEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
+
+  // Toggle states
+  const [pushNotifications, setPushNotifications] = useState(true);
+  const [emailUpdates, setEmailUpdates] = useState(false);
 
   useEffect(() => {
-    // 1. Retrieve the user object from local storage
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    setUser(storedUser);
-
-    // 2. If the user is an organizer, fetch their specific events
-    if (storedUser?.role === "organizer") {
-      fetchMyEvents(storedUser.id);
-    } else {
-      setLoading(false);
+    // Get user from localStorage (stored during login/register)
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
   }, []);
 
-  const fetchMyEvents = async (userId) => {
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("profile_picture", file);
+    
     try {
-      const events = await getEvents();
-      // Filter the global events list to find events created by this user
-      const filtered = events.filter(e => e.organizer?.id === userId);
-      setMyEvents(filtered);
-    } catch (err) {
-      console.error("Error fetching events:", err);
+      setUploading(true);
+      const response = await updateProfile(formData);
+      
+      // Update local state and storage with new user data (including new avatar)
+      const updatedUser = { ...user, avatar: response.user.avatar };
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      
+      alert("Profile picture updated!");
+    } catch (error) {
+      console.error("Upload failed", error);
+      alert("Failed to update profile picture.");
     } finally {
-      setLoading(false);
+      setUploading(false);
     }
   };
 
-  if (!user) return <div className="pt-24 text-center">Loading profile...</div>;
+  if (!user) return <div className="flex justify-center p-10"><Loader2 className="animate-spin" /></div>;
+
+  const sections = [
+    {
+      title: 'ACCOUNT',
+      items: [
+        { label: 'Edit Profile', type: 'link' },
+        { label: 'Payment Methods', type: 'link' },
+        { label: 'Saved Events', type: 'link' },
+      ],
+    },
+    {
+      title: 'PREFERENCES',
+      items: [
+        { label: 'Push Notifications', type: 'toggle', state: pushNotifications, setter: setPushNotifications },
+        { label: 'Email Updates', type: 'toggle', state: emailUpdates, setter: setEmailUpdates },
+      ],
+    },
+    {
+      title: 'SUPPORT',
+      items: [
+        { label: 'Help Center', type: 'link' },
+        { label: 'Privacy Policy', type: 'link' },
+        { label: 'Terms of Service', type: 'link' },
+      ],
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-white text-[#1d1d1f] pt-24 px-6 font-['Satoshi'] antialiased">
-      <div className="max-w-5xl mx-auto">
-
-        {/* --- PROFILE HEADER --- */}
-        <div className="flex flex-col md:flex-row gap-10 items-center md:items-start mb-16">
+    <div className="min-h-screen bg-white max-w-md mx-auto font-sans text-gray-900 pb-10">
+      {/* Header */}
+      <div className="px-6 pt-8 pb-4">
+        <h1 className="text-3xl font-bold mb-6">Profile</h1>
+        
+        <div className="flex items-center gap-4 mb-8">
           <div className="relative">
-            {/* The 'user.avatar' comes from your backend. 
-               It contains the S3 URL for the image you uploaded.
-            */}
-            <img
-              src={user.avatar || "https://via.placeholder.com/150"}
-              alt="Profile"
-              className="w-32 h-32 rounded-full object-cover shadow-lg border-2 border-neutral-50"
-            />
-          </div>
-
-          <div className="text-center md:text-left flex-1">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-1">
-              {user.name}
-            </h1>
-            <p className="text-neutral-500 mb-4">{user.email}</p>
+            <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center border-4 border-white shadow-sm overflow-hidden">
+              {user.avatar ? (
+                <img src={user.avatar} alt="Profile" className="w-full h-full object-cover" />
+              ) : (
+                <span className="text-gray-500 font-bold text-xl">
+                  {user.name?.substring(0, 2).toUpperCase()}
+                </span>
+              )}
+              {uploading && (
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <Loader2 size={20} className="text-white animate-spin" />
+                </div>
+              )}
+            </div>
             
-            <div className="flex gap-3 justify-center md:justify-start">
-              <span className="px-4 py-1 bg-black text-white rounded-full text-[10px] font-black uppercase tracking-widest">
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              className="hidden" 
+              accept="image/*" 
+              onChange={handleFileChange}
+            />
+            
+            <button 
+              onClick={() => fileInputRef.current.click()}
+              disabled={uploading}
+              className="absolute bottom-0 right-0 bg-black text-white rounded-full p-1 border-2 border-white hover:bg-gray-800 transition-colors"
+            >
+              <Plus size={14} strokeWidth={3} />
+            </button>
+          </div>
+          
+          <div>
+            <h2 className="text-xl font-bold">{user.name}</h2>
+            <p className="text-gray-400 text-sm">{user.email}</p>
+            <div className="mt-2">
+              <span className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full font-medium capitalize">
                 {user.role}
-              </span>
-              <span className="px-4 py-1 bg-neutral-100 rounded-full text-[10px] font-bold text-neutral-600 uppercase tracking-widest">
-                Joined {new Date(user.created_at).getFullYear()}
               </span>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* --- ORGANIZER EVENTS SECTION --- */}
-        {user.role === "organizer" && (
-          <div className="border-t border-neutral-100 pt-10">
-            <h2 className="text-xl font-bold mb-8 tracking-tight">Your Hosted Events</h2>
-            
-            {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-pulse">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="h-64 bg-neutral-100 rounded-[2rem]" />
-                ))}
-              </div>
-            ) : myEvents.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {myEvents.map(event => (
-                  <div key={event.id} className="group cursor-pointer">
-                    <div className="aspect-video rounded-[2rem] overflow-hidden mb-4 shadow-sm">
-                      <img 
-                        src={event.banner || event.image} 
-                        alt={event.title} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                    <h3 className="font-bold text-lg leading-tight mb-1">{event.title}</h3>
-                    <p className="text-sm text-neutral-400">{event.location}</p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-neutral-400 italic">You haven't created any events yet.</p>
-            )}
+      {/* Settings Sections */}
+      <div className="px-6 space-y-8">
+        {sections.map((section, idx) => (
+          <div key={idx}>
+            <h3 className="text-gray-400 text-xs font-bold tracking-widest mb-4">
+              {section.title}
+            </h3>
+            <div className="space-y-1">
+              {section.items.map((item, itemIdx) => (
+                <div 
+                  key={itemIdx} 
+                  className={`flex items-center justify-between py-4 ${itemIdx !== section.items.length - 1 ? 'border-b border-gray-100' : ''}`}
+                >
+                  <span className="text-[15px] font-medium">{item.label}</span>
+                  
+                  {item.type === 'link' ? (
+                    <ChevronRight size={18} className="text-gray-400" />
+                  ) : (
+                    <button 
+                      onClick={() => item.setter(!item.state)}
+                      className={`w-12 h-6 rounded-full transition-colors duration-200 relative ${item.state ? 'bg-black' : 'bg-gray-200'}`}
+                    >
+                      <div className={`absolute top-1 bg-white w-4 h-4 rounded-full transition-transform duration-200 ${item.state ? 'translate-x-7' : 'translate-x-1'}`} />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-        )}
-
+        ))}
+        
+        {/* Logout Button */}
+        <button 
+          onClick={() => {
+            localStorage.clear();
+            window.location.href = "/login";
+          }}
+          className="w-full py-4 text-red-500 font-bold text-sm tracking-widest border-t border-gray-100 mt-4 hover:bg-red-50 transition-colors"
+        >
+          LOG OUT
+        </button>
       </div>
     </div>
   );
