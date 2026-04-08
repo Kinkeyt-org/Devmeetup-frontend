@@ -5,6 +5,7 @@ import { getEvents } from "../api/event";
 const Home = () => {
   const navigate = useNavigate();
   const [featuredEvents, setFeaturedEvents] = useState([]);
+  const [speecialEvents, setSpecialEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,8 +19,18 @@ const Home = () => {
         setLoading(false);
       }
     };
+    const fetchSpecialEvents = async () => {
+      try {
+        const data = await getEvents();
+        setSpecialEvents(data.slice(3, 4)); // Only 1 special event for homepage
+      } catch (err) {
+        console.error("Failed to fetch special events:", err);
+      }
+    };
+
 
     fetchEvents();
+    fetchSpecialEvents();
   }, []);
 
   return (
@@ -49,13 +60,15 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Hero Image */}
+          {/*` Special Featured Event */}
           <div className="relative group overflow-hidden rounded-4xl md:rounded-[3rem] shadow-2xl -mx-2 md:mx-0">
-            <img 
-              src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=1600&auto=format&fit=crop" 
-              alt="Vibrant event crowd" 
-              className="w-full h-87.5 md:h-162.5 object-cover transform group-hover:scale-105 transition-transform duration-1000"
-            />
+            {speecialEvents.length > 0 ? ( // Just show the first one for now
+              <img 
+                src={speecialEvents[0].banner || speecialEvents[0].image || "https://via.placeholder.com/1200x600"}
+                alt={speecialEvents[0].title}
+                className="w-full h-87.5 md:h-162.5 object-cover transform group-hover:scale-105 transition-transform duration-1000"
+              />
+            ) : null}
             <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
             <div className="absolute bottom-8 left-8 text-white">
               <p className="text-xs font-bold uppercase tracking-[0.3em] mb-2 opacity-80">Featured Experience</p>
