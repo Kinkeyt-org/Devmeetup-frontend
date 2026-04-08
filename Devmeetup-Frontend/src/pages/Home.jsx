@@ -65,41 +65,39 @@ const Home = () => {
 
           {/*` Special Featured Event */}
           <div className="relative group overflow-hidden rounded-4xl md:rounded-[3rem] shadow-2xl -mx-2 md:mx-0">
-            <div className="relative group overflow-hidden rounded-4xl md:rounded-[3rem] shadow-2xl -mx-2 md:mx-0">
+            {specialLoading ? (
+              <div className="w-full h-87.5 md:h-162.5 bg-neutral-200 animate-pulse rounded-4xl" />
+            ) : speecialEvents.length > 0 ? (
+              <img 
+                src={speecialEvents[0].banner || speecialEvents[0].image || "https://via.placeholder.com/1200x600"}
+                alt={speecialEvents[0].title}
+                className="w-full h-87.5 md:h-162.5 object-cover transform group-hover:scale-105 transition-transform duration-1000"
+              />
+            ) : null}
 
-              {specialLoading ? (
-                <div className="w-full h-87.5 md:h-162.5 bg-neutral-200 animate-pulse rounded-4xl" />
-              ) : speecialEvents.length > 0 ? (
-                <img 
-                  src={speecialEvents[0].banner || speecialEvents[0].image || "https://via.placeholder.com/1200x600"}
-                  alt={speecialEvents[0].title}
-                  className="w-full h-87.5 md:h-162.5 object-cover transform group-hover:scale-105 transition-transform duration-1000"
-                />
-              ) : null}
-
-              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
-
-              {!specialLoading && speecialEvents.length > 0 && (
-                <div className="absolute bottom-8 left-8 text-white">
-                  <p className="text-xs font-bold uppercase tracking-[0.3em] mb-2 opacity-80">
-                    Featured Experience
-                  </p>
-                  <h2 className="text-3xl md:text-5xl font-bold italic tracking-tighter">
-                    {speecialEvents[0].title}
-                  </h2>
-                </div>
-              )}
-            </div>
             <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
-            {speecialEvents.length > 0 && (
+
+            {!specialLoading && speecialEvents.length > 0 && (
               <div className="absolute bottom-8 left-8 text-white">
-                <p className="text-xs font-bold uppercase tracking-[0.3em] mb-2 opacity-80">Featured Experience</p>
+                <p className="text-xs font-bold uppercase tracking-[0.3em] mb-2 opacity-80">
+                  Featured Experience
+                </p>
                 <h2 className="text-3xl md:text-5xl font-bold italic tracking-tighter">
                   {speecialEvents[0].title}
                 </h2>
               </div>
             )}
           </div>
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
+          {speecialEvents.length > 0 && (
+            <div className="absolute bottom-8 left-8 text-white">
+              <p className="text-xs font-bold uppercase tracking-[0.3em] mb-2 opacity-80">Featured Experience</p>
+              <h2 className="text-3xl md:text-5xl font-bold italic tracking-tighter">
+                {speecialEvents[0].title}
+              </h2>
+            </div>
+          )}
+         
         </div>
       </section>
 
