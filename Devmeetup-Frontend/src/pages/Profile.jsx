@@ -1,22 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, Plus, Loader2 } from 'lucide-react';
-import { updateProfile } from '../api/user'; // Adjust path as needed
+import { ChevronRight, Plus, Loader2, ArrowLeft } from 'lucide-react';
+import { updateProfile } from '../api/user';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
 
-  // Toggle states
   const [pushNotifications, setPushNotifications] = useState(true);
   const [emailUpdates, setEmailUpdates] = useState(false);
 
   useEffect(() => {
-    // Get user from localStorage (stored during login/register)
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
 
   const handleFileChange = async (e) => {
@@ -24,21 +22,18 @@ const Profile = () => {
     if (!file) return;
 
     const formData = new FormData();
-    formData.append("profile_picture", file);
-    
+    formData.append('profile_picture', file);
+
     try {
       setUploading(true);
       const response = await updateProfile(formData);
-      
-      // Update local state and storage with new user data (including new avatar)
       const updatedUser = { ...user, avatar: response.user.avatar };
       setUser(updatedUser);
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      
-      alert("Profile picture updated!");
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      alert('Profile picture updated!');
     } catch (error) {
-      console.error("Upload failed", error);
-      alert("Failed to update profile picture.");
+      console.error(error);
+      alert('Failed to update profile picture.');
     } finally {
       setUploading(false);
     }
@@ -73,52 +68,57 @@ const Profile = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white max-w-md mx-auto font-['Satoshi] text-gray-900 pb-10">
-      {/* Header */}
-      <div className="px-6 pt-15 pb-4">
-        
-        <div className="flex items-center gap-4 mb-8">
-          <div className="relative">
-            <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center border-4 border-white shadow-sm overflow-hidden">
-              {user.avatar ? (
-                <img src={user.avatar} alt="Profile" className="w-full h-full object-cover" />
-              ) : (
-                <span className="text-gray-500  text-xl">
-                  {user.name?.substring(0, 2).toUpperCase()}
-                </span>
-              )}
-              {uploading && (
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <Loader2 size={20} className="text-white animate-spin" />
-                </div>
-              )}
-            </div>
-            
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              className="hidden" 
-              accept="image/*" 
-              onChange={handleFileChange}
-            />
-            
-            <button 
-              onClick={() => fileInputRef.current.click()}
-              disabled={uploading}
-              className="absolute bottom-0 right-0 bg-black text-white rounded-full p-1 border-2 border-white hover:bg-gray-800 transition-colors"
-            >
-              <Plus size={14} strokeWidth={3} />
-            </button>
+    <div className="min-h-screen bg-white max-w-md mx-auto font-['Satoshi'] text-gray-900 pb-10">
+      {/* Header with back arrow */}
+      <div className="px-6 pt-8 pb-6 flex items-center gap-4">
+        <button
+          onClick={() => navigate(-1)}
+          className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+        >
+          <ArrowLeft size={20} />
+        </button>
+        <h1 className="text-lg font-bold">Profile</h1>
+      </div>
+
+      {/* User Info */}
+      <div className="px-6 flex items-center gap-4 mb-8">
+        <div className="relative">
+          <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center border-4 border-white shadow-sm overflow-hidden">
+            {user.avatar ? (
+              <img src={user.avatar} alt="Profile" className="w-full h-full object-cover" />
+            ) : (
+              <span className="text-gray-500 text-xl">{user.name?.substring(0, 2).toUpperCase()}</span>
+            )}
+            {uploading && (
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <Loader2 size={20} className="text-white animate-spin" />
+              </div>
+            )}
           </div>
-          
-          <div>
-            <h2 className="text-xl font-bold">{user.name}</h2>
-            <p className="text-gray-400 text-sm">{user.email}</p>
-            <div className="mt-2">
-              <span className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full font-medium capitalize">
-                {user.role}
-              </span>
-            </div>
+
+          <input
+            type="file"
+            ref={fileInputRef}
+            className="hidden"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+          <button
+            onClick={() => fileInputRef.current.click()}
+            disabled={uploading}
+            className="absolute bottom-0 right-0 bg-black text-white rounded-full p-1 border-2 border-white hover:bg-gray-800 transition-colors"
+          >
+            <Plus size={14} strokeWidth={3} />
+          </button>
+        </div>
+
+        <div>
+          <h2 className="text-xl font-bold">{user.name}</h2>
+          <p className="text-gray-400 text-sm">{user.email}</p>
+          <div className="mt-2">
+            <span className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full font-medium capitalize">
+              {user.role}
+            </span>
           </div>
         </div>
       </div>
@@ -127,21 +127,19 @@ const Profile = () => {
       <div className="px-6 space-y-8">
         {sections.map((section, idx) => (
           <div key={idx}>
-            <h3 className="text-gray-400 text-xs font-bold tracking-widest mb-4">
-              {section.title}
-            </h3>
+            <h3 className="text-gray-400 text-xs font-bold tracking-widest mb-4">{section.title}</h3>
             <div className="space-y-1">
               {section.items.map((item, itemIdx) => (
-                <div 
-                  key={itemIdx} 
+                <div
+                  key={itemIdx}
                   className={`flex items-center justify-between py-4 ${itemIdx !== section.items.length - 1 ? 'border-b border-gray-100' : ''}`}
                 >
                   <span className="text-[15px] font-medium">{item.label}</span>
-                  
+
                   {item.type === 'link' ? (
                     <ChevronRight size={18} className="text-gray-400" />
                   ) : (
-                    <button 
+                    <button
                       onClick={() => item.setter(!item.state)}
                       className={`w-12 h-6 rounded-full transition-colors duration-200 relative ${item.state ? 'bg-black' : 'bg-gray-200'}`}
                     >
@@ -153,12 +151,12 @@ const Profile = () => {
             </div>
           </div>
         ))}
-        
+
         {/* Logout Button */}
-        <button 
+        <button
           onClick={() => {
             localStorage.clear();
-            window.location.href = "/login";
+            navigate('/login');
           }}
           className="w-full py-4 text-red-500 font-bold text-sm tracking-widest border-t border-gray-100 mt-4 hover:bg-red-50 transition-colors"
         >
