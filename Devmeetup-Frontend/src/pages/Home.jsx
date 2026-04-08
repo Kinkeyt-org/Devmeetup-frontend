@@ -4,13 +4,18 @@ import { getEvents } from "../api/event";
 
 const Home = () => {
   const navigate = useNavigate();
-
+  const [user, setUser] = useState(null);
   const [featuredEvents, setFeaturedEvents] = useState([]);
   const [speecialEvents, setSpecialEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [specialLoading, setSpecialLoading] = useState(true);
 
   useEffect(() => {
+    
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
     const fetchEvents = async () => {
       try {
         const data = await getEvents();
@@ -36,6 +41,20 @@ const Home = () => {
     fetchEvents();
     fetchSpecialEvents();
   }, []);
+
+  const handleHostEvent = () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    if (user.role !== "organizer") {
+      navigate("/upgrade"); // upgrade page
+      return;
+    }
+
+    navigate("/create");
+  };
 
   return (
     <div className="min-h-screen bg-white text-[#1d1d1f] font-['Satoshi'] antialiased overflow-x-hidden">
@@ -63,7 +82,9 @@ const Home = () => {
                 Explore Events
               </button>
 
-              <button className="w-full sm:w-auto px-10 py-4 bg-white border border-neutral-200 rounded-full font-bold hover:bg-neutral-50 transition-all">
+              <button 
+                onClick={handleHostEvent}
+                className="w-full sm:w-auto px-10 py-4 bg-white border border-neutral-200 rounded-full font-bold hover:bg-neutral-50 transition-all">
                 Host an Event
               </button>
             </div>

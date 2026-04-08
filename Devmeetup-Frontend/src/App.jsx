@@ -10,6 +10,7 @@ import Search from './pages/Search';
 import Navbar from './components/Navbar';
 import EventsPage from './pages/EventsPage';
 import EventDetails from './pages/EventDetails';
+import Upgrade from './pages/Upgrade';
 
 // import ProtectedRoute from './components/ProtectedRoute';
 
@@ -34,6 +35,7 @@ const AppContent = () => {
           <Route path='/my-tickets' element={<MyTickets />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/events/:id' element={<EventDetails />} />
+            <Route path='/upgrade' element={<Upgrade />} />
           
         {/* Protected routes
         <Route element={<ProtectedRoute />}>
