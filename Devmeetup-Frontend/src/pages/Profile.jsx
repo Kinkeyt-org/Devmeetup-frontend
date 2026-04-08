@@ -83,7 +83,7 @@ const Profile = () => {
               {user.avatar ? (
                 <img src={user.avatar} alt="Profile" className="w-full h-full object-cover" />
               ) : (
-                <span className="text-gray-500 font-bold text-xl">
+                <span className="text-gray-500  text-xl">
                   {user.name?.substring(0, 2).toUpperCase()}
                 </span>
               )}
