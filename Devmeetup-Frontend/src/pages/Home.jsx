@@ -70,10 +70,14 @@ const Home = () => {
               />
             ) : null}
             <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
-            <div className="absolute bottom-8 left-8 text-white">
-              <p className="text-xs font-bold uppercase tracking-[0.3em] mb-2 opacity-80">Featured Experience</p>
-              <h2 className="text-3xl md:text-5xl font-bold italic tracking-tighter">{speecialEvents[0].title}</h2>
-            </div>
+            {speecialEvents.length > 0 && (
+              <div className="absolute bottom-8 left-8 text-white">
+                <p className="text-xs font-bold uppercase tracking-[0.3em] mb-2 opacity-80">Featured Experience</p>
+                <h2 className="text-3xl md:text-5xl font-bold italic tracking-tighter">
+                  {speecialEvents[0].title}
+                </h2>
+              </div>
+            )}
           </div>
         </div>
       </section>
