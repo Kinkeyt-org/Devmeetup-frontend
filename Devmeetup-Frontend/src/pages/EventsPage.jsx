@@ -51,6 +51,7 @@ const ExploreEvents = () => {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
+                aria-pressed={activeCategory === cat}
                 className={`px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all duration-300 ${
                   activeCategory === cat
                     ? 'bg-black text-white shadow-lg'
@@ -78,7 +79,7 @@ const ExploreEvents = () => {
         {!loading && (
           <div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredEvents.map((event) => (
-              <div
+              <Link
                 key={event.id}
                 onClick={() => navigate(`/events/${event.id}`)}
                 className="group cursor-pointer"
@@ -90,11 +91,12 @@ const ExploreEvents = () => {
 
                   <img
                     src={event.banner || event.image}
-                    alt={event.title}
+                    alt={`${event.title} event in ${event.location}`}
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity group-hover:opacity-90" />
+                  <div className="absolute inset-0 bg-linear  -to-t from-black/80 via-black/40 to-transparent transition-opacity group-hover:opacity-90" />
 
                   <div className="absolute bottom-3 left-6 text-white">
                     <h3 className="text-xl font-bold leading-tight tracking-tight">
@@ -128,15 +130,15 @@ const ExploreEvents = () => {
                     </p>
                   </div>
 
-                  <div 
+                  <Link 
                     onClick={()=>{navigate(`/events/${event.id}`)}}
                     className="w-8 h-8 rounded-full bg-neutral-50 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                       <path d="M7 17l9-9M7 8h9v9"/>
                     </svg>
-                  </div>
+                  </Link>
                 </div>
-              </div>
+              </Link>
             ))}
             
           </div>
