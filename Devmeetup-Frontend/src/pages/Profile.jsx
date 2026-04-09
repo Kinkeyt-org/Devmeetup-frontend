@@ -64,7 +64,7 @@ const Profile = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FBFBFD] text-[#1D1D1F] font-sans antialiased pb-20">
+    <div className="min-h-screen bg-[#FBFBFD] text-[#1D1D1F] font-['Satoshi'] antialiased pb-20">
       {/* Navigation Bar */}
       <nav className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 h-14 flex items-center justify-between">
         <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:opacity-60 transition-opacity">
@@ -77,7 +77,7 @@ const Profile = () => {
       {/* Hero Header */}
       <header className="flex flex-col items-center pt-10 pb-8 bg-white border-b border-gray-100">
         <div className="relative group">
-          <div className="w-24 h-24 rounded-[2rem] bg-gray-50 overflow-hidden border border-gray-100 shadow-sm">
+          <div className="w-24 h-24 rounded-full bg-gray-50 overflow-hidden border border-gray-100 shadow-sm">
             {user.avatar ? (
               <img src={user.avatar} alt="Profile" className="w-full h-full object-cover" />
             ) : (
@@ -123,9 +123,9 @@ const Profile = () => {
                     ) : (
                       <button
                         onClick={() => item.setter(!item.state)}
-                        className={`w-11 h-6 rounded-full transition-all duration-300 relative ${item.state ? 'bg-[#34C759]' : 'bg-[#E9E9EA]'}`}
+                        className={`w-11 h-6 rounded-full transition-all duration-300 relative ${item.state ? 'bg-black' : 'bg-[#E9E9EA]'}`}
                       >
-                        <div className={`absolute top-[2px] left-[2px] bg-white w-[20px] h-[20px] rounded-full shadow-sm transition-transform duration-300 ${item.state ? 'translate-x-5' : 'translate-x-0'}`} />
+                        <div className={`absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full shadow-sm transition-transform duration-300 ${item.state ? 'translate-x-5' : 'translate-x-0'}`} />
                       </button>
                     )}
                   </div>

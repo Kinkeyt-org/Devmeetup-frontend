@@ -126,7 +126,7 @@ const CreatePage = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-black text-white px-6 py-3 rounded-2xl shadow-lg z-50 font-semibold"
+            className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-black text-white px-6 py-3 rounded-xl shadow-lg z-50 font-semibold"
           >
             🎉 Event created successfully!
           </motion.div>
@@ -137,17 +137,17 @@ const CreatePage = () => {
       <header className="sticky top-0 z-10 px-6 py-4 backdrop-blur bg-white/70">
         <button
           onClick={() => navigate(-1)}
-          className="text-sm font-bold text-gray-600 hover:text-black"
+          className="text-sm font-bold text-gray-600 md:hidden hover:text-black"
         >
           ← Back
         </button>
       </header>
 
       <main className="flex-1 flex justify-center px-4 pb-24">
-        <form onSubmit={handleSubmit} className="w-full max-w-xl space-y-6">
+        <form onSubmit={handleSubmit} className="w-full max-w-xl md:max-w-5xl space-y-6">
 
           {/* IMAGE UPLOAD */}
-          <div className="relative w-full h-56 bg-gray-100 rounded-3xl overflow-hidden flex items-center justify-center border-2 border-dashed border-gray-200 hover:border-gray-400 transition-colors">
+          <div className="relative w-full h-56 md:h-80  bg-gray-100 rounded-3xl overflow-hidden flex items-center justify-center border-2 border-dashed border-gray-200 hover:border-gray-400 transition-colors">
             {imagePreview ? (
               <img
                 src={imagePreview}
