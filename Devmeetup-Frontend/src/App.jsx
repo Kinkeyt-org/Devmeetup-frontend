@@ -35,7 +35,7 @@ const AppContent = () => {
           <Route path='/my-tickets' element={<MyTickets />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/events/:id' element={<EventDetails />} />
-            <Route path='/upgrade' element={<Upgrade />} />
+          <Route path='/upgrade' element={<Upgrade />} />
           
         {/* Protected routes
         <Route element={<ProtectedRoute />}>

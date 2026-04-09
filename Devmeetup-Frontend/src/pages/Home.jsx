@@ -50,7 +50,7 @@ const Home = () => {
     }
 
     if (user.role !== "organizer") {
-      navigate("/upgrade"); // upgrade page
+      navigate("/become-organizer"); // upgrade page
       return;
     }
 
