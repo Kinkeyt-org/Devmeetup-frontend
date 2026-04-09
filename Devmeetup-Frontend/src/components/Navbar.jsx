@@ -116,19 +116,12 @@ const Navbar = () => {
         <div className="bg-white p-2 flex items-center justify-between">
           <MobileNavItem to="/" icon={<Icons.Home />} active={location.pathname === "/"} />
           <MobileNavItem to="/search" icon={<Icons.Search />} active={location.pathname === "/search"} />
-
-          {user && (
-            <>
-              <Link to="/events/create">
-                <motion.div whileTap={{ scale: 0.9 }} className="w-12 h-12 bg-amber-400 rounded-full flex items-center justify-center shadow-lg">
-                  <Icons.Plus />
-                </motion.div>
-              </Link>
-
-              <MobileNavItem to="/my-tickets" icon={<Icons.Ticket />} active={location.pathname === "/my-tickets"} />
-            </>
-          )}
-
+          <Link to="/events/create">
+            <motion.div whileTap={{ scale: 0.9 }} className="w-12 h-12 bg-amber-400 rounded-full flex items-center justify-center shadow-lg">
+              <Icons.Plus />
+            </motion.div>
+          </Link>
+          <MobileNavItem to={user ? "/my-tickets" : "/login"} icon={<Icons.Ticket />} active={location.pathname === "/my-tickets"} />
           <MobileNavItem to={user ? "/profile" : "/login"} icon={<Icons.User />} active={location.pathname === "/profile"} />
         </div>
       </div>
