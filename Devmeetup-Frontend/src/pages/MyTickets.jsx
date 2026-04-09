@@ -81,14 +81,7 @@ const MyTickets = () => {
       <div className="min-h-screen bg-white text-[#1d1d1f] font-['Satoshi'] antialiased">
 
         {/* HEADER */}
-        <div className="max-w-6xl mx-auto px-6 pt-28 pb-10">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
-            My Tickets
-          </h1>
-          <p className="text-neutral-500 mt-3">
-            All your upcoming experiences in one place.
-          </p>
-        </div>
+        
 
         {/* EMPTY STATE */}
         {!loading && tickets.length === 0 && (
