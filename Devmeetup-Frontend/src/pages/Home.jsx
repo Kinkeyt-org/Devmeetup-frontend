@@ -68,7 +68,7 @@ const Home = () => {
       <div className="min-h-screen bg-white text-[#1d1d1f] font-['Satoshi'] antialiased overflow-x-hidden">
         
         {/* HERO SECTION */}
-        <section className="pt-20 md:pt-32 pb-12 px-6 md:px-0">
+        <section className="pt-30 md:pt-32 pb-12 px-6 md:px-0">
           <div className="max-w-5xl mx-auto">
 
             {/* TEXT */}
@@ -146,7 +146,9 @@ const Home = () => {
               </p>
             </div>
 
-            <button className="text-sm font-bold border-b-2 border-black pb-0.5">
+            <button className="text-sm font-bold border-b-2 border-black pb-0.5"
+              onClick={()=>navigate("/events")}
+            >
               View all
             </button>
           </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, Plus, Loader2, ArrowLeft } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { updateProfile } from '../api/user';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +20,6 @@ const Profile = () => {
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     const formData = new FormData();
     formData.append('profile_picture', file);
 
@@ -30,20 +29,18 @@ const Profile = () => {
       const updatedUser = { ...user, avatar: response.user.avatar };
       setUser(updatedUser);
       localStorage.setItem('user', JSON.stringify(updatedUser));
-      alert('Profile picture updated!');
     } catch (error) {
       console.error(error);
-      alert('Failed to update profile picture.');
     } finally {
       setUploading(false);
     }
   };
 
-  if (!user) return <div className="flex justify-center p-10"><Loader2 className="animate-spin" /></div>;
+  if (!user) return <div className="flex h-screen items-center justify-center bg-white"><Loader2 className="animate-spin text-gray-300" /></div>;
 
   const sections = [
     {
-      title: 'ACCOUNT',
+      title: 'Account',
       items: [
         { label: 'Edit Profile', type: 'link' },
         { label: 'Payment Methods', type: 'link' },
@@ -51,100 +48,89 @@ const Profile = () => {
       ],
     },
     {
-      title: 'PREFERENCES',
+      title: 'Preferences',
       items: [
         { label: 'Push Notifications', type: 'toggle', state: pushNotifications, setter: setPushNotifications },
         { label: 'Email Updates', type: 'toggle', state: emailUpdates, setter: setEmailUpdates },
       ],
     },
     {
-      title: 'SUPPORT',
+      title: 'Support',
       items: [
         { label: 'Help Center', type: 'link' },
         { label: 'Privacy Policy', type: 'link' },
-        { label: 'Terms of Service', type: 'link' },
       ],
     },
   ];
 
   return (
-    <div className="min-h-screen bg-white max-w-md mx-auto font-['Satoshi'] text-gray-900 pb-10">
-      {/* Header with back arrow */}
-      <div className="px-6 pt-8 pb-6 flex items-center gap-4">
-        <button
-          onClick={() => navigate(-1)}
-          className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-        >
-          <ArrowLeft size={20} />
+    <div className="min-h-screen bg-[#FBFBFD] text-[#1D1D1F] font-sans antialiased pb-20">
+      {/* Navigation Bar */}
+      <nav className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 h-14 flex items-center justify-between">
+        <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:opacity-60 transition-opacity">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         </button>
-        <h1 className="text-lg font-bold">Profile</h1>
-      </div>
+        <span className="font-semibold text-[17px] tracking-tight">Profile</span>
+        <div className="w-10" /> {/* Spacer for centering */}
+      </nav>
 
-      {/* User Info */}
-      <div className="px-6 flex items-center gap-4 mb-8">
-        <div className="relative">
-          <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center border-4 border-white shadow-sm overflow-hidden">
+      {/* Hero Header */}
+      <header className="flex flex-col items-center pt-10 pb-8 bg-white border-b border-gray-100">
+        <div className="relative group">
+          <div className="w-24 h-24 rounded-[2rem] bg-gray-50 overflow-hidden border border-gray-100 shadow-sm">
             {user.avatar ? (
               <img src={user.avatar} alt="Profile" className="w-full h-full object-cover" />
             ) : (
-              <span className="text-gray-500 text-xl">{user.name?.substring(0, 2).toUpperCase()}</span>
+              <div className="w-full h-full flex items-center justify-center text-gray-300 text-2xl font-medium">
+                {user.name?.charAt(0)}
+              </div>
             )}
             {uploading && (
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                <Loader2 size={20} className="text-white animate-spin" />
+              <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex items-center justify-center">
+                <Loader2 size={24} className="animate-spin text-black" />
               </div>
             )}
           </div>
-
-          <input
-            type="file"
-            ref={fileInputRef}
-            className="hidden"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-          <button
+          
+          <button 
             onClick={() => fileInputRef.current.click()}
-            disabled={uploading}
-            className="absolute bottom-0 right-0 bg-black text-white rounded-full p-1 border-2 border-white hover:bg-gray-800 transition-colors"
+            className="absolute -bottom-1 -right-1 bg-white border border-gray-100 shadow-sm rounded-full p-2 hover:scale-105 active:scale-95 transition-all"
           >
-            <Plus size={14} strokeWidth={3} />
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
           </button>
+          <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
         </div>
 
-        <div>
-          <h2 className="text-xl font-bold">{user.name}</h2>
-          <p className="text-gray-400 text-sm">{user.email}</p>
-          <div className="mt-2">
-            <span className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full font-medium capitalize">
-              {user.role}
-            </span>
-          </div>
-        </div>
-      </div>
+        <h1 className="mt-4 text-2xl font-bold tracking-tight">{user.name}</h1>
+        <p className="text-[#86868B] text-[15px]">{user.email}</p>
+      </header>
 
-      {/* Settings Sections */}
-      <div className="px-6 space-y-8">
+      {/* Settings Grid */}
+      <div className="max-w-md mx-auto mt-8 px-4 space-y-8">
         {sections.map((section, idx) => (
           <div key={idx}>
-            <h3 className="text-gray-400 text-xs font-bold tracking-widest mb-4">{section.title}</h3>
-            <div className="space-y-1">
+            <h3 className="px-4 text-[13px] font-semibold text-[#86868B] uppercase tracking-wider mb-2">
+              {section.title}
+            </h3>
+            <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
               {section.items.map((item, itemIdx) => (
-                <div
-                  key={itemIdx}
-                  className={`flex items-center justify-between py-4 ${itemIdx !== section.items.length - 1 ? 'border-b border-gray-100' : ''}`}
-                >
-                  <span className="text-[15px] font-medium">{item.label}</span>
-
-                  {item.type === 'link' ? (
-                    <ChevronRight size={18} className="text-gray-400" />
-                  ) : (
-                    <button
-                      onClick={() => item.setter(!item.state)}
-                      className={`w-12 h-6 rounded-full transition-colors duration-200 relative ${item.state ? 'bg-black' : 'bg-gray-200'}`}
-                    >
-                      <div className={`absolute top-1 bg-white w-4 h-4 rounded-full transition-transform duration-200 ${item.state ? 'translate-x-7' : 'translate-x-1'}`} />
-                    </button>
+                <div key={itemIdx} className="relative">
+                  <div className={`flex items-center justify-between p-4 active:bg-gray-50 transition-colors cursor-pointer`}>
+                    <span className="text-[16px] font-medium tracking-tight">{item.label}</span>
+                    
+                    {item.type === 'link' ? (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C7C7CC" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    ) : (
+                      <button
+                        onClick={() => item.setter(!item.state)}
+                        className={`w-11 h-6 rounded-full transition-all duration-300 relative ${item.state ? 'bg-[#34C759]' : 'bg-[#E9E9EA]'}`}
+                      >
+                        <div className={`absolute top-[2px] left-[2px] bg-white w-[20px] h-[20px] rounded-full shadow-sm transition-transform duration-300 ${item.state ? 'translate-x-5' : 'translate-x-0'}`} />
+                      </button>
+                    )}
+                  </div>
+                  {itemIdx !== section.items.length - 1 && (
+                    <div className="ml-4 border-b border-gray-50" />
                   )}
                 </div>
               ))}
@@ -152,15 +138,11 @@ const Profile = () => {
           </div>
         ))}
 
-        {/* Logout Button */}
         <button
-          onClick={() => {
-            localStorage.clear();
-            navigate('/login');
-          }}
-          className="w-full py-4 text-red-500 font-bold text-sm tracking-widest border-t border-gray-100 mt-4 hover:bg-red-50 transition-colors"
+          onClick={() => { localStorage.clear(); navigate('/login'); }}
+          className="w-full py-4 bg-white rounded-2xl border border-gray-100 text-[#FF3B30] font-semibold text-[16px] hover:bg-red-50/50 transition-colors mt-4"
         >
-          LOG OUT
+          Log Out
         </button>
       </div>
     </div>
