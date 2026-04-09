@@ -11,6 +11,7 @@ import Navbar from './components/Navbar';
 import EventsPage from './pages/EventsPage';
 import EventDetails from './pages/EventDetails';
 import Upgrade from './pages/Upgrade';
+import OrganizerOnboarding from './pages/OrganizerOnboarding';
 
 // import ProtectedRoute from './components/ProtectedRoute';
 
@@ -18,7 +19,7 @@ const AppContent = () => {
   const location = useLocation();
 
   // Only show Navbar on routes not listed here
-  const hideNavbarRoutes = ['/login', '/search', '/profile', '/upgrade'];
+  const hideNavbarRoutes = ['/login', '/search', '/profile', '/upgrade', '/become-organizer'];
 
   return (
     <>
@@ -36,6 +37,7 @@ const AppContent = () => {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/events/:id' element={<EventDetails />} />
           <Route path='/upgrade' element={<Upgrade />} />
+          <Route path="/become-organizer" element={<OrganizerOnboarding />} />
           
         {/* Protected routes
         <Route element={<ProtectedRoute />}>
