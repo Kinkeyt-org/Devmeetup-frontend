@@ -76,76 +76,70 @@ const ExploreEvents = () => {
         )}
 
         {!loading && (
-          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <AnimatePresence>
-              {filteredEvents.map((event) => (
-                <motion.div
-                  key={event.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3 }}
-                  onClick={() => navigate(`/events/${event.id}`)}
-                  className="group cursor-pointer"
-                >
-                  <div className="aspect-16/10 md:aspect-4/5 bg-neutral-100 rounded-[2.5rem] mb-4 overflow-hidden relative shadow-sm border border-neutral-100">
-                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black shadow-sm z-10">
-                      {event.is_free || event.is_free === 1 || event.is_free === "1" ? "Free" : `₦${event.price || 0}`}
-                    </div>
-
-                    <img
-                      src={event.banner || event.image}
-                      alt={event.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity group-hover:opacity-90" />
-
-                    <div className="absolute bottom-3 left-6 text-white">
-                      <h3 className="text-xl font-bold leading-tight tracking-tight">
-                        {event.title}
-                      </h3>
-                      <p className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1">
-                        {event.location}
-                      </p>
-                    </div>
+          <div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredEvents.map((event) => (
+              <div
+                key={event.id}
+                onClick={() => navigate(`/events/${event.id}`)}
+                className="group cursor-pointer"
+              >
+                <div className="aspect-16/10 md:aspect-4/5 bg-neutral-100 rounded-[2.5rem] mb-4 overflow-hidden relative shadow-sm border border-neutral-100">
+                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black shadow-sm z-10">
+                    {event.is_free || event.is_free === 1 || event.is_free === "1" ? "Free" : `₦${event.price || 0}`}
                   </div>
 
-                  {/* TAGS + DATE */}
-                  <div className="flex justify-between items-start px-2">
-                    <div className="space-y-1">
-                      <div className="flex gap-2">
-                        {event.tags && event.tags.length > 0 ? (
-                          event.tags.slice(0, 2).map((tag, i) => (
-                            <p key={i} className="text-[10px] font-black text-amber-500 uppercase tracking-widest">
-                              {tag} {i === 0 && event.tags.length > 1 ? "•" : ""}
-                            </p>
-                          ))
-                        ) : (
-                          <p className="text-[10px] font-black text-amber-500 uppercase tracking-widest">
-                            General
+                  <img
+                    src={event.banner || event.image}
+                    alt={event.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity group-hover:opacity-90" />
+
+                  <div className="absolute bottom-3 left-6 text-white">
+                    <h3 className="text-xl font-bold leading-tight tracking-tight">
+                      {event.title}
+                    </h3>
+                    <p className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1">
+                      {event.location}
+                    </p>
+                  </div>
+                </div>
+
+                {/* TAGS + DATE */}
+                <div className="flex justify-between items-start px-2">
+                  <div className="space-y-1">
+                    <div className="flex gap-2">
+                      {event.tags && event.tags.length > 0 ? (
+                        event.tags.slice(0, 2).map((tag, i) => (
+                          <p key={i} className="text-[10px] font-black text-amber-500 uppercase tracking-widest">
+                            {tag} {i === 0 && event.tags.length > 1 ? "•" : ""}
                           </p>
-                        )}
-                      </div>
-
-                      <p className="text-[10px] font-bold text-neutral-700 uppercase ">
-                        {event.event_date_human || event.event_date}
-                      </p>
+                        ))
+                      ) : (
+                        <p className="text-[10px] font-black text-amber-500 uppercase tracking-widest">
+                          General
+                        </p>
+                      )}
                     </div>
 
-                    <div 
-                      onClick={()=>{navigate(`/events/${event.id}`)}}
-                      className="w-8 h-8 rounded-full bg-neutral-50 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                        <path d="M7 17l9-9M7 8h9v9"/>
-                      </svg>
-                    </div>
+                    <p className="text-[10px] font-bold text-neutral-700 uppercase ">
+                      {event.event_date_human || event.event_date}
+                    </p>
                   </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </motion.div>
+
+                  <div 
+                    onClick={()=>{navigate(`/events/${event.id}`)}}
+                    className="w-8 h-8 rounded-full bg-neutral-50 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                      <path d="M7 17l9-9M7 8h9v9"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            ))}
+            
+          </div>
         )}
 
         {/* Empty State */}
