@@ -18,7 +18,7 @@ const AppContent = () => {
   const location = useLocation();
 
   // Only show Navbar on routes not listed here
-  const hideNavbarRoutes = ['/login', '/search', '/profile'];
+  const hideNavbarRoutes = ['/login', '/search', '/profile', '/upgrade'];
 
   return (
     <>

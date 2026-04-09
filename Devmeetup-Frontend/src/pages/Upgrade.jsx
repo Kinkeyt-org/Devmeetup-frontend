@@ -1,274 +1,159 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 
-const BecomeOrganizer = () => {
+const OrganizerOnboarding = () => {
   const navigate = useNavigate();
 
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const [form, setForm] = useState({
-    orgName: "",
-    bio: "",
-    website: "",
-    category: "tech",
-    agree: false,
-  });
-
-  const handleChange = (e) => {
-    setError("");
-    const { name, value, type, checked } = e.target;
-
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+  const getUser = () => {
+    try {
+      return JSON.parse(localStorage.getItem("user"));
+    } catch {
+      return null;
+    }
   };
 
-  const next = () => setStep((s) => Math.min(s + 1, 3));
-  const back = () => setStep((s) => Math.max(s - 1, 1));
+  const handleContinue = () => {
+    const user = getUser();
 
-  const handleSubmit = async () => {
-    if (!form.agree) {
-      setError("You must agree to continue.");
+    if (!user) {
+      navigate("/login", { state: { from: "/become-organizer" } });
       return;
     }
 
-    try {
-      setLoading(true);
-      setError("");
-
-      // simulate API call → replace with real API
-      await new Promise((res) => setTimeout(res, 1500));
-
-      // after success → upgrade user role + redirect
-      navigate("/dashboard");
-    } catch (err) {
-      setError("Something went wrong. Try again.");
-    } finally {
-      setLoading(false);
+    if (user.role !== "organizer") {
+      navigate("/upgrade");
+      return;
     }
+
+    navigate("/events/create");
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <>
+      <Helmet>
+        <title>Become an Organizer</title>
+        <meta
+          name="description"
+          content="Start hosting events and build your community."
+        />
+      </Helmet>
 
-      {/* HERO SECTION */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d"
-            alt="hero"
-            className="h-full w-full object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/80 to-slate-50" />
+      <div className="min-h-screen bg-white text-[#1d1d1f] font-['Satoshi'] antialiased">
+
+        {/* subtle top bar (optional but premium feel) */}
+        <div className="w-full flex justify-between items-center px-6 py-4">
+          <button
+            onClick={() => navigate("/")}
+            className="text-sm text-neutral-500 hover:text-black transition"
+          >
+            ← Back
+          </button>
+
+          <p className="text-xs tracking-[0.3em] uppercase text-neutral-300">
+            onboarding
+          </p>
+
+          <div />
         </div>
 
-        <div className="relative mx-auto max-w-6xl px-4 py-20 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl font-semibold tracking-tight sm:text-5xl"
-          >
-            Become an Event Organizer
-          </motion.h1>
+        {/* HERO SECTION */}
+        <section className="pt-16 pb-16 px-6">
+          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-14 items-center">
 
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="mx-auto mt-4 max-w-2xl text-base text-slate-600"
-          >
-            Create events, grow your audience, and build your own community.
-            Set up your organizer profile in less than 2 minutes.
-          </motion.p>
+            {/* TEXT */}
+            <div>
+              <p className="text-xs tracking-[0.3em] uppercase text-neutral-400 mb-4">
+                Organizer Setup
+              </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mt-8 flex justify-center gap-3"
-          >
-            <button
-              onClick={() => setStep(1)}
-              className="rounded-full bg-slate-950 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:bg-slate-800"
-            >
-              Start Setup
-            </button>
+              <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight mb-6">
+                Host events that
+                <br />
+                <span className="text-neutral-300">people remember.</span>
+              </h1>
 
-            <button
-              onClick={() => navigate(-1)}
-              className="rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 hover:border-slate-300"
-            >
-              Go Back
-            </button>
-          </motion.div>
-        </div>
-      </section>
+              <p className="text-neutral-500 text-lg md:text-xl leading-relaxed mb-8 max-w-xl">
+                Turn ideas into real experiences. Build communities, grow your
+                audience, and create events that matter on a platform built for creators.
+              </p>
 
-      {/* ONBOARDING CARD */}
-      <main className="mx-auto max-w-3xl px-4 pb-20">
-        <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-
-          {/* STEP INDICATOR */}
-          <div className="mb-8 flex items-center justify-between">
-            {[1, 2, 3].map((s) => (
-              <div key={s} className="flex items-center gap-2">
-                <div
-                  className={`h-8 w-8 rounded-full flex items-center justify-center text-sm font-semibold ${
-                    step >= s
-                      ? "bg-slate-950 text-white"
-                      : "bg-slate-100 text-slate-500"
-                  }`}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={handleContinue}
+                  className="px-10 py-4 bg-black text-white rounded-full font-bold hover:scale-[1.02] active:scale-95 transition shadow-lg"
                 >
-                  {s}
-                </div>
-                {s !== 3 && (
-                  <div className="h-[2px] w-10 bg-slate-100" />
-                )}
+                  Continue Setup
+                </button>
+
+                <button
+                  onClick={() => navigate("/events")}
+                  className="px-10 py-4 border border-neutral-200 rounded-full font-bold hover:bg-neutral-50 transition"
+                >
+                  Explore Events
+                </button>
               </div>
-            ))}
+
+              {/* micro trust line */}
+              <p className="text-xs text-neutral-400 mt-6">
+                Takes less than 2 minutes to get started.
+              </p>
+            </div>
+
+            {/* HERO IMAGE */}
+            <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl group">
+              <img
+                src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d"
+                alt="Event hosting"
+                className="w-full h-[520px] object-cover group-hover:scale-105 transition duration-700"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+              <div className="absolute bottom-6 left-6 text-white">
+                <p className="text-xs uppercase tracking-[0.2em] opacity-80">
+                  Why host here?
+                </p>
+                <h3 className="text-2xl font-bold">
+                  Simple. Powerful. Fast.
+                </h3>
+              </div>
+            </div>
+
           </div>
+        </section>
 
-          {/* STEP CONTENT */}
-          <AnimatePresence mode="wait">
-            {step === 1 && (
-              <motion.div
-                key="step1"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 10 }}
-              >
-                <h2 className="text-xl font-semibold">
-                  Tell us about your organization
-                </h2>
-                <p className="mt-2 text-sm text-slate-500">
-                  This helps attendees recognize you as a trusted host.
-                </p>
+        {/* FEATURES */}
+        <section className="max-w-6xl mx-auto px-6 pb-24">
+          <div className="grid md:grid-cols-3 gap-8">
 
-                <input
-                  name="orgName"
-                  value={form.orgName}
-                  onChange={handleChange}
-                  placeholder="Organization or personal brand name"
-                  className="mt-5 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
-                />
+            <div className="p-7 rounded-3xl border border-neutral-100 hover:shadow-sm transition">
+              <h3 className="font-bold text-xl mb-2">Reach people</h3>
+              <p className="text-neutral-500">
+                Get discovered by users actively looking for events like yours.
+              </p>
+            </div>
 
-                <textarea
-                  name="bio"
-                  value={form.bio}
-                  onChange={handleChange}
-                  rows="4"
-                  placeholder="Short bio about you or your events"
-                  className="mt-4 w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
-                />
-              </motion.div>
-            )}
+            <div className="p-7 rounded-3xl border border-neutral-100 hover:shadow-sm transition">
+              <h3 className="font-bold text-xl mb-2">Easy setup</h3>
+              <p className="text-neutral-500">
+                Create and publish events in minutes with a clean workflow.
+              </p>
+            </div>
 
-            {step === 2 && (
-              <motion.div
-                key="step2"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 10 }}
-              >
-                <h2 className="text-xl font-semibold">
-                  Add optional details
-                </h2>
-                <p className="mt-2 text-sm text-slate-500">
-                  These help build trust and credibility.
-                </p>
+            <div className="p-7 rounded-3xl border border-neutral-100 hover:shadow-sm transition">
+              <h3 className="font-bold text-xl mb-2">Build community</h3>
+              <p className="text-neutral-500">
+                Turn attendees into loyal followers and repeat participants.
+              </p>
+            </div>
 
-                <input
-                  name="website"
-                  value={form.website}
-                  onChange={handleChange}
-                  placeholder="Website (optional)"
-                  className="mt-5 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
-                />
-
-                <select
-                  name="category"
-                  value={form.category}
-                  onChange={handleChange}
-                  className="mt-4 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
-                >
-                  <option value="tech">Tech</option>
-                  <option value="business">Business</option>
-                  <option value="education">Education</option>
-                  <option value="lifestyle">Lifestyle</option>
-                </select>
-              </motion.div>
-            )}
-
-            {step === 3 && (
-              <motion.div
-                key="step3"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 10 }}
-              >
-                <h2 className="text-xl font-semibold">
-                  Final step
-                </h2>
-                <p className="mt-2 text-sm text-slate-500">
-                  Accept terms and complete setup.
-                </p>
-
-                <label className="mt-5 flex items-start gap-3 text-sm text-slate-600">
-                  <input
-                    type="checkbox"
-                    name="agree"
-                    checked={form.agree}
-                    onChange={handleChange}
-                    className="mt-1"
-                  />
-                  I agree to host events responsibly and follow platform rules.
-                </label>
-
-                {error && (
-                  <p className="mt-3 text-sm text-red-500">{error}</p>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* ACTION BUTTONS */}
-          <div className="mt-8 flex justify-between">
-            {step > 1 ? (
-              <button
-                onClick={back}
-                className="rounded-xl border border-slate-200 px-5 py-2 text-sm"
-              >
-                Back
-              </button>
-            ) : (
-              <div />
-            )}
-
-            {step < 3 ? (
-              <button
-                onClick={next}
-                className="rounded-xl bg-slate-950 px-5 py-2 text-sm text-white"
-              >
-                Next
-              </button>
-            ) : (
-              <button
-                onClick={handleSubmit}
-                disabled={loading}
-                className="rounded-xl bg-slate-950 px-5 py-2 text-sm text-white"
-              >
-                {loading ? "Setting up..." : "Become Organizer"}
-              </button>
-            )}
           </div>
-        </div>
-      </main>
-    </div>
+        </section>
+
+      </div>
+    </>
   );
 };
 
-export default BecomeOrganizer;
+export default OrganizerOnboarding;
