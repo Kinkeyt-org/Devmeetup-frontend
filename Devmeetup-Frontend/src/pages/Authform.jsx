@@ -192,7 +192,6 @@ export default function Authform() {
 
                 {/* Forgot Password Link */}
               </form>
-
               <p className="text-sm text-neutral-500 mt-6">
                 Don’t have an account?{" "}
                 <button
@@ -223,11 +222,11 @@ export default function Authform() {
 
               {/* NEW: "OR" Divider */}
               <div className="relative flex items-center mb-6">
-                <div className="flex-grow border-t border-neutral-200"></div>
-                <span className="flex-shrink mx-4 text-xs font-medium text-neutral-400 uppercase tracking-widest">
+                <div className="grow border-t border-neutral-200"></div>
+                <span className="shrink mx-4 text-xs font-medium text-neutral-400 uppercase tracking-widest">
                   or
                 </span>
-                <div className="flex-grow border-t border-neutral-200"></div>
+                <div className="grow border-t border-neutral-200"></div>
               </div>
 
               <form className="space-y-5" onSubmit={handleSignUp}>

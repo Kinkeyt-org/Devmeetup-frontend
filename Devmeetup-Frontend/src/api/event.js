@@ -33,7 +33,7 @@ export const getEvents = async () => {
 export const getEventDetails = async (id) => {
   const res = await api.get(`/events/${id}`);
   // Response shape: { data: { ... } }
-  return res.data.data;
+  return res.data.data.details;
 };
 
 // Create event — always FormData (supports banner upload, tags, is_free, price)

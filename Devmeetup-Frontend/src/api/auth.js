@@ -26,17 +26,21 @@ export const login = async (email, password) => {
   return res.data;
 };
 
-// SIGNUP
-export const signup = async (name, email, password, password_confirmation) => {
-  const res = await api.post("/register", { name, email, password, password_confirmation });
-  if (res.data.token) localStorage.setItem("token", res.data.token); //  ADDED — store token on signup too
+
+// SIGNUP - Needs to handle profile pictures
+export const signup = async (formData) => {
+  // Use POST with multipart/form-data for the profile picture
+  const res = await api.post("/register", formData, {
+    headers: { "Content-Type": "multipart/form-data" }
+  });
+  if (res.data.token) localStorage.setItem("token", res.data.token);
   return res.data;
 };
 
 // LOGOUT
 export const logout = async () => {
   try {
-    await api.post("/logout"); //  ADDED — tell Laravel to invalidate the token
+    await api.get("/logout"); //  ADDED — tell Laravel to invalidate the token
   } finally {
     localStorage.removeItem("token"); // Always clear local token even if request fails
   }
