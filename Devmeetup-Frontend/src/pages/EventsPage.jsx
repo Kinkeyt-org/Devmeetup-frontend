@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getEvents, bookEvent } from "../api/event";
 
-const ExploreEvents = () => {
+const EventsPage = () => {
   const navigate = useNavigate();
 
-  const [activeCategory, setActiveCategory] = useState("All");
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeCategory, setActiveCategory] = useState("All");
   const [bookingId, setBookingId] = useState(null);
 
   const categories = ["All", "Tech", "Design", "Business", "Music", "Lifestyle"];
@@ -18,7 +18,7 @@ const ExploreEvents = () => {
         const data = await getEvents();
         setEvents(data);
       } catch (err) {
-        console.error("Failed to fetch events:", err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -32,17 +32,14 @@ const ExploreEvents = () => {
       ? events
       : events.filter((e) => e.tags?.includes(activeCategory));
 
-  const handleBook = async (eventId, e) => {
-    e.stopPropagation();
-
+  const handleBook = async (id) => {
     try {
-      setBookingId(eventId);
-      await bookEvent(eventId);
+      setBookingId(id);
+      await bookEvent(id);
 
-      // update UI instantly
       setEvents((prev) =>
         prev.map((ev) =>
-          ev.id === eventId ? { ...ev, booked: true } : ev
+          ev.id === id ? { ...ev, booked: true } : ev
         )
       );
     } catch (err) {
@@ -52,135 +49,272 @@ const ExploreEvents = () => {
     }
   };
 
-  const SkeletonCard = () => (
-    <div className="animate-pulse">
-      <div className="bg-neutral-200 h-40 rounded-xl mb-4"></div>
-      <div className="h-4 bg-neutral-200 rounded w-3/4 mb-2"></div>
-      <div className="h-3 bg-neutral-200 rounded w-1/2 mb-4"></div>
-      <div className="h-10 bg-neutral-200 rounded-full"></div>
+  const isFree = (event) =>
+    event.is_free === true ||
+    event.is_free === 1 ||
+    event.is_free === "1";
+
+  /* ---------------- CARD ---------------- */
+  const EventCard = ({ event }) => (
+    <div
+      onClick={() => navigate(`/events/${event.id}`)}
+      style={{
+        borderRadius: "20px",
+        overflow: "hidden",
+        cursor: "pointer",
+        background: "#0e0e0e",
+        border: "1px solid rgba(255,255,255,0.07)",
+        transition: "transform 0.3s ease, box-shadow 0.3s ease",
+        fontFamily: "'DM Sans', sans-serif",
+      }}
+    >
+      {/* Accent bar */}
+      <div
+        style={{
+          height: "3px",
+          background: isFree(event)
+            ? "linear-gradient(90deg,#34d399,#059669)"
+            : "linear-gradient(90deg,#f5a623,#ff8c42)",
+        }}
+      />
+
+      {/* Image */}
+      <div style={{ width: "100%", height: "200px", background: "#181818" }}>
+        {event.banner || event.image ? (
+          <img
+            src={event.banner || event.image}
+            alt={event.title}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              transition: "transform 0.7s ease",
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              opacity: 0.1,
+              fontSize: "60px",
+              color: "#fff",
+            }}
+          >
+            ⚡
+          </div>
+        )}
+      </div>
+
+      {/* Body */}
+      <div style={{ padding: "18px 20px 20px" }}>
+        {/* Tag + Price */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: "10px",
+          }}
+        >
+          <span
+            style={{
+              fontSize: "10px",
+              fontWeight: 700,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              padding: "4px 10px",
+              borderRadius: "100px",
+              background: isFree(event)
+                ? "rgba(52,211,153,0.12)"
+                : "rgba(245,166,35,0.12)",
+              color: isFree(event) ? "#34d399" : "#f5a623",
+            }}
+          >
+            {event.tags?.[0] || "General"}
+          </span>
+
+          <span
+            style={{
+              fontSize: "13px",
+              fontWeight: 700,
+              color: isFree(event) ? "#34d399" : "rgba(255,255,255,0.9)",
+            }}
+          >
+            {isFree(event)
+              ? "Free"
+              : `₦${Number(event.price || 0).toLocaleString()}`}
+          </span>
+        </div>
+
+        {/* Title */}
+        <h3
+          style={{
+            fontSize: "18px",
+            fontWeight: 700,
+            color: "#fff",
+            marginBottom: "10px",
+            lineHeight: 1.25,
+          }}
+        >
+          {event.title}
+        </h3>
+
+        {/* Meta */}
+        <div style={{ display: "flex", gap: "6px" }}>
+          <span style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.4)" }}>
+            {event.location}
+          </span>
+          <span style={{ color: "rgba(255,255,255,0.2)" }}>•</span>
+          <span style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.4)" }}>
+            {event.event_date_human || event.event_date}
+          </span>
+        </div>
+
+        <div
+          style={{
+            height: "1px",
+            background: "rgba(255,255,255,0.06)",
+            margin: "16px 0",
+          }}
+        />
+
+        {/* Footer */}
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.3)" }}>
+            {event.attendees_count
+              ? `${event.attendees_count} going`
+              : ""}
+          </span>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleBook(event.id);
+            }}
+            disabled={bookingId === event.id || event.booked}
+            style={{
+              border: "none",
+              cursor: event.booked ? "default" : "pointer",
+              fontSize: "12.5px",
+              fontWeight: 700,
+              padding: "10px 18px",
+              borderRadius: "100px",
+              background: event.booked
+                ? "rgba(52,211,153,0.1)"
+                : isFree(event)
+                ? "rgba(52,211,153,0.12)"
+                : "#f5a623",
+              color: event.booked
+                ? "#34d399"
+                : isFree(event)
+                ? "#34d399"
+                : "#0e0e0e",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            {bookingId === event.id ? (
+              <>
+                <div
+                  style={{
+                    width: "12px",
+                    height: "12px",
+                    border: "2px solid rgba(0,0,0,0.3)",
+                    borderTopColor: "#000",
+                    borderRadius: "50%",
+                    animation: "spin 0.6s linear infinite",
+                  }}
+                />
+                Booking
+              </>
+            ) : event.booked ? (
+              "✓ Booked"
+            ) : isFree(event) ? (
+              "RSVP Free"
+            ) : (
+              "Book Event"
+            )}
+          </button>
+        </div>
+      </div>
     </div>
   );
 
-  return (
-    <div className="min-h-screen bg-white text-[#1d1d1f] font-['Satoshi']">
+  /* ---------------- SKELETON ---------------- */
+  const SkeletonCard = () => (
+    <div
+      style={{
+        borderRadius: "20px",
+        background: "#0e0e0e",
+        border: "1px solid rgba(255,255,255,0.05)",
+        overflow: "hidden",
+      }}
+    >
+      <div style={{ height: "200px", background: "#1a1a1a" }} />
+      <div style={{ padding: "18px" }}>
+        <div style={{ height: "10px", width: "40%", background: "#1f1f1f", marginBottom: "10px" }} />
+        <div style={{ height: "14px", width: "70%", background: "#1f1f1f", marginBottom: "10px" }} />
+        <div style={{ height: "10px", width: "60%", background: "#1f1f1f" }} />
+        <div style={{ height: "40px", background: "#1f1f1f", borderRadius: "100px", marginTop: "20px" }} />
+      </div>
+    </div>
+  );
 
-      {/* HEADER */}
-      <div className="sticky top-0 z-40 bg-white border-b border-neutral-100 pt-24 pb-4 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-6 py-2.5 rounded-full text-sm font-bold transition ${
-                  activeCategory === cat
-                    ? "bg-black text-white"
-                    : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
+  /* ---------------- UI ---------------- */
+  return (
+    <div style={{ minHeight: "100vh", background: "#000", padding: "40px" }}>
+      {/* FILTER */}
+      <div style={{ display: "flex", gap: "10px", marginBottom: "30px" }}>
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setActiveCategory(cat)}
+            style={{
+              padding: "8px 16px",
+              borderRadius: "100px",
+              border: "none",
+              cursor: "pointer",
+              background: activeCategory === cat ? "#fff" : "#1a1a1a",
+              color: activeCategory === cat ? "#000" : "#aaa",
+            }}
+          >
+            {cat}
+          </button>
+        ))}
       </div>
 
-      {/* EVENTS */}
-      <section className="max-w-6xl mx-auto py-12 px-6">
-
-        {/* LOADING */}
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {Array.from({ length: 6 }).map((_, i) => (
+      {/* GRID */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+          gap: "20px",
+        }}
+      >
+        {loading
+          ? Array.from({ length: 6 }).map((_, i) => (
               <SkeletonCard key={i} />
+            ))
+          : filteredEvents.map((event) => (
+              <EventCard key={event.id} event={event} />
             ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+      </div>
 
-            {filteredEvents.map((event) => {
-              const isBooking = bookingId === event.id;
-
-              return (
-                <div
-                  key={event.id}
-                  onClick={() => navigate(`/events/${event.id}`)}
-                  className="group cursor-pointer"
-                >
-                  <div className="bg-white border border-neutral-100 rounded-[2rem] p-5 transition hover:shadow-md">
-
-                    {/* TOP META */}
-                    <div className="flex justify-between items-start mb-4">
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-neutral-400 font-semibold">
-                        {event.tags?.[0] || "General"}
-                      </p>
-
-                      <span className="text-xs font-bold text-neutral-500">
-                        {event.is_free || event.is_free === 1 || event.is_free === "1"
-                          ? "Free"
-                          : `₦${event.price || 0}`}
-                      </span>
-                    </div>
-
-                    {/* TITLE */}
-                    <h3 className="text-xl font-bold tracking-tight leading-snug mb-2 text-[#1d1d1f] group-hover:text-neutral-500 transition">
-                      {event.title}
-                    </h3>
-
-                    {/* META */}
-                    <p className="text-sm text-neutral-500 mb-4 line-clamp-2">
-                      {event.location} • {event.event_date_human || event.event_date}
-                    </p>
-
-                    {/* IMAGE */}
-                    <div className="w-full h-40 rounded-xl overflow-hidden mb-5 bg-neutral-100">
-                      <img
-                        src={event.banner || event.image}
-                        alt={event.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
-                      />
-                    </div>
-
-                    {/* BUTTON */}
-                    <button
-                      onClick={(e) => handleBook(event.id, e)}
-                      disabled={isBooking || event.booked}
-                      className={`w-full py-3 rounded-full text-sm font-semibold flex items-center justify-center gap-2 transition
-                        ${
-                          event.booked
-                            ? "bg-neutral-100 text-neutral-400 cursor-not-allowed"
-                            : "bg-black text-white hover:opacity-90"
-                        }`}
-                    >
-                      {isBooking ? (
-                        <>
-                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          Booking
-                        </>
-                      ) : event.booked ? (
-                        "Booked"
-                      ) : (
-                        "Book Event"
-                      )}
-                    </button>
-
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        {/* EMPTY STATE */}
-        {!loading && filteredEvents.length === 0 && (
-          <div className="py-32 text-center text-neutral-300 text-xl font-bold">
-            No events found.
-          </div>
-        )}
-
-      </section>
+      {/* spin animation */}
+      <style>
+        {`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}
+      </style>
     </div>
   );
 };
 
-export default ExploreEvents;
+export default EventsPage;
