@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { login, signup } from "../api/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const GOOGLE_ICON = (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -11,8 +11,27 @@ const GOOGLE_ICON = (
   </svg>
 );
 
+const EYE_ICONS = {
+  Visible: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  ),
+  Hidden: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+      <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+      <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+      <line x1="2" y1="2" x2="22" y2="22" />
+    </svg>
+  )
+};
+
 export default function Authform() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [mode, setMode] = useState("signin");
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -23,20 +42,26 @@ export default function Authform() {
   const [password_confirmation, setPassword_confirmation] = useState("");
   const [name, setName] = useState("");
 
-  const [forgotEmail, setForgotEmail] = useState("");
-  const [forgotSent, setForgotSent] = useState(false);
+  const icon = {
+    Ticket: () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" /><line x1="9" y1="9" x2="9" y2="15" /><line x1="15" y1="9" x2="15" y2="15" /></svg>
+  };
+
+  const handleRedirect = () => {
+    navigate(location.state?.from || "/");
+  };
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+
     try {
       const data = await login(email, password);
-      // FIX: Store only the token string from the response
-      if (data && data.token) {
+
+      if (data?.token) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user)); // Store user info for later use
-        navigate("/");
+        localStorage.setItem("user", JSON.stringify(data.user));
+        handleRedirect();
       }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
@@ -49,13 +74,14 @@ export default function Authform() {
     e.preventDefault();
     setLoading(true);
     setError("");
+
     try {
       const data = await signup(name, email, password, password_confirmation);
-      // FIX: Store only the token string from the response
-      if (data && data.token) {
+
+      if (data?.token) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user)); // Store user info for later use
-        navigate("/");
+        localStorage.setItem("user", JSON.stringify(data.user));
+        handleRedirect();
       }
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
@@ -65,135 +91,203 @@ export default function Authform() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center font-[Satoshi] bg-white">
-      <div className="w-full max-w-md p-6">
-        <div className="flex items-center gap-2 mb-8 justify-center">
-          <div className="w-8 h-8 rounded-lg bg-amber-400 flex items-center justify-center">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <span className="text-black font-bold text-lg">EventHub</span>
+    <div className="min-h-screen grid md:grid-cols-2 bg-white font-['Satoshi']">
+
+      {/* LEFT SIDE */}
+      <div className="hidden md:flex relative items-end p-12 bg-[#1d1d1f] text-white overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1503428593586-e225b39bddfe"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
+        />
+        <div className="relative z-10 max-w-md">
+          <p className="text-xs uppercase tracking-[0.3em] text-neutral-400 mb-4">
+            EventHub
+          </p>
+          <h1 className="text-5xl font-bold leading-tight mb-4">
+            Discover experiences you’ll never forget.
+          </h1>
+          <p className="text-neutral-300">
+            Find events that match your vibe and connect with people.
+          </p>
         </div>
+        <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
+      </div>
 
-        {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl text-center font-medium">
-            {error}
-          </div>
-        )}
+      {/* RIGHT SIDE */}
+      <div className="flex items-center justify-center px-6 py-12">
+        <div className="w-full max-w-md">
 
-        {mode === "forgot" && (
-          <div>
-            <button onClick={() => { setMode("signin"); setForgotSent(false); setError(""); }} className="flex cursor-pointer items-center gap-2 hover:text-amber-400 text-sm mb-8 transition-colors text-neutral-600">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 12H5M12 5l-7 7 7 7" />
-              </svg>
-              Back to sign in
-            </button>
-            {!forgotSent ? (
-              <>
-                <h2 className="text-black text-2xl font-bold mb-1">Reset password</h2>
-                <p className="text-neutral-500 text-sm mb-8">Enter your email and we'll send you a reset link.</p>
-                <form onSubmit={(e) => { e.preventDefault(); setForgotSent(true); }} className="space-y-4">
-                  <div>
-                    <label className="block text-xs text-neutral-400 mb-1.5 font-medium tracking-wide uppercase">Email address</label>
-                    <input type="email" required value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} placeholder="you@example.com" className="w-full border border-neutral-700 rounded-xl px-4 py-3 text-black placeholder-neutral-600 text-sm focus:outline-none focus:border-amber-400 transition-all" />
-                  </div>
-                  <button type="submit" className="w-full bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 rounded-xl text-sm cursor-pointer transition-all mt-2">Send reset link</button>
-                </form>
-              </>
-            ) : (
-              <div className="text-center py-8">
-                <div className="w-14 h-14 rounded-full bg-amber-400/10 border border-amber-400/30 flex items-center justify-center mx-auto mb-4">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2">
-                    <path d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0l-8-5-8 5" />
-                  </svg>
-                </div>
-                <h3 className="text-black font-bold text-lg mb-2">Check your inbox</h3>
-                <p className="text-neutral-500 text-sm">We sent a reset link to <span className="text-amber-400 font-medium">{forgotEmail}</span></p>
-                <button onClick={() => { setMode("signin"); setForgotSent(false); }} className="mt-6 text-sm text-amber-400 hover:text-amber-300 underline underline-offset-4 cursor-pointer  transition-colors">Back to sign in</button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {mode === "signin" && (
-          <>
-            <div className="mb-8">
-              <h2 className="text-black text-3xl font-bold mb-1">Welcome back</h2>
-              <p className="text-neutral-500 text-sm">Sign in to your EventHub account</p>
+          {/* LOGO */}
+          <div className="flex items-center gap-2 mb-10">
+            <div className="w-9 h-9 rounded-xl bg-amber-400 flex items-center justify-center">
+              {icon.Ticket()}
             </div>
-            <button className="w-full active:bg-neutral-100/50 active:scale-101 flex items-center justify-center gap-3 cursor-pointer border border-neutral-200 hover:bg-neutral-50 rounded-xl py-3 text-sm font-medium transition-all mb-5">
-              {GOOGLE_ICON} Continue with Google
-            </button>
-            <div className="flex items-center gap-3 mb-5">
-              <div className="flex-1 h-px bg-neutral-200" />
-              <span className="text-neutral-400 text-xs">or with email</span>
-              <div className="flex-1 h-px bg-neutral-200" />
+            <span className="font-bold text-lg">EventHub</span>
+          </div>
+
+          {/* ERROR */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl text-center">
+              {error}
             </div>
-            <form className="space-y-4" onSubmit={handleSignIn}>
-              <div>
-                <label className="block text-xs text-neutral-400 mb-1.5 font-medium tracking-wide uppercase">Email</label>
-                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" className="w-full border border-neutral-300 rounded-xl px-4 py-3 text-black placeholder-neutral-400 text-sm focus:outline-none focus:border-amber-400 transition-all" />
-              </div>
-              <div>
-                <div className="flex justify-between mb-1.5">
-                  <label className="text-xs text-neutral-400 font-medium tracking-wide uppercase">Password</label>
-                  <button type="button" onClick={() => { setMode("forgot"); setError(""); }} className="text-xs text-amber-500 cursor-pointer hover:text-amber-400 transition-colors">Forgot password?</button>
-                </div>
-                <div className="relative">
-                  <input type={showPass ? "text" : "password"} required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="w-full border border-neutral-300 rounded-xl px-4 py-3 text-black placeholder-neutral-400 text-sm focus:outline-none focus:border-amber-400 transition-all pr-11" />
-                  <button type="button" onClick={() => setShowPass(!showPass)} className="absolute cursor-pointer right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-amber-400 transition-colors">
-                    {showPass ? (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24M1 1l22 22" /></svg>
-                    ) : (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
-                    )}
+          )}
+
+          {/* SIGN IN */}
+          {mode === "signin" && (
+            <>
+              <h2 className="text-3xl font-bold mb-1">Welcome back</h2>
+              <p className="text-neutral-500 text-sm mb-6">
+                Sign in to continue
+              </p>
+
+              <button className="w-full flex items-center justify-center gap-3 border border-neutral-200 hover:bg-neutral-50 rounded-full py-3 text-sm font-medium transition mb-5">
+                {GOOGLE_ICON} Sign in with Google
+              </button>
+
+              <form className="space-y-5" onSubmit={handleSignIn}>
+                <input
+                  type="email"
+                  required
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-black"
+                />
+
+               <div className="relative group">
+                  <input
+                    type={showPass ? "text" : "password"} // Dynamic type
+                    placeholder="Password"
+                    className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl px-4 py-3 pr-12 text-black placeholder-neutral-400 text-sm focus:outline-none focus:border-black focus:bg-white transition-all"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  
+                  <button
+                    type="button"
+                    onClick={() => setShowPass(!showPass)} // Toggle state
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black transition-colors"
+                  >
+                    {showPass ? <EYE_ICONS.Visible /> : <EYE_ICONS.Hidden />}
                   </button>
                 </div>
-              </div>
-              <button disabled={loading} type="submit" className="w-full bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-black font-bold py-3 cursor-pointer rounded-xl text-sm transition-all mt-2 shadow-lg shadow-amber-400/20 disabled:opacity-50 flex items-center justify-center">
-                {loading ? <div className="animate-spin h-5 w-5 border-2 border-black border-t-transparent rounded-full" /> : "Sign in"}
-              </button>
-            </form>
-            <p className="text-center text-sm text-neutral-500 mt-6">
-              Don't have an account? <button onClick={() => { setMode("signup"); setError(""); }} className="text-amber-500 cursor-pointer hover:text-amber-400 font-semibold transition-colors">Create one</button>
-            </p>
-          </>
-        )}
 
-        {mode === "signup" && (
-          <>
-            <div className="mb-8">
-              <h2 className="text-black text-3xl font-bold mb-1">Join EventHub</h2>
-              <p className="text-neutral-500 text-sm">Create your free account today</p>
-            </div>
-            <form className="space-y-4" onSubmit={handleSignUp}>
-              <div>
-                <label className="block text-xs text-neutral-400 mb-1.5 font-medium tracking-wide uppercase">Full name</label>
-                <input type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder="John Doe" className="w-full border border-neutral-300 rounded-xl px-4 py-3 text-black placeholder-neutral-400 text-sm focus:outline-none focus:border-amber-400 transition-all" />
-              </div>
-              <div>
-                <label className="block text-xs text-neutral-400 mb-1.5 font-medium tracking-wide uppercase">Email</label>
-                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" className="w-full border border-neutral-300 rounded-xl px-4 py-3 text-black placeholder-neutral-400 text-sm focus:outline-none focus:border-amber-400 transition-all" />
-              </div>
-              <div>
-                <label className="block text-xs text-neutral-400 mb-1.5 font-medium tracking-wide uppercase">Password</label>
-                <input type={showPass ? "text" : "password"} required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Min. 8 characters" className="w-full border border-neutral-300 rounded-xl px-4 py-3 text-black placeholder-neutral-400 text-sm focus:outline-none focus:border-amber-400 transition-all" />
-              </div>
-              <div>
-                <label className="block text-xs text-neutral-400 mb-1.5 font-medium tracking-wide uppercase">Password Confirmation</label>
-                <input type={showPass ? "text" : "password"} required value={password_confirmation} onChange={(e) => setPassword_confirmation(e.target.value)} placeholder="Min. 8 characters" className="w-full border border-neutral-300 rounded-xl px-4 py-3 text-black placeholder-neutral-400 text-sm focus:outline-none focus:border-amber-400 transition-all" />
-              </div>
-              <button disabled={loading} type="submit" className="w-full cursor-pointer bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 rounded-xl text-sm transition-all shadow-lg shadow-amber-400/20 mt-2 disabled:opacity-50 flex items-center justify-center">
-                {loading ? <div className="animate-spin h-5 w-5 border-2 border-black border-t-transparent rounded-full" />  : "Create account"}
+                <div className="flex justify-end mt-2">
+                  <button
+                    type="button"
+                    onClick={() => navigate("/forgot-password")}
+                    className="text-xs text-neutral-500 hover:text-black transition"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+                <button
+                  disabled={loading}
+                  className="w-full bg-black text-white py-3 rounded-full font-bold"
+                >
+                  {loading ? "..." : "Sign in"}
+                </button>
+
+                {/* Forgot Password Link */}
+              </form>
+
+              <p className="text-sm text-neutral-500 mt-6">
+                Don’t have an account?{" "}
+                <button
+                  onClick={() => setMode("signup")}
+                  className="text-black font-semibold"
+                >
+                  Create one
+                </button>
+              </p>
+            </>
+          )}
+
+          {/* SIGN UP */}
+          {mode === "signup" && (
+            <>
+              <h2 className="text-3xl font-bold mb-1">Create account</h2>
+              <p className="text-neutral-500 text-sm mb-6">
+                Join EventHub today
+              </p>
+
+
+              <button 
+                type="button" 
+                className="w-full flex items-center justify-center gap-3 border border-neutral-200 hover:bg-neutral-50 rounded-full py-3 text-sm font-medium transition mb-6"
+              >
+                {GOOGLE_ICON} Sign up with Google
               </button>
-            </form>
-            <p className="text-center text-sm text-neutral-500 mt-5">
-              Already have an account? <button onClick={() => { setMode("signin"); setError(""); }} className="text-amber-500 cursor-pointer hover:text-amber-400 font-semibold transition-colors">Sign in</button>
-            </p>
-          </>
-        )}
+
+              {/* NEW: "OR" Divider */}
+              <div className="relative flex items-center mb-6">
+                <div className="flex-grow border-t border-neutral-200"></div>
+                <span className="flex-shrink mx-4 text-xs font-medium text-neutral-400 uppercase tracking-widest">
+                  or
+                </span>
+                <div className="flex-grow border-t border-neutral-200"></div>
+              </div>
+
+              <form className="space-y-5" onSubmit={handleSignUp}>
+                <input
+                  type="text"
+                  required
+                  placeholder="Full name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl px-4 py-3 text-sm"
+                />
+
+                <input
+                  type="email"
+                  required
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl px-4 py-3 text-sm"
+                />
+
+                <input
+                  type="password"
+                  required
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl px-4 py-3 text-sm"
+                />
+
+                <input
+                  type="password"
+                  required
+                  placeholder="Confirm password"
+                  value={password_confirmation}
+                  onChange={(e) => setPassword_confirmation(e.target.value)}
+                  className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl px-4 py-3 text-sm"
+                />
+
+                <button
+                  disabled={loading}
+                  className="w-full bg-black text-white py-3 rounded-full font-bold"
+                >
+                  {loading ? "..." : "Create account"}
+                </button>
+              </form>
+
+              <p className="text-sm text-neutral-500 mt-6">
+                Already have an account?{" "}
+                <button
+                  onClick={() => setMode("signin")}
+                  className="text-black font-semibold"
+                >
+                  Sign in
+                </button>
+              </p>
+            </>
+          )}
+
+        </div>
       </div>
     </div>
   );
