@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@font-face {
+    font-family: Satoshi;
+    src: url(/fonts/GeneralSans-Regular.woff) format('woff');
+    font-display: block;
+}
+
+
+@font-face {
+    font-family: General Sans;
+    src: url(/fonts/GeneralSans-Regular.woff) format('woff');
+    font-display: block;
+}
+
