@@ -105,10 +105,10 @@ const OrganizerOnboarding = () => {
               <img
                 src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d"
                 alt="Event hosting"
-                className="w-full h-[520px] object-cover group-hover:scale-105 transition duration-700"
+                className="w-full h-130 object-cover hidden md:flex group-hover:scale-105 transition duration-700"
               />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
               <div className="absolute bottom-6 left-6 text-white">
                 <p className="text-xs uppercase tracking-[0.2em] opacity-80">
@@ -124,7 +124,7 @@ const OrganizerOnboarding = () => {
         </section>
 
         {/* FEATURES */}
-        <section className="max-w-6xl mx-auto px-6 pb-24">
+        <section className="max-w-6xl hidden md:flex mx-auto px-6 pb-24">
           <div className="grid md:grid-cols-3 gap-8">
 
             <div className="p-7 rounded-3xl border border-neutral-100 hover:shadow-sm transition">
