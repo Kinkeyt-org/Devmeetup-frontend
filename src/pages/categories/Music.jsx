@@ -88,7 +88,7 @@ export default function Music() {
       {/* HERO SECTION */}
       <section className="relative w-full h-[85vh] min-h-[500px]">
         <img
-          src="https://images.unsplash.com/photo-1470229722913-7c090be5f524?q=80&w=2070&auto=format&fit=crop"
+          src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=2070&auto=format&fit=crop"
           alt="Music banner"
           className="w-full h-full object-cover"
         />
