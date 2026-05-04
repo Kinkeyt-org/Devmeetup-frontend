@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { getEventDetails } from '../api/event';
 import { bookEvent } from '../api/ticket';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; 
 import { toast } from 'react-hot-toast';
 import {
   ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon,
@@ -36,6 +36,7 @@ const EventDetails = () => {
   const [dominantColor, setDominantColor] = useState('20, 10, 40');
   const [showMenu, setShowMenu] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   const handleDownloadPng = async () => {
     setShowMenu(false);
@@ -294,19 +295,28 @@ const EventDetails = () => {
                   style={{ height: 250 }}
                 >
                   {coords.lat && coords.lng ? (
-                    <iframe
-                      title="Event Location"
-                      src={`https://maps.google.com/maps?q=${coords.lat},${coords.lng}&z=17&output=embed`}
-                      className="w-full h-full border-0"
-                      style={{
-                        filter: isDark
-                          ? 'grayscale(1) invert(1) brightness(0.85) contrast(1.15)'
-                          : 'grayscale(1) contrast(1.1)'
-                      }}
-                      allowFullScreen
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    />
+                    <>
+                      {!mapLoaded && (
+                        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-neutral-50 dark:bg-[#111118]">
+                          <div className="w-6 h-6 border-2 border-neutral-200 dark:border-white/10 border-t-neutral-500 dark:border-t-white/50 rounded-full animate-spin" />
+                          <p className="text-xs text-neutral-400 dark:text-white/35 mt-3">Loading map...</p>
+                        </div>
+                      )}
+                      <iframe
+                        title="Event Location"
+                        src={`https://maps.google.com/maps?q=${coords.lat},${coords.lng}&z=17&output=embed`}
+                        className={`w-full h-full border-0 transition-opacity duration-500 ${mapLoaded ? 'opacity-100' : 'opacity-0'}`}
+                        style={{
+                          filter: isDark
+                            ? 'grayscale(1) invert(1) brightness(0.85) contrast(1.15)'
+                            : 'grayscale(1) contrast(1.1)'
+                        }}
+                        onLoad={() => setMapLoaded(true)}
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                      />
+                    </>
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
                       {isGeocoding ? (
