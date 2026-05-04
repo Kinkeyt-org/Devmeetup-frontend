@@ -88,7 +88,7 @@ export default function Design() {
       {/* HERO SECTION */}
       <section className="relative w-full h-[85vh] min-h-[500px]">
         <img
-          src="https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2000&auto=format&fit=crop"
+          src="https://images.unsplash.com/photo-1652449823136-b279fbe5dfd3?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Design banner"
           className="w-full h-full object-cover"
         />
