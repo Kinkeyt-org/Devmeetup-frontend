@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import { getEventDetails } from '../api/event';
 import { bookEvent } from '../api/ticket';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -22,6 +23,8 @@ const getTagIcon = (tag) => {
 };
 
 const EventDetails = () => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -294,8 +297,12 @@ const EventDetails = () => {
                     <iframe
                       title="Event Location"
                       src={`https://maps.google.com/maps?q=${coords.lat},${coords.lng}&z=17&output=embed`}
-                      className="w-full h-full border-0 dark:brightness-[0.75] dark:invert dark:contrast-[1.1] dark:hue-rotate-[200deg] dark:saturate-[0.3]"
-                      style={{ filter: 'inherit' }}
+                      className="w-full h-full border-0"
+                      style={{
+                        filter: isDark
+                          ? 'grayscale(1) invert(1) brightness(0.85) contrast(1.15)'
+                          : 'grayscale(1) contrast(1.1)'
+                      }}
                       allowFullScreen
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
