@@ -43,9 +43,28 @@ const EventsPage = () => {
     }
 
     try {
-      const data = await getEvents("upcoming", 1, 9);
+      const options = filter !== "all" ? { category: filter } : {};
+      const data = await getEvents("upcoming", 1, 20, options);
       // Update state with fetched events
-      const newEvents = Array.isArray(data.events) ? data.events : [];
+      let newEvents = Array.isArray(data.events) ? data.events : [];
+
+      // Fallback: If backend ignored category parameter, perform local filtering
+      if (filter !== "all") {
+        const isBackendFiltering = newEvents.length === 0 || newEvents.every(e => 
+          (e.category && e.category.toLowerCase() === filter.toLowerCase()) || 
+          (e.tags && (typeof e.tags === 'string' ? e.tags.toLowerCase().includes(filter.toLowerCase()) : e.tags.includes(filter)))
+        );
+        
+        if (!isBackendFiltering) {
+          newEvents = newEvents.filter(e => {
+            const titleMatch = e.title?.toLowerCase().includes(filter.toLowerCase());
+            const descMatch = e.description?.toLowerCase().includes(filter.toLowerCase());
+            const catMatch = e.category?.toLowerCase() === filter.toLowerCase();
+            const tagMatch = e.tags && (typeof e.tags === 'string' ? e.tags.toLowerCase().includes(filter.toLowerCase()) : e.tags.includes(filter));
+            return titleMatch || descMatch || catMatch || tagMatch;
+          });
+        }
+      }
 
       setEvents(newEvents.slice(0, 9));
     } catch (err) {
@@ -152,12 +171,19 @@ const EventsPage = () => {
               return (
                 <button
                   key={cat.name}
-                  className="flex flex-col items-center gap-3 p-4 rounded-2xl border border-neutral-100 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition group"
+                  onClick={() => setFilter(filter === cat.name ? "all" : cat.name)}
+                  className={`flex flex-col items-center gap-3 p-4 rounded-2xl border transition group ${
+                    filter === cat.name 
+                      ? "border-neutral-900 dark:border-white bg-neutral-50 dark:bg-white/10" 
+                      : "border-neutral-100 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-900"
+                  }`}
                 >
                   <div className="w-12 h-12 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center group-hover:scale-110 transition duration-300">
                     <Icon size={20} className="text-neutral-600 dark:text-neutral-400" />
                   </div>
-                  <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
+                  <span className={`text-xs font-medium ${
+                    filter === cat.name ? "text-neutral-900 dark:text-white" : "text-neutral-600 dark:text-neutral-400"
+                  }`}>
                     {cat.name}
                   </span>
                 </button>
