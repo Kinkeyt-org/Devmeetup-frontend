@@ -43,7 +43,7 @@ export const getEvents = async (
   perPage = 10,
   options = {}
 ) => {
-  const { lat, lng, radius, category } = options;
+  const { lat, lng, radius} = options;
 
   // Start building the request URL with basic params
   let url = `/events?sort=${type}&page=${page}&perPage=${perPage}`;
@@ -57,10 +57,6 @@ export const getEvents = async (
   // If a radius is specified, include it (for distance filtering)
   if (radius) {
     url += `&radius=${radius}`;
-  }
-
-  if (category && category !== "all") {
-    url += `&category=${encodeURIComponent(category)}`;
   }
 
   // Make the API request
