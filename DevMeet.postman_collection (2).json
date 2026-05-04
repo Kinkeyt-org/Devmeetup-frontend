@@ -1,0 +1,1188 @@
+{
+  "info": {
+    "_postman_id": "0475f0be-aee5-434e-a33d-d5e82559cb48",
+    "name": "DevMeet",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53369804",
+    "_collection_link": "https://go.postman.co/collection/53369804-0475f0be-aee5-434e-a33d-d5e82559cb48?source=collection_link"
+  },
+  "item": [
+    { 
+      "name": "Events",
+      "item": [
+        {
+          "name": "Create Event",
+          "request": {
+            "auth": {
+              "type": "bearer", 
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "3|SehI9k3KT3flpujafo1bZdQFPT6c9epUEzm4xM3t9af3c985",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"WEB3 CONFERENCE\",\r\n    \"description\":\"A gathering to discuss about web3 matters\",\r\n    \"location\":\"Lagos\",\r\n    \"capacity\":100,\r\n    \"date\": \"2026-04-15\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/events",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "events"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Create Event success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"title\": \"CYBER SECURITY\",\r\n    \"description\":\"A gathering to discuss about how scecurity online matters\",\r\n    \"location\":\"Lagos\",\r\n    \"capacity\":100,\r\n    \"date\": \"2026-05-15\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/events",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "events"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8080"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.5.3"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 27 Mar 2026 08:51:49 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Event created successfully\",\n    \"details\": {\n        \"title\": \"CYBER SECURITY\",\n        \"description\": \"A gathering to discuss about how scecurity online matters\",\n        \"location\": \"Lagos\",\n        \"capacity\": 100,\n        \"date\": \"2026-05-15\",\n        \"organizer_id\": \"5ae413d6-fd81-4aab-a25f-8dc7ab7d65cc\",\n        \"id\": \"17d4e0d9-bfbc-44d6-ae2b-5f1b41690e24\",\n        \"updated_at\": \"2026-03-27T08:51:49.000000Z\",\n        \"created_at\": \"2026-03-27T08:51:49.000000Z\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Show all Events",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/events",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "events"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Show all Events Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/events",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "events"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8080"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.5.3"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 27 Mar 2026 08:52:20 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"current_page\": 1,\n    \"data\": [\n        {\n            \"id\": \"78adf515-f284-4211-8542-81ef562f97aa\",\n            \"organizer_id\": \"5ae413d6-fd81-4aab-a25f-8dc7ab7d65cc\",\n            \"title\": \"WEB3 CONFERENCE\",\n            \"description\": \"A gathering to discuss about web3 matters\",\n            \"location\": \"Lagos\",\n            \"capacity\": 100,\n            \"date\": \"2026-04-15\",\n            \"created_at\": \"2026-03-26T22:36:52.000000Z\",\n            \"updated_at\": \"2026-03-26T23:02:30.000000Z\"\n        },\n        {\n            \"id\": \"17d4e0d9-bfbc-44d6-ae2b-5f1b41690e24\",\n            \"organizer_id\": \"5ae413d6-fd81-4aab-a25f-8dc7ab7d65cc\",\n            \"title\": \"CYBER SECURITY\",\n            \"description\": \"A gathering to discuss about how scecurity online matters\",\n            \"location\": \"Lagos\",\n            \"capacity\": 100,\n            \"date\": \"2026-05-15\",\n            \"created_at\": \"2026-03-27T08:51:49.000000Z\",\n            \"updated_at\": \"2026-03-27T08:51:49.000000Z\"\n        }\n    ],\n    \"first_page_url\": \"http://localhost:8080/api/events?page=1\",\n    \"from\": 1,\n    \"last_page\": 1,\n    \"last_page_url\": \"http://localhost:8080/api/events?page=1\",\n    \"links\": [\n        {\n            \"url\": null,\n            \"label\": \"&laquo; Previous\",\n            \"page\": null,\n            \"active\": false\n        },\n        {\n            \"url\": \"http://localhost:8080/api/events?page=1\",\n            \"label\": \"1\",\n            \"page\": 1,\n            \"active\": true\n        },\n        {\n            \"url\": null,\n            \"label\": \"Next &raquo;\",\n            \"page\": null,\n            \"active\": false\n        }\n    ],\n    \"next_page_url\": null,\n    \"path\": \"http://localhost:8080/api/events\",\n    \"per_page\": 10,\n    \"prev_page_url\": null,\n    \"to\": 2,\n    \"total\": 2\n}"
+            }
+          ]
+        },
+        {
+          "name": "Show specific event",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/events/78adf515-f284-4211-8542-81ef562f97aa",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "events",
+                "78adf515-f284-4211-8542-81ef562f97aa"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Show specific event success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/events/78adf515-f284-4211-8542-81ef562f97aa",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "events",
+                    "78adf515-f284-4211-8542-81ef562f97aa"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8080"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.5.3"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 27 Mar 2026 08:52:48 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Found Event details\",\n    \"data\": {\n        \"details\": {\n            \"id\": \"78adf515-f284-4211-8542-81ef562f97aa\",\n            \"organizer_id\": \"5ae413d6-fd81-4aab-a25f-8dc7ab7d65cc\",\n            \"title\": \"WEB3 CONFERENCE\",\n            \"description\": \"A gathering to discuss about web3 matters\",\n            \"location\": \"Lagos\",\n            \"capacity\": 100,\n            \"date\": \"2026-04-15\",\n            \"created_at\": \"2026-03-26T22:36:52.000000Z\",\n            \"updated_at\": \"2026-03-26T23:02:30.000000Z\"\n        }\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update an Event",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "3|SehI9k3KT3flpujafo1bZdQFPT6c9epUEzm4xM3t9af3c985",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Blockchain Dev\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/events/bb9790f7-c28e-41bb-a7c1-94345fcda52c",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "events",
+                "bb9790f7-c28e-41bb-a7c1-94345fcda52c"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Update an Event success",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"title\": \"Blockchain Dev\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/events/78adf515-f284-4211-8542-81ef562f97aa",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "events",
+                    "78adf515-f284-4211-8542-81ef562f97aa"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8080"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.5.3"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 27 Mar 2026 08:53:46 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"success\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Event",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "3|SehI9k3KT3flpujafo1bZdQFPT6c9epUEzm4xM3t9af3c985",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/events/bb9790f7-c28e-41bb-a7c1-94345fcda52c",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "events",
+                "bb9790f7-c28e-41bb-a7c1-94345fcda52c"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Delete Event success",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/events/78adf515-f284-4211-8542-81ef562f97aa",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "events",
+                    "78adf515-f284-4211-8542-81ef562f97aa"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8080"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.5.3"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 27 Mar 2026 08:54:15 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Event deleted successfully.\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tickets",
+      "item": [
+        {
+          "name": "Create Booking Ticket",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "4|6uzj10SOX56Og6rGRSPlRKiPrGxNClcuDshJn2aV4a2da5c1",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/event/78adf515-f284-4211-8542-81ef562f97aa/book",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "event",
+                "78adf515-f284-4211-8542-81ef562f97aa",
+                "book"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Create Booking Ticket success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/event/17d4e0d9-bfbc-44d6-ae2b-5f1b41690e24/book",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "event",
+                    "17d4e0d9-bfbc-44d6-ae2b-5f1b41690e24",
+                    "book"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8080"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.5.3"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 27 Mar 2026 09:05:38 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Ticket has been created\",\n    \"ticket-details\": [\n        {\n            \"id\": \"b66c1f42-a826-4c49-8706-e3f9c26a7ad3\",\n            \"event_id\": \"17d4e0d9-bfbc-44d6-ae2b-5f1b41690e24\",\n            \"attendee_id\": \"a762997a-31fc-4a7f-bdff-4a92d0e2e5e4\",\n            \"ticket_code\": \"nXwMYRBAfa\",\n            \"status\": \"booked\",\n            \"created_at\": \"2026-03-27T09:05:38.000000Z\",\n            \"updated_at\": \"2026-03-27T09:05:38.000000Z\"\n        }\n    ],\n    \"capacity-left\": 99\n}"
+            }
+          ]
+        },
+        {
+          "name": "Fetch all of Users tickets",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "4|6uzj10SOX56Og6rGRSPlRKiPrGxNClcuDshJn2aV4a2da5c1",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/my-tickets",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "my-tickets"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Fetch all of Users tickets success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/my-tickets",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "my-tickets"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8080"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.5.3"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 27 Mar 2026 09:06:43 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Tickets fetched Successfully\",\n    \"data\": [\n        {\n            \"id\": \"b66c1f42-a826-4c49-8706-e3f9c26a7ad3\",\n            \"event_id\": \"17d4e0d9-bfbc-44d6-ae2b-5f1b41690e24\",\n            \"attendee_id\": \"a762997a-31fc-4a7f-bdff-4a92d0e2e5e4\",\n            \"ticket_code\": \"nXwMYRBAfa\",\n            \"status\": \"booked\",\n            \"created_at\": \"2026-03-27T09:05:38.000000Z\",\n            \"updated_at\": \"2026-03-27T09:05:38.000000Z\",\n            \"event\": {\n                \"id\": \"17d4e0d9-bfbc-44d6-ae2b-5f1b41690e24\",\n                \"organizer_id\": \"5ae413d6-fd81-4aab-a25f-8dc7ab7d65cc\",\n                \"title\": \"CYBER SECURITY\",\n                \"description\": \"A gathering to discuss about how scecurity online matters\",\n                \"location\": \"Lagos\",\n                \"capacity\": 98,\n                \"date\": \"2026-05-15\",\n                \"created_at\": \"2026-03-27T08:51:49.000000Z\",\n                \"updated_at\": \"2026-03-27T09:06:28.000000Z\"\n            }\n        },\n        {\n            \"id\": \"49658872-845c-4fe3-8b53-c893dca9338f\",\n            \"event_id\": \"17d4e0d9-bfbc-44d6-ae2b-5f1b41690e24\",\n            \"attendee_id\": \"a762997a-31fc-4a7f-bdff-4a92d0e2e5e4\",\n            \"ticket_code\": \"Ig1G835XlZ\",\n            \"status\": \"booked\",\n            \"created_at\": \"2026-03-27T09:06:28.000000Z\",\n            \"updated_at\": \"2026-03-27T09:06:28.000000Z\",\n            \"event\": {\n                \"id\": \"17d4e0d9-bfbc-44d6-ae2b-5f1b41690e24\",\n                \"organizer_id\": \"5ae413d6-fd81-4aab-a25f-8dc7ab7d65cc\",\n                \"title\": \"CYBER SECURITY\",\n                \"description\": \"A gathering to discuss about how scecurity online matters\",\n                \"location\": \"Lagos\",\n                \"capacity\": 98,\n                \"date\": \"2026-05-15\",\n                \"created_at\": \"2026-03-27T08:51:49.000000Z\",\n                \"updated_at\": \"2026-03-27T09:06:28.000000Z\"\n            }\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Cancel Ticket",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "4|6uzj10SOX56Og6rGRSPlRKiPrGxNClcuDshJn2aV4a2da5c1",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/tickets/7b4deff0-82da-4978-81ac-2123bb6e6e5b/cancel",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tickets",
+                "7b4deff0-82da-4978-81ac-2123bb6e6e5b",
+                "cancel"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Cancel Ticket success",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/tickets/b66c1f42-a826-4c49-8706-e3f9c26a7ad3/cancel",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tickets",
+                    "b66c1f42-a826-4c49-8706-e3f9c26a7ad3",
+                    "cancel"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8080"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.5.3"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 27 Mar 2026 09:07:50 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Ticket has been successfully cancelled\",\n    \"capacity_left\": 99\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "RegisterUser",
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|a3rdBUdxkC9XYJQEMMbX5tUXKsr0qGFlvdh8Claa65d0d0d7",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Kolise\",\r\n    \"email\": \"kolise@gmail.com\",\r\n    \"password\":\"Emmanuelani234\",\r\n    \"password_confirmation\":\"Emmanuelani234\",\r\n    \"role\": \"organizer\"\r\n   \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "register"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Register",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"Emeka\",\r\n    \"email\": \"okoye@gmail.com\",\r\n    \"password\":\"Emeka234\",\r\n    \"password_confirmation\":\"Emeka234\",\r\n    \"role\": \"organizer\"\r\n   \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/register",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "register"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8080"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.5.3"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 27 Mar 2026 08:50:29 GMT"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                }
+              ],
+              "cookie": [],
+              "body": null
+            }
+          ]
+        },
+        {
+          "name": "LoginUser",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|kD019knrQeI02rHYiOLMugiEj8jnKPAiE1o2jnEP08ccf168",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"anikolise@gmail.com\",\r\n    \"password\":\"Emmanuelani234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "LoginSuccess",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"anikolise@gmail.com\",\r\n    \"password\":\"Emmanuelani234\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8080"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.5.3"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 27 Mar 2026 08:47:40 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"logged in\",\n    \"user\": {\n        \"id\": \"a762997a-31fc-4a7f-bdff-4a92d0e2e5e4\",\n        \"name\": \"Emmanuel\",\n        \"email\": \"anikolise@gmail.com\",\n        \"email_verified_at\": null,\n        \"role\": \"attendee\",\n        \"created_at\": \"2026-03-26T21:52:04.000000Z\",\n        \"updated_at\": \"2026-03-26T21:52:04.000000Z\"\n    },\n    \"token\": \"5|xN7IszBuVY99CW6ZbmaWf2oDCVpl6Klax1cjINB9c82bacb3\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
