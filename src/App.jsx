@@ -23,6 +23,9 @@ import Upgrade from "./pages/Upgrade";
 import OrganizerOnboarding from "./pages/OrganizerOnboarding";
 import Tech from "./pages/categories/Tech";
 import Design from "./pages/categories/Design";
+import Business from "./pages/categories/Business";
+import Lifestyle from "./pages/categories/Lifestyle";
+import Workshops from "./pages/categories/Workshops";
 
 
 /* ================= APP CONTENT ================= */
@@ -105,6 +108,9 @@ const AppContent = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/categories/tech" element={<Tech />} />
           <Route path="/categories/design" element={<Design />} />
+          <Route path="/categories/business" element={<Business />} />
+          <Route path="/categories/lifestyle" element={<Lifestyle />} />
+          <Route path="/categories/workshops" element={<Workshops />} />
           <Route path="/my-tickets" element={<MyTickets />} />
           <Route path="/events/:id" element={<EventDetails />} />
           <Route path="/upgrade" element={<Upgrade />} />
@@ -115,6 +121,9 @@ const AppContent = () => {
           <Routes>
             <Route path="/categories/tech" element={<Tech />} />
             <Route path="/categories/design" element={<Design />} />
+            <Route path="/categories/business" element={<Business />} />
+            <Route path="/categories/lifestyle" element={<Lifestyle />} />
+            <Route path="/categories/workshops" element={<Workshops />} />
           </Routes>
         )}
       </div>
