@@ -43,10 +43,6 @@ const Dashboard = () => {
     fetchEvents();
   }, []);
 
-  const handleCreateEvent = () => {
-    if (user?.role !== "organizer") return navigate("/become-organizer");
-    navigate("/events/create");
-  };
 
   const handleFindNearbyEvents = useCallback(() => {
     if (!navigator.geolocation) {
