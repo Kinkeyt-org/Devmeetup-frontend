@@ -49,7 +49,7 @@ const MOCK_EVENTS = [
     title: "Future of Product Design",
     event_date_human: "Tue, Nov 22 • 10:00 AM",
     location: "San Francisco, CA",
-    image: "https://images.unsplash.com/photo-1507238692062-5a042e987975?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1694903089438-bf28d4697d9a?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     type: "physical",
   }
 ];
