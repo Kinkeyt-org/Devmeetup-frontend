@@ -79,7 +79,7 @@ export default function Lifestyle() {
       {isModal && (
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 md:top-6 md:right-6 z-[60] p-2 bg-black/50 hover:bg-black/80 text-white rounded-full backdrop-blur-md"
+          className="absolute top-4 right-4 md:top-6 md:right-6 z-60 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full backdrop-blur-md"
         >
           <X size={24} />
         </button>
@@ -93,7 +93,7 @@ export default function Lifestyle() {
           className="w-full h-full object-cover"
         />
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-[#111111]/80 to-transparent">
+        <div className="absolute inset-0 bg-linear-to-t from-[#111111] via-[#111111]/80 to-transparent">
           <div className="w-full h-full max-w-7xl mx-auto flex flex-col justify-end px-6 pb-12 md:pb-20">
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 md:mb-6">Lifestyle</h1>
             <div className="flex flex-wrap items-center gap-4 text-sm md:text-base text-neutral-300 font-medium mb-4 md:mb-6">
@@ -138,7 +138,7 @@ export default function Lifestyle() {
 
   if (isModal) {
     return (
-      <div className="fixed inset-0 z-[100] flex bg-neutral-50 dark:bg-[#111111]">
+      <div className="fixed inset-0 z-100 flex bg-neutral-50 dark:bg-[#111111]">
         <div className="w-full h-full relative">
           {content}
         </div>
