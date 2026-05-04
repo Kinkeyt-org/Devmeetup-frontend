@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { getEvents } from "../api/event";
 import { Helmet } from "react-helmet-async";
 import EventCard from "../components/EventCard";
@@ -16,21 +17,22 @@ import {
 } from "lucide-react";
 
 const CATEGORIES = [
-  { name: "Technology", icon: Cpu },
-  { name: "Design", icon: Palette },
-  { name: "Business", icon: Briefcase },
-  { name: "Workshops", icon: Wrench },
-  { name: "Lifestyle", icon: Smile },
-  { name: "Music", icon: MusicIcon },
-  { name: "Education", icon: GraduationCap },
-  { name: "Health", icon: Heart },
-  { name: "Social", icon: UsersIcon },
+  { name: "Technology", path: "tech", icon: Cpu },
+  { name: "Design", path: "design", icon: Palette },
+  { name: "Business", path: "business", icon: Briefcase },
+  { name: "Workshops", path: "workshops", icon: Wrench },
+  { name: "Lifestyle", path: "lifestyle", icon: Smile },
+  { name: "Music", path: "music", icon: MusicIcon },
+  { name: "Education", path: "education", icon: GraduationCap },
+  { name: "Health", path: "health", icon: Heart },
+  { name: "Social", path: "social", icon: UsersIcon },
 ];
 
 /* ================= PAGE ================= */
 const EventsPage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   // FILTER STATE
   const [filter, setFilter] = useState("all");
@@ -150,8 +152,10 @@ const EventsPage = () => {
             {CATEGORIES.map((cat) => {
               const Icon = cat.icon;
               return (
-                <button
+                <Link
                   key={cat.name}
+                  to={`/categories/${cat.path}`}
+                  state={{ backgroundLocation: location }}
                   className="flex flex-col items-center gap-3 p-4 rounded-2xl border border-neutral-100 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition group"
                 >
                   <div className="w-12 h-12 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center group-hover:scale-110 transition duration-300">
@@ -160,7 +164,7 @@ const EventsPage = () => {
                   <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
                     {cat.name}
                   </span>
-                </button>
+                </Link>
               );
             })}
           </div>

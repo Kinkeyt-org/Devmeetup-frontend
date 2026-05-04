@@ -21,11 +21,15 @@ import EventsPage from "./pages/EventsPage";
 import EventDetails from "./pages/EventDetails";
 import Upgrade from "./pages/Upgrade";
 import OrganizerOnboarding from "./pages/OrganizerOnboarding";
+import Tech from "./pages/categories/Tech";
+import Design from "./pages/categories/Design";
 
 
 /* ================= APP CONTENT ================= */
 const AppContent = () => {
   const location = useLocation();
+  const backgroundLocation = location.state?.backgroundLocation;
+
   const [user, setUser] = useState(() => {
     try {
       return localStorage.getItem("token") || null;
@@ -73,7 +77,7 @@ const AppContent = () => {
       <div className="relative z-10">
         {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
 
-        <Routes>
+        <Routes location={backgroundLocation || location}>
           <Route
             path="/"
             element={
@@ -99,11 +103,20 @@ const AppContent = () => {
           <Route path="/search" element={<Search />} />
           <Route path="/events/create" element={<CreatePage />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/categories/tech" element={<Tech />} />
+          <Route path="/categories/design" element={<Design />} />
           <Route path="/my-tickets" element={<MyTickets />} />
           <Route path="/events/:id" element={<EventDetails />} />
           <Route path="/upgrade" element={<Upgrade />} />
           <Route path="/become-organizer" element={<OrganizerOnboarding />} />
         </Routes>
+
+        {backgroundLocation && (
+          <Routes>
+            <Route path="/categories/tech" element={<Tech />} />
+            <Route path="/categories/design" element={<Design />} />
+          </Routes>
+        )}
       </div>
     </>
   );
