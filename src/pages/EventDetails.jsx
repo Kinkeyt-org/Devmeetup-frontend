@@ -181,8 +181,8 @@ const EventDetails = () => {
 
   if (!event) {
     return (
-      <div className="min-h-screen bg-neutral-950 flex items-center justify-center">
-        <p className="text-white/40 text-sm">Event not found</p>
+      <div className="min-h-screen bg-white dark:bg-neutral-950 flex items-center justify-center">
+        <p className="text-neutral-400 dark:text-white/40 text-sm">Event not found</p>
       </div>
     );
   }  const bannerSrc = event.banner || event.image || event.avatar;
@@ -194,25 +194,7 @@ const EventDetails = () => {
         <meta name="description" content={event.description || "Join this amazing event on DevMeet."} />
       </Helmet>
 
-      <div id="event-details-page" className="min-h-screen relative overflow-x-hidden font-sans bg-[#0a0a0f]">
-        {/* Full-page blurred image backdrop */}
-        {bannerSrc && (
-          <div
-            className="fixed inset-0 z-0 pointer-events-none"
-            aria-hidden="true"
-          >
-            <img
-              src={bannerSrc}
-              alt=""
-              className="w-full h-full object-cover"
-              style={{ filter: 'blur(90px) saturate(1.5)', transform: 'scale(1.25)', opacity: 0.45 }}
-            />
-            {/* Dark gradient overlay so text is readable */}
-            <div
-              className="absolute inset-0 bg-linear-to-b from-[#0a0a0f]/35 via-[#0a0a0f]/65 to-[#0a0a0f]/95 md:from-[#0a0a0f]/55 md:via-[#0a0a0f]/82 md:to-[#0a0a0f]/97"
-            />
-          </div>
-        )}
+      <div id="event-details-page" className="min-h-screen relative overflow-x-hidden font-sans bg-white dark:bg-[#0a0a0f]">
 
         {/* Scrollable content */}
         <div className="relative z-10 max-w-7xl mx-auto min-h-screen pb-32 px-5 md:px-8 lg:px-12">
@@ -220,30 +202,27 @@ const EventDetails = () => {
           <div className="flex items-center justify-between pt-4 md:pt-12 pb-4">
             <button
               onClick={() => navigate(-1)}
-              className="w-9 h-9 rounded-full flex items-center justify-center transition-colors"
-              style={{ background: 'rgba(255,255,255,0.08)' }}
+              className="w-9 h-9 rounded-full flex items-center justify-center transition-colors bg-neutral-100 dark:bg-white/8"
             >
-              <ArrowLeft size={18} color="white" />
+              <ArrowLeft size={18} className="text-neutral-700 dark:text-white" />
             </button>
             <div className="flex items-center gap-2">
               {/* MORE MENU */}
               <div className="relative">
                 <button
                   onClick={() => setShowMenu(v => !v)}
-                  className="w-9 h-9 rounded-full flex items-center justify-center"
-                  style={{ background: 'rgba(255,255,255,0.08)' }}
+                  className="w-9 h-9 rounded-full flex items-center justify-center bg-neutral-100 dark:bg-white/8"
                 >
-                  <MoreHorizontal size={18} color="white" />
+                  <MoreHorizontal size={18} className="text-neutral-700 dark:text-white" />
                 </button>
                 {showMenu && (
                   <div
-                    className="absolute right-0 top-11 z-50 min-w-[180px] rounded-2xl border border-white/10 overflow-hidden"
-                    style={{ background: 'rgba(20,20,28,0.95)', backdropFilter: 'blur(16px)' }}
+                    className="absolute right-0 top-11 z-50 min-w-[180px] rounded-2xl border border-neutral-200 dark:border-white/10 overflow-hidden bg-white dark:bg-neutral-900/95 backdrop-blur-2xl"
                   >
                     <button
                       onClick={handleDownloadPng}
                       disabled={isDownloading}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-white/80 hover:bg-white/10 transition disabled:opacity-50"
+                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 dark:text-white/80 hover:bg-neutral-100 dark:hover:bg-white/10 transition disabled:opacity-50"
                     >
                       <ImageDown size={15} className="shrink-0" />
                       {isDownloading ? 'Downloading...' : 'Download as PNG'}
@@ -253,10 +232,9 @@ const EventDetails = () => {
               </div>
               <button
                 onClick={handleShare}
-                className="w-9 h-9 rounded-full flex items-center justify-center"
-                style={{ background: 'rgba(255,255,255,0.08)' }}
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-neutral-100 dark:bg-white/8"
               >
-                <ExternalLink size={16} color="white" />
+                <ExternalLink size={16} className="text-neutral-700 dark:text-white" />
               </button>
             </div>
           </div>
@@ -288,7 +266,7 @@ const EventDetails = () => {
               
               {/* TITLE */}
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-                <h1 className="text-white leading-tight flex-1 font-semibold text-xl md:text-2xl lg:text-3xl tracking-tight">
+                <h1 className="text-neutral-900 dark:text-white leading-tight flex-1 font-semibold text-xl md:text-2xl lg:text-3xl tracking-tight">
                   {event.title}
                 </h1>
               </div>
@@ -309,9 +287,9 @@ const EventDetails = () => {
                     <Icon
                       size={14}
                       strokeWidth={2}
-                      style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }}
+                      className="text-neutral-400 dark:text-white/45 shrink-0"
                     />
-                    <span className="text-[12px] md:text-[13.5px] font-normal text-white/70 leading-[1.4]">
+                    <span className="text-[12px] md:text-[13.5px] font-normal text-neutral-600 dark:text-white/70 leading-[1.4]">
                       {value}
                     </span>
                   </div>
@@ -321,7 +299,7 @@ const EventDetails = () => {
               {/* DESCRIPTION */}
               {event.description && (
                 <div className="mt-6 lg:mt-8">
-                  <p className="text-xs md:text-sm font-normal text-white/60 leading-[1.7] lg:text-[15px]">
+                  <p className="text-xs md:text-sm font-normal text-neutral-500 dark:text-white/60 leading-[1.7] lg:text-[15px]">
                     {event.description}
                   </p>
                 </div>
@@ -330,14 +308,15 @@ const EventDetails = () => {
               {/* MAP SECTION */}
               <div className="mt-8 lg:mt-10">
                 <div className="flex items-center gap-2 mb-3">
-                  <Compass size={14} style={{ color: 'rgba(255,255,255,0.4)' }} />
-                  <span className="text-[11px] md:text-[13px] font-semibold text-white/50 tracking-[0.06em] uppercase">
+                  <Compass size={14} className="text-neutral-400 dark:text-white/40" />
+                  <span className="text-[11px] md:text-[13px] font-semibold text-neutral-500 dark:text-white/50 tracking-[0.06em] uppercase">
                     Location
                   </span>
                 </div>
                 <div
                   className="overflow-hidden"
-                  style={{ borderRadius: 16, height: 250, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                  className="rounded-2xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4"
+                  style={{ height: 250 }}
                 >
                   {coords.lat && coords.lng ? (
                     <Map
@@ -350,7 +329,7 @@ const EventDetails = () => {
                         <MarkerContent>
                           <div className="relative flex items-center justify-center">
                             <div className="absolute h-12 w-12 animate-ping rounded-full bg-white/10" />
-                            <div className="relative h-7 w-7 rounded-full border-[5px] border-white bg-neutral-900 shadow-xl" />
+                            <div className="relative h-7 w-7 rounded-full border-[5px] border-neutral-900 dark:border-white bg-white dark:bg-neutral-900 shadow-xl" />
                           </div>
                         </MarkerContent>
                         <MarkerPopup>
@@ -367,10 +346,10 @@ const EventDetails = () => {
                       {isGeocoding ? (
                         <div className="flex flex-col items-center gap-3">
                           <div className="w-6 h-6 border-2 border-white/10 border-t-white/50 rounded-full animate-spin" />
-                          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>Locating venue...</p>
+                          <p className="text-xs text-neutral-400 dark:text-white/35">Locating venue...</p>
                         </div>
                       ) : (
-                        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.25)' }}>Map preview unavailable</p>
+                        <p className="text-xs text-neutral-300 dark:text-white/25">Map preview unavailable</p>
                       )}
                     </div>
                   )}
@@ -382,16 +361,7 @@ const EventDetails = () => {
                 <button
                   onClick={handleBookEvent}
                   disabled={isBooking}
-                  className="w-full flex items-center justify-center transition-opacity hover:opacity-90 active:scale-[0.98] font-semibold text-[15px] tracking-[0.06em] uppercase"
-                  style={{
-                    background: 'white',
-                    color: '#0a0a0f',
-                    borderRadius: 14,
-                    height: 54,
-                    opacity: isBooking ? 0.6 : 1,
-                    border: 'none',
-                    cursor: isBooking ? 'not-allowed' : 'pointer',
-                  }}
+                  className={`w-full flex items-center justify-center transition-opacity hover:opacity-90 active:scale-[0.98] font-semibold text-[15px] tracking-[0.06em] uppercase rounded-[14px] h-[54px] border-none bg-neutral-900 dark:bg-white text-white dark:text-[#0a0a0f] ${isBooking ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
                 >
                   {isBooking ? (
                     <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
@@ -407,9 +377,8 @@ const EventDetails = () => {
 
         {/* FIXED BOTTOM — RSVP BUTTON (Mobile Only) */}
         <div
-          className="fixed bottom-0 left-0 right-0 z-20 flex justify-center md:hidden"
+          className="fixed bottom-0 left-0 right-0 z-20 flex justify-center md:hidden bg-gradient-to-t from-white/98 dark:from-[#0a0a0f]/98 via-white/80 dark:via-[#0a0a0f]/80 to-transparent"
           style={{
-            background: 'linear-gradient(to top, rgba(10,10,15,0.98) 60%, transparent)',
             paddingBottom: 'env(safe-area-inset-bottom, 0px)',
           }}
         >
@@ -417,16 +386,7 @@ const EventDetails = () => {
             <button
               onClick={handleBookEvent}
               disabled={isBooking}
-              className="w-full flex items-center justify-center transition-opacity active:scale-[0.98] font-semibold text-[15px] tracking-[0.06em] uppercase"
-              style={{
-                background: 'white',
-                color: '#0a0a0f',
-                borderRadius: 14,
-                height: 54,
-                opacity: isBooking ? 0.6 : 1,
-                border: 'none',
-                cursor: isBooking ? 'not-allowed' : 'pointer',
-              }}
+              className={`w-full flex items-center justify-center transition-opacity active:scale-[0.98] font-semibold text-[15px] tracking-[0.06em] uppercase rounded-[14px] h-[54px] border-none bg-neutral-900 dark:bg-white text-white dark:text-[#0a0a0f] ${isBooking ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
             >
               {isBooking ? (
                 <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
