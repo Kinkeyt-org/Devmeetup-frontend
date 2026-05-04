@@ -5,22 +5,12 @@ import { bookEvent } from '../api/ticket';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import { toast } from 'react-hot-toast';
 import {
-  ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon,
-  Music, Share2, MoreHorizontal, ExternalLink, Compass, ImageDown
+  ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon,  Share2, MoreHorizontal, ExternalLink, Compass, ImageDown
 } from 'lucide-react';
 import { Helmet } from "react-helmet-async";
 import EventDetailsSkeleton from '../components/EventDetailsSkeleton';
 import { toPng } from 'html-to-image';
 
-
-
-// Tag icon resolver — maps common tag strings to Lucide icons
-const getTagIcon = (tag) => {
-  const t = tag.toLowerCase().trim();
-  if (t.includes('music') || t.includes('concert') || t.includes('dj') || t.includes('live')) return Music;
-  if (t.includes('tech') || t.includes('code') || t.includes('dev')) return TagIcon;
-  return TagIcon;
-};
 
 const EventDetails = () => {
   const { theme } = useTheme();
@@ -33,7 +23,6 @@ const EventDetails = () => {
   const [isBooking, setIsBooking] = useState(false);
   const [coords, setCoords] = useState({ lat: null, lng: null });
   const [isGeocoding, setIsGeocoding] = useState(false);
-  const [dominantColor, setDominantColor] = useState('20, 10, 40');
   const [showMenu, setShowMenu] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);

@@ -14,13 +14,9 @@ const Home = () => {
   const [user, setUser] = useState(null);
   const [featuredEvents, setFeaturedEvents] = useState([]);
   const [specialEvents, setSpecialEvents] = useState([]);
-  const [nearbyEvents, setNearbyEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [specialLoading, setSpecialLoading] = useState(true);
-  const [nearbyLoading, setNearbyLoading] = useState(false);
 
-  // Here is the 'Brain' working. We grab the user's location.
-  const { coords, error: locationError } = useLocation();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -51,30 +47,6 @@ const Home = () => {
     fetchEvents();
     fetchSpecial();
   }, []);
-
-  // This is the trigger: When we finally get 'coords', we ask Emma for local stuff.
-  // useEffect(() => {
-  //   if (coords) {
-  //     const fetchNearby = async () => {
-  //       setNearbyLoading(true);
-  //       try {
-  //         // We pass the lat/lng we got from the browser to Emma's API.
-  //         const data = await getEvents("upcoming", 1, 10, {
-  //           lat: coords.lat,
-  //           lng: coords.lng,
-  //           radius: 50, // 50km radius
-  //         });
-  //         setNearbyEvents(data.events);
-  //       } catch (err) {
-  //         console.error("Failed to fetch nearby events:", err);
-  //       } finally {
-  //         setNearbyLoading(false);
-  //       }
-  //     };
-
-  //     fetchNearby();
-  //   }
-  // }, [coords]);
 
   const handleHostEvent = () => {
     if (!user) return navigate("/login");
@@ -116,12 +88,6 @@ const Home = () => {
               </p>
 
               <div className="mt-6 flex justify-center lg:justify-start">
-                <button
-                  onClick={handleHostEvent}
-                  className="px-5 py-3 rounded-full bg-neutral-900 text-white dark:bg-white dark:text-black text-sm flex items-center gap-2 hover:opacity-90 transition"
-                >
-                  Host an Event <ArrowRight size={16} />
-                </button>
               </div>
             </div>
 
@@ -202,7 +168,7 @@ const Home = () => {
               <button
                 onClick={() => navigate("/events")}
                 aria-label="View all upcoming events"
-                className="text-sm px-4 py-2 rounded-full border border-neutral-200 dark:border-white/10 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition"
+                className="text-[0.7rem] px-4 py-2 rounded-full border border-neutral-200 dark:border-white/10 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition"
               >
                 View all
               </button>

@@ -15,7 +15,8 @@ import {
   Menu,
   X,
   LogOut,
-  ArrowRight
+  ArrowRight,
+  ArrowUp
 } from "lucide-react";
 
 
@@ -169,25 +170,36 @@ const Navbar = () => {
             )}
 
             {/* MOBILE BUTTON */}
-            <div className="flex md:hidden items-center gap-2">
-              <ThemeToggle />
-
-              {user && !isMobileMenuOpen && (
+              {!user?(
                 <Link
-                  to="/profile"
-                  className="w-8 h-8 rounded-full overflow-hidden border border-neutral-200 dark:border-neutral-800"
+                  className="px-4 md:hidden py-2 text-sm font-medium rounded-full flex gap-1  items-center bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-800 transition"
+                  to="/login"
                 >
-                  <img src={avatarSrc} className="w-full h-full object-cover" />
+                  sign in <ArrowRight size={14}/>
                 </Link>
-              )}
+              ):(
+              <div className="flex md:hidden items-center gap-2">
 
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="w-9 h-9 flex items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
-              >
-                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </button>
-            </div>
+                <ThemeToggle />
+                {user && !isMobileMenuOpen && (
+                  <Link
+                    to="/profile"
+                    className="w-8 h-8 rounded-full overflow-hidden border border-neutral-200 dark:border-neutral-800"
+                  >
+                    <img src={avatarSrc} className="w-full h-full object-cover" />
+                  </Link>
+                )}           
+                <button
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
+                >
+                  {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                </button>
+
+              </div>
+              )
+            
+              }
           </div>
         </div>
       </nav>

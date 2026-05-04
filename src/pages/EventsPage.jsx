@@ -169,13 +169,7 @@ const EventsPage = () => {
           {/* EMPTY STATE */}
           {!loading && events.length === 0 && (
             <div className="text-center py-20 text-neutral-500 border border-dashed rounded-4xl border-neutral-200 dark:border-neutral-800">
-              <p className="text-sm">No events found matching this filter.</p>
-              <button
-                onClick={() => setFilter("all")}
-                className="mt-4 text-xs text-black dark:text-white underline underline-offset-4"
-              >
-                Clear all filters
-              </button>
+              <p className="text-sm">No events found </p>
             </div>
           )}
 
@@ -183,7 +177,7 @@ const EventsPage = () => {
       </section>
 
       {/* CATEGORIES */}
-      <section className="mt-20 border-t border-neutral-100 dark:border-white/5 pt-16">
+      <section className="mt-20  border-neutral-100 dark:border-white/5 pt-16">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-8">
             <h2 className="text-xl md:text-2xl font-semibold mb-2">Browse by Category</h2>
