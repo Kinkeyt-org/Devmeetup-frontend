@@ -7,38 +7,11 @@ import {
   ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon,
   Music, Share2, MoreHorizontal, ExternalLink, Compass, ImageDown
 } from 'lucide-react';
-import { Map, MapMarker, MarkerContent, MapControls, MarkerPopup } from '@/components/ui/map';
 import { Helmet } from "react-helmet-async";
 import EventDetailsSkeleton from '../components/EventDetailsSkeleton';
 import { toPng } from 'html-to-image';
 
-const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
-const mapboxStyles = {
-  dark: {
-    version: 8,
-    sources: {
-      'mapbox-dark': {
-        type: 'raster',
-        tiles: [`https://api.mapbox.com/styles/v1/mapbox/dark-v11/tiles/256/{z}/{x}/{y}@2x?access_token=${mapboxToken}`],
-        tileSize: 256,
-        attribution: '© Mapbox'
-      }
-    },
-    layers: [{ id: 'mapbox-dark-layer', type: 'raster', source: 'mapbox-dark', minzoom: 0, maxzoom: 22 }]
-  },
-  light: {
-    version: 8,
-    sources: {
-      'mapbox-light': {
-        type: 'raster',
-        tiles: [`https://api.mapbox.com/styles/v1/mapbox/light-v11/tiles/256/{z}/{x}/{y}@2x?access_token=${mapboxToken}`],
-        tileSize: 256,
-        attribution: '© Mapbox'
-      }
-    },
-    layers: [{ id: 'mapbox-light-layer', type: 'raster', source: 'mapbox-light', minzoom: 0, maxzoom: 22 }]
-  }
-};
+
 
 // Tag icon resolver — maps common tag strings to Lucide icons
 const getTagIcon = (tag) => {
@@ -314,33 +287,19 @@ const EventDetails = () => {
                   </span>
                 </div>
                 <div
-                  className="overflow-hidden"
-                  className="rounded-2xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4"
+                  className="rounded-2xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4 overflow-hidden relative"
                   style={{ height: 250 }}
                 >
                   {coords.lat && coords.lng ? (
-                    <Map
-                      center={[coords.lng, coords.lat]}
-                      zoom={17}
-                      styles={mapboxStyles}
-                      className="h-full w-full"
-                    >
-                      <MapMarker longitude={coords.lng} latitude={coords.lat}>
-                        <MarkerContent>
-                          <div className="relative flex items-center justify-center">
-                            <div className="absolute h-12 w-12 animate-ping rounded-full bg-white/10" />
-                            <div className="relative h-7 w-7 rounded-full border-[5px] border-neutral-900 dark:border-white bg-white dark:bg-neutral-900 shadow-xl" />
-                          </div>
-                        </MarkerContent>
-                        <MarkerPopup>
-                          <div className="p-3 min-w-[160px]">
-                            <p className="text-sm font-semibold mb-1 text-black">{event.title}</p>
-                            <p className="text-xs text-neutral-500 leading-relaxed">{event.location}</p>
-                          </div>
-                        </MarkerPopup>
-                      </MapMarker>
-                      <MapControls showZoom showFullscreen showLocate />
-                    </Map>
+                    <iframe
+                      title="Event Location"
+                      src={`https://maps.google.com/maps?q=${coords.lat},${coords.lng}&z=17&output=embed`}
+                      className="w-full h-full border-0 dark:brightness-[0.75] dark:invert dark:contrast-[1.1] dark:hue-rotate-[200deg] dark:saturate-[0.3]"
+                      style={{ filter: 'inherit' }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
                       {isGeocoding ? (
