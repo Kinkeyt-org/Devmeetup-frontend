@@ -1,0 +1,155 @@
+import React, { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { X, Heart, Users } from "lucide-react";
+import EventCard from "../../components/EventCard";
+
+const MOCK_EVENTS = [
+  {
+    id: "h1",
+    title: "Global Wellness Summit",
+    event_date_human: "Sat, Aug 20 • 8:00 AM",
+    location: "Miami, FL",
+    image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80",
+    type: "physical",
+  },
+  {
+    id: "h2",
+    title: "Mental Health First Aid",
+    event_date_human: "Mon, Sep 12 • 1:00 PM",
+    location: "Online",
+    image: "https://images.unsplash.com/photo-1544027993-37dbd58eae8e?w=800&q=80",
+    type: "virtual",
+  },
+  {
+    id: "h3",
+    title: "Nutrition & Dietetics Expo",
+    event_date_human: "Fri, Oct 07 • 10:00 AM",
+    location: "Los Angeles, CA",
+    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80",
+    type: "physical",
+  },
+  {
+    id: "h4",
+    title: "Yoga Instructor Training",
+    event_date_human: "Sat, Nov 05 • 7:00 AM",
+    location: "Online",
+    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80",
+    type: "virtual",
+  },
+  {
+    id: "h5",
+    title: "Medical Tech Innovations",
+    event_date_human: "Wed, Dec 14 • 9:00 AM",
+    location: "San Diego, CA",
+    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80",
+    type: "physical",
+  },
+  {
+    id: "h6",
+    title: "Holistic Healing Workshop",
+    event_date_human: "Sun, Jan 22 • 2:00 PM",
+    location: "Denver, CO",
+    image: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=800&q=80",
+    type: "physical",
+  }
+];
+
+export default function Health() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isModal = !!location.state?.backgroundLocation;
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isModal) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isModal]);
+
+  const handleClose = () => {
+    navigate(-1);
+  };
+
+  const content = (
+    <div className="w-full h-full flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
+      {/* Modal Close Button */}
+      {isModal && (
+        <button
+          onClick={handleClose}
+          className="absolute top-4 right-4 md:top-6 md:right-6 z-[60] p-2 bg-black/50 hover:bg-black/80 text-white rounded-full backdrop-blur-md"
+        >
+          <X size={24} />
+        </button>
+      )}
+
+      {/* HERO SECTION */}
+      <section className="relative w-full h-[85vh] min-h-[500px]">
+        <img
+          src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2070&auto=format&fit=crop"
+          alt="Health banner"
+          className="w-full h-full object-cover"
+        />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-[#111111]/80 to-transparent">
+          <div className="w-full h-full max-w-7xl mx-auto flex flex-col justify-end px-6 pb-12 md:pb-20">
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 md:mb-6">Health</h1>
+            <div className="flex flex-wrap items-center gap-4 text-sm md:text-base text-neutral-300 font-medium mb-4 md:mb-6">
+              <div className="flex items-center gap-2 whitespace-nowrap">
+                <Heart size={18} className="md:w-5 md:h-5" />
+                <span><strong className="text-white">9K</strong> Events</span>
+              </div>
+              <div className="flex items-center gap-2 whitespace-nowrap">
+                <Users size={18} className="md:w-5 md:h-5" />
+                <span><strong className="text-white">75K</strong> Enthusiasts</span>
+              </div>
+            </div>
+            <p className="text-neutral-300 text-sm md:text-lg mb-8 max-w-md md:max-w-xl leading-relaxed">
+              Focus on your well-being with fitness classes, mental health workshops, and groundbreaking medical symposiums.
+            </p>
+            <div className="flex flex-col sm:flex-row w-full max-w-md gap-3 sm:gap-0">
+              <input
+                type="email"
+                placeholder="me@email.com"
+                className="w-full sm:flex-1 bg-white/10 text-white placeholder-neutral-400 px-5 py-4 rounded-full sm:rounded-r-none sm:rounded-l-full outline-none border border-white/20 focus:border-white/40 backdrop-blur-md text-base"
+              />
+              <button className="w-full sm:w-auto bg-white text-black px-8 py-4 font-semibold rounded-full sm:rounded-l-none sm:rounded-r-full hover:bg-neutral-200 text-base">
+                Subscribe
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* EVENTS LISTING */}
+      <section className="max-w-7xl mx-auto px-6 py-12 lg:py-20 w-full">
+        <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-8">Popular Health Events</h2>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {MOCK_EVENTS.map((event) => (
+            <EventCard key={event.id} event={event} />
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+
+  if (isModal) {
+    return (
+      <div className="fixed inset-0 z-[100] flex bg-neutral-50 dark:bg-[#111111]">
+        <div className="w-full h-full relative">
+          {content}
+        </div>
+      </div>
+    );
+  }
+
+  // Regular Page Rendering
+  return (
+    <div className="min-h-screen pt-16">
+      {content}
+    </div>
+  );
+}
