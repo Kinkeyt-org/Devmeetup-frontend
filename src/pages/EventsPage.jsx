@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getEvents } from "../api/event";
 import { Helmet } from "react-helmet-async";
 import EventCard from "../components/EventCard";
@@ -13,7 +13,8 @@ import {
   Music as MusicIcon,
   GraduationCap,
   Heart,
-  Users as UsersIcon
+  Users as UsersIcon,
+  MapPin
 } from "lucide-react";
 
 const CATEGORIES = [
@@ -33,6 +34,7 @@ const EventsPage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // FILTER STATE
   const [filter, setFilter] = useState("all");
@@ -104,23 +106,63 @@ const EventsPage = () => {
       {/* EVENTS */}
       <section>
         <div className="max-w-7xl mx-auto px-6">
-          {/* 3x3 HORIZONTAL GRID (LIMITED TO 9) */}
-          <div className="grid grid-rows-3 grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
+
+          {/* MOBILE: Horizontal scroll with EventCard */}
+          <div className="md:hidden grid grid-rows-3 grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
             {events.map((event) => (
               <div
                 key={event.id}
-                className="w-[280px] sm:w-[350px] md:w-[400px] shrink-0"
+                className="w-[280px] sm:w-[350px] shrink-0"
               >
                 <EventCard event={event} />
               </div>
             ))}
 
-            {/* INITIAL LOADING SKELETONS */}
+            {/* MOBILE LOADING SKELETONS */}
             {loading &&
               Array.from({ length: 9 }).map((_, i) => (
-                <div key={`skeleton-${i}`} className="w-[280px] sm:w-[350px] md:w-[400px] shrink-0">
+                <div key={`skeleton-${i}`} className="w-[280px] sm:w-[350px] shrink-0">
                   <EventSkeleton />
                 </div>
+              ))}
+          </div>
+
+          {/* DESKTOP: Compact row cards in a 3-col wrapping grid (like Dashboard) */}
+          <div className="hidden md:grid md:grid-cols-3 gap-3 pb-6">
+            {events.map((event) => (
+              <div
+                key={event.id}
+                onClick={() => navigate(`/events/${event.id}`)}
+                className="flex flex-row cursor-pointer rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition"
+              >
+                <img
+                  src={event.banner || event.image}
+                  alt={event.title}
+                  className="h-20 w-20 object-cover shrink-0 rounded-xl m-1"
+                />
+
+                <div className="p-2 flex-1 flex flex-col justify-center">
+                  <p className="text-[10px] text-neutral-500 mb-0.5">
+                    {event.event_date_human}
+                  </p>
+                  <h3 className="font-semibold line-clamp-1 text-sm">
+                    {event.title}
+                  </h3>
+                  <p className="text-[10px] text-neutral-500 mt-0.5 flex items-center gap-1">
+                    <MapPin size={10} className="shrink-0" />
+                    <span className="line-clamp-1">{event.location}</span>
+                  </p>
+                </div>
+              </div>
+            ))}
+
+            {/* DESKTOP LOADING SKELETONS */}
+            {loading &&
+              Array.from({ length: 9 }).map((_, i) => (
+                <div
+                  key={`skeleton-${i}`}
+                  className="h-[88px] bg-neutral-100 dark:bg-neutral-900 rounded-2xl animate-pulse"
+                />
               ))}
           </div>
 
