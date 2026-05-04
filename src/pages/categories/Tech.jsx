@@ -109,13 +109,13 @@ export default function Tech() {
             <p className="text-neutral-300 text-sm md:text-lg mb-8 max-w-md md:max-w-xl leading-relaxed">
               Join a hackathon, jam on product design, and meet fellow tinkerers in the industry of tomorrow.
             </p>
-            <div className="flex flex-col sm:flex-row w-full max-w-md gap-3 sm:gap-0">
+            <div className="flex flex-row w-full max-w-md">
               <input
                 type="email"
                 placeholder="me@email.com"
-                className="w-full sm:flex-1 bg-white/10 text-white placeholder-neutral-400 px-5 py-4 rounded-full sm:rounded-r-none sm:rounded-l-full outline-none border border-white/20 focus:border-white/40 backdrop-blur-md text-base"
+                className="flex-1 min-w-0 bg-white/10 text-white placeholder-neutral-400 px-4 py-3 md:px-5 md:py-4 rounded-l-full outline-none border border-white/20 focus:border-white/40 backdrop-blur-md text-sm md:text-base"
               />
-              <button className="w-full sm:w-auto bg-white text-black px-8 py-4 font-semibold rounded-full sm:rounded-l-none sm:rounded-r-full hover:bg-neutral-200 text-base">
+              <button className="shrink-0 bg-white text-black px-5 py-3 md:px-8 md:py-4 font-semibold rounded-r-full hover:bg-neutral-200 text-sm md:text-base">
                 Subscribe
               </button>
             </div>
