@@ -118,21 +118,48 @@ const EventDetails = () => {
   }, [id]);
 
   const handleShare = async () => {
+    const shareText = `${event?.title}\n📍 ${event?.location || 'Online'}\n📅 ${event?.event_date_human || ''}`;
+    
     const shareData = {
       title: event?.title || 'Check out this event!',
-      text: event?.description?.substring(0, 100) + '...',
+      text: shareText,
       url: window.location.href,
     };
+
     try {
       if (navigator.share) {
+        // Try to include image if possible
+        if (bannerSrc && navigator.canShare && navigator.canShare({ files: [] })) {
+          try {
+            const response = await fetch(bannerSrc);
+            const blob = await response.blob();
+            const file = new File([blob], 'event-preview.jpg', { type: blob.type });
+            
+            if (navigator.canShare({ files: [file] })) {
+              await navigator.share({
+                ...shareData,
+                files: [file],
+              });
+              toast.success('Shared successfully!');
+              return;
+            }
+          } catch (imgErr) {
+            console.error('Could not fetch image for sharing:', imgErr);
+            // Fallback to text-only share below
+          }
+        }
+
         await navigator.share(shareData);
         toast.success('Shared successfully!');
       } else {
-        await navigator.clipboard.writeText(window.location.href);
-        toast.success('Link copied to clipboard!');
+        await navigator.clipboard.writeText(`${shareText}\n${window.location.href}`);
+        toast.success('Link and details copied!');
       }
     } catch (err) {
-      console.error('Error sharing:', err);
+      if (err.name !== 'AbortError') {
+        console.error('Error sharing:', err);
+        toast.error('Sharing failed');
+      }
     }
   };
 
@@ -158,6 +185,20 @@ const EventDetails = () => {
       <Helmet>
         <title>{event.title} | DevMeet</title>
         <meta name="description" content={event.description || "Join this amazing event on DevMeet."} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:title" content={event.title} />
+        <meta property="og:description" content={event.description || "Join this amazing event on DevMeet."} />
+        <meta property="og:image" content={bannerSrc} />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={window.location.href} />
+        <meta property="twitter:title" content={event.title} />
+        <meta property="twitter:description" content={event.description || "Join this amazing event on DevMeet."} />
+        <meta property="twitter:image" content={bannerSrc} />
       </Helmet>
 
       <div id="event-details-page" className="min-h-screen relative overflow-x-hidden font-sans bg-background">
