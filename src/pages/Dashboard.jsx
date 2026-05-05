@@ -115,9 +115,19 @@ const Dashboard = () => {
 
               <div>
                 <h1 className="text-2xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white">
-                  {user?.name
-                    ? `Welcome back, ${user.name.split(" ")[0]}`
-                    : "Welcome to DevMeet"}
+                  {user?.name ? (
+                    <>
+                      {(() => {
+                        const hour = new Date().getHours();
+                        if (hour >= 5 && hour < 12) return "Good morning";
+                        if (hour >= 12 && hour < 17) return "Good afternoon";
+                        if (hour >= 17 && hour < 22) return "Good evening";
+                        return "Still exploring?";
+                      })()}, {user.name.split(" ")[0]}
+                    </>
+                  ) : (
+                    "Welcome to DevMeet"
+                  )}
                 </h1>
 
                 <p className="mt-2 text-neutral-500 dark:text-neutral-400 max-w-md">
