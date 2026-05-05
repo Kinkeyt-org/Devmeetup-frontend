@@ -194,8 +194,11 @@ const CreatePage = () => {
         payload.append("banner", formData.image);
       }
 
+      // Send event type so backend/frontend can distinguish physical vs virtual
+      payload.append("event_type", eventType);
+
       //I send the coords from frontend to backend so it can save the exact location of the event
-      if (coords.lat && coords.lng) {
+      if (eventType === "physical" && coords.lat && coords.lng) {
         payload.append("latitude", coords.lat);
         payload.append("longitude", coords.lng);
       }
@@ -319,7 +322,12 @@ const CreatePage = () => {
                   <button
                     key={type}
                     type="button"
-                    onClick={() => setEventType(type)}
+                    onClick={() => {
+                      setEventType(type);
+                      // Clear location & coords when switching types to avoid stale data
+                      setFormData(prev => ({ ...prev, location: "" }));
+                      setCoords({ lat: null, lng: null });
+                    }}
                     className={`flex-1 py-2 rounded-lg text-sm transition ${eventType === type
                       ? "bg-white dark:bg-neutral-800 shadow text-neutral-900 dark:text-white"
                       : "text-neutral-500"
@@ -346,6 +354,8 @@ const CreatePage = () => {
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center">
                   {isVerifying ? (
                     <Loader2 size={16} className="text-neutral-400 animate-spin" />
+                  ) : eventType === "virtual" ? (
+                    <Globe size={16} className="text-neutral-400" />
                   ) : eventType === "physical" && formData.location.length >= 3 && !coords.lat ? (
                     <MapPin size={16} className="text-neutral-400" />
                   ) : null}
