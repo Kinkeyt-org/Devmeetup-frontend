@@ -25,7 +25,7 @@ const Security = () => {
           {/* PASSWORD SECTION */}
           <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 overflow-hidden shadow-sm">
             <div className="p-6 border-b border-neutral-100 dark:border-white/5">
-              <h2 className="text-lg font-semibold flex items-center gap-2">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
                 <Lock className="w-5 h-5 text-neutral-400" />
                 Password
               </h2>
@@ -49,7 +49,7 @@ const Security = () => {
           {/* TWO-FACTOR SECTION */}
           <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 overflow-hidden shadow-sm">
             <div className="p-6 border-b border-neutral-100 dark:border-white/5">
-              <h2 className="text-lg font-semibold flex items-center gap-2">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
                 <Smartphone className="w-5 h-5 text-neutral-400" />
                 Two-Factor Authentication
               </h2>
@@ -76,7 +76,7 @@ const Security = () => {
           {/* SESSIONS SECTION */}
           <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 overflow-hidden shadow-sm">
             <div className="p-6 border-b border-neutral-100 dark:border-white/5">
-              <h2 className="text-lg font-semibold flex items-center gap-2">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
                 <Smartphone className="w-5 h-5 text-neutral-400" />
                 Recent Devices
               </h2>
@@ -92,7 +92,7 @@ const Security = () => {
                     <p className="text-xs text-neutral-500">Current Session</p>
                   </div>
                 </div>
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-green-600 bg-green-100 dark:bg-green-500/10 px-2 py-1 rounded">Online</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-green-600 bg-green-100 dark:bg-green-500/10 px-2 py-1 rounded">Online</span>
               </div>
             </div>
           </div>

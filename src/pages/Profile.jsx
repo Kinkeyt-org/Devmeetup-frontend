@@ -156,7 +156,7 @@ const Profile = () => {
             />
           </div>
 
-          <h1 className="mt-5 text-3xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white text-center">
+          <h1 className="mt-5 text-2xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white text-center">
             {user.name}
           </h1>
           <p className="text-neutral-500 dark:text-neutral-400 text-sm md:text-base mt-1 text-center">
@@ -199,7 +199,7 @@ const Profile = () => {
             </div>
             <button
               onClick={() => navigate("/events/create")}
-              className="mt-3 w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-semibold transition-colors shadow-sm"
+              className="mt-3 w-full py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-medium transition-colors shadow-sm"
             >
               Create New Event
             </button>
@@ -223,7 +223,7 @@ const Profile = () => {
         )}
 
         {/* ACCOUNT SETTINGS */}
-        <h2 className="text-[11px] font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-[0.15em] mb-4 px-4">
+        <h2 className="text-xl font-semibold text-neutral-900 dark:text-white mb-4 px-4">
           Account Settings
         </h2>
         <div className="bg-white dark:bg-neutral-900/50 rounded-[1.5rem] border border-neutral-200/60 dark:border-neutral-800/60 overflow-hidden mb-8 shadow-sm">
@@ -249,7 +249,7 @@ const Profile = () => {
         </div>
 
         {/* SUPPORT */}
-        <h2 className="text-[11px] font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-[0.15em] mb-4 px-4">
+        <h2 className="text-xl font-semibold text-neutral-900 dark:text-white mb-4 px-4 mt-4">
           Support & About
         </h2>
         <div className="bg-white dark:bg-neutral-900/50 rounded-[1.5rem] border border-neutral-200/60 dark:border-neutral-800/60 overflow-hidden mb-8 shadow-sm">
@@ -278,7 +278,7 @@ const Profile = () => {
         <div className="px-2">
           <button
             onClick={handleLogout}
-            className="w-full py-4 flex items-center justify-center gap-2 rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-transparent dark:border-neutral-800/60 text-red-600 dark:text-red-500 text-[15px] font-medium hover:bg-red-50 dark:hover:bg-red-500/10 hover:border-red-100 dark:hover:border-red-500/20 active:scale-[0.98] transition-all shadow-sm"
+            className="w-full py-4 flex items-center justify-center gap-2 rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-transparent dark:border-neutral-800/60 text-red-600 dark:text-red-500 text-[15px] font-semibold hover:bg-red-50 dark:hover:bg-red-500/10 hover:border-red-100 dark:hover:border-red-500/20 active:scale-[0.98] transition-all shadow-sm"
           >
             <LogOut className="w-5 h-5" />
             Log out
