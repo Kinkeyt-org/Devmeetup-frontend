@@ -79,13 +79,25 @@ const EventDetails = () => {
         const eventData = await getEventDetails(id);
         setEvent(eventData);
 
+        const hasUrlInLocation = eventData?.location?.match(/https?:\/\/[^\s]+/);
+        const isOnlineEvent =
+          eventData?.type?.toLowerCase() === "virtual" ||
+          eventData?.type?.toLowerCase() === "online" ||
+          eventData?.is_online === true ||
+          eventData?.is_virtual === true ||
+          hasUrlInLocation ||
+          eventData?.location?.toLowerCase()?.includes('online') ||
+          eventData?.location?.toLowerCase()?.includes('virtual');
+
         const eventLat = eventData.lat || eventData.latitude;
         const eventLng = eventData.lng || eventData.longitude;
 
-        if (eventLat && eventLng) {
-          setCoords({ lat: parseFloat(eventLat), lng: parseFloat(eventLng) });
-        } else if (eventData.location) {
-          geocodeLocation(eventData.location);
+        if (!isOnlineEvent) {
+          if (eventLat && eventLng) {
+            setCoords({ lat: parseFloat(eventLat), lng: parseFloat(eventLng) });
+          } else if (eventData.location) {
+            geocodeLocation(eventData.location);
+          }
         }
       } catch (error) {
         console.error('Error fetching event details:', error);
@@ -180,13 +192,18 @@ const EventDetails = () => {
     );
   }
   const bannerSrc = event.banner || event.image || event.avatar;
+  const hasUrlInLocation = event?.location?.match(/https?:\/\/[^\s]+/);
   const isOnline = 
     event?.type?.toLowerCase() === "virtual" || 
     event?.type?.toLowerCase() === "online" || 
     event?.is_online === true || 
     event?.is_virtual === true ||
+    hasUrlInLocation ||
     event?.location?.toLowerCase()?.includes('online') ||
     event?.location?.toLowerCase()?.includes('virtual');
+  const meetingLink =
+    event?.meeting_link ||
+    (hasUrlInLocation ? hasUrlInLocation[0] : null);
 
   return (
     <>
@@ -339,7 +356,19 @@ const EventDetails = () => {
                       <Globe size={24} className="text-neutral-400 dark:text-white/40" />
                     </div>
                     <h3 className="text-neutral-900 dark:text-white font-medium mb-1">This is a virtual event</h3>
-                    <p className="text-xs text-neutral-500 dark:text-white/40 max-w-[240px]">The joining link will be available in your tickets after RSVP.</p>
+                    {meetingLink ? (
+                      <a
+                        href={meetingLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-black text-sm font-semibold hover:opacity-90 transition"
+                      >
+                        <ExternalLink size={14} />
+                        Join Event
+                      </a>
+                    ) : (
+                      <p className="text-xs text-neutral-500 dark:text-white/40 max-w-[240px]">The joining link will be available after RSVP.</p>
+                    )}
                   </div>
                 ) : (
                   <div
