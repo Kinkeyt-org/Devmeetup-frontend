@@ -140,7 +140,7 @@ const Dashboard = () => {
                 <div className="flex items-end justify-between mb-6">
                   <div>
                     <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-2">
-                      <Compass size={18} />Events Near You
+                      <Compass size={20} />Events Near You
                     </h2>
                     <p className="text-neutral-500 text-sm mt-1">
                       Discover what's happening around you.
