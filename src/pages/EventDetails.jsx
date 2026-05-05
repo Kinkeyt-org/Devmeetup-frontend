@@ -147,7 +147,7 @@ const EventDetails = () => {
 
   if (!event) {
     return (
-      <div className="min-h-screen bg-white dark:bg-neutral-950 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <p className="text-neutral-400 dark:text-white/40 text-sm">Event not found</p>
       </div>
     );
@@ -160,7 +160,7 @@ const EventDetails = () => {
         <meta name="description" content={event.description || "Join this amazing event on DevMeet."} />
       </Helmet>
 
-      <div id="event-details-page" className="min-h-screen relative overflow-x-hidden font-sans bg-white dark:bg-[#0a0a0f]">
+      <div id="event-details-page" className="min-h-screen relative overflow-x-hidden font-sans bg-background">
 
         {/* Scrollable content */}
         <div className="relative z-10 max-w-7xl mx-auto min-h-screen pb-32 px-5 md:px-8 lg:px-12">
@@ -342,7 +342,7 @@ const EventDetails = () => {
 
         {/* FIXED BOTTOM — RSVP BUTTON (Mobile Only) */}
         <div
-          className="fixed bottom-0 left-0 right-0 z-20 flex justify-center md:hidden bg-gradient-to-t from-white/98 dark:from-[#0a0a0f]/98 via-white/80 dark:via-[#0a0a0f]/80 to-transparent"
+          className="fixed bottom-0 left-0 right-0 z-20 flex justify-center md:hidden bg-gradient-to-t from-background/98 via-background/80 to-transparent"
           style={{
             paddingBottom: 'env(safe-area-inset-bottom, 0px)',
           }}

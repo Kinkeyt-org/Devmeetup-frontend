@@ -7,14 +7,12 @@
 
 @layer base {
   html, body {
-    @apply bg-white dark:bg-neutral-950 transition-colors duration-150;
+    @apply bg-background text-foreground transition-colors duration-150;
   }
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
+
   html {
     @apply font-sans;
   }
