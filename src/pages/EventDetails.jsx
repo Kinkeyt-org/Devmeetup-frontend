@@ -5,7 +5,7 @@ import { bookEvent } from '../api/ticket';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import { toast } from 'react-hot-toast';
 import {
-  ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon,  Share2, MoreHorizontal, ExternalLink, Compass, ImageDown
+  ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon, Share2, MoreHorizontal, ExternalLink, Compass, ImageDown
 } from 'lucide-react';
 import { Helmet } from "react-helmet-async";
 import EventDetailsSkeleton from '../components/EventDetailsSkeleton';
@@ -128,7 +128,6 @@ const EventDetails = () => {
 
     try {
       if (navigator.share) {
-        // Try to include image if possible
         if (bannerSrc && navigator.canShare && navigator.canShare({ files: [] })) {
           try {
             const response = await fetch(bannerSrc);
@@ -145,7 +144,6 @@ const EventDetails = () => {
             }
           } catch (imgErr) {
             console.error('Could not fetch image for sharing:', imgErr);
-            // Fallback to text-only share below
           }
         }
 
@@ -167,7 +165,6 @@ const EventDetails = () => {
     ? (typeof event.tags === 'string' ? event.tags.split(',') : event.tags)
     : [];
 
-  // Loading skeleton
   if (loading) {
     return <EventDetailsSkeleton />;
   }
@@ -178,7 +175,21 @@ const EventDetails = () => {
         <p className="text-neutral-400 dark:text-white/40 text-sm">Event not found</p>
       </div>
     );
-  }  const bannerSrc = event.banner || event.image || event.avatar;
+  }
+
+  const bannerSrc = event.banner || event.image || event.avatar;
+
+  // Detect online event
+  const locationLower = (event.location || '').toLowerCase();
+  const isOnline =
+    event.is_online ||
+    event.meeting_link ||
+    event.join_url ||
+    ['online', 'virtual', 'zoom', 'meet.google', 'google meet', 'teams', 'livestream', 'webinar', 'remote'].some(k =>
+      locationLower.includes(k)
+    );
+
+  const joinLink = event.meeting_link || event.join_url || event.url || null;
 
   return (
     <>
@@ -206,6 +217,7 @@ const EventDetails = () => {
         {/* Scrollable content */}
         <div className="relative z-10 max-w-7xl mx-auto min-h-screen pb-32 px-5 md:px-8 lg:px-12">
 
+          {/* HEADER */}
           <div className="flex items-center justify-between pt-4 md:pt-12 pb-4">
             <button
               onClick={() => navigate(-1)}
@@ -223,9 +235,7 @@ const EventDetails = () => {
                   <MoreHorizontal size={18} className="text-neutral-700 dark:text-white" />
                 </button>
                 {showMenu && (
-                  <div
-                    className="absolute right-0 top-11 z-50 min-w-[180px] rounded-2xl border border-neutral-200 dark:border-white/10 overflow-hidden bg-white dark:bg-neutral-900/95 backdrop-blur-2xl"
-                  >
+                  <div className="absolute right-0 top-11 z-50 min-w-[180px] rounded-2xl border border-neutral-200 dark:border-white/10 overflow-hidden bg-white dark:bg-neutral-900/95 backdrop-blur-2xl">
                     <button
                       onClick={handleDownloadPng}
                       disabled={isDownloading}
@@ -312,54 +322,94 @@ const EventDetails = () => {
                 </div>
               )}
 
-              {/* MAP SECTION */}
+              {/* LOCATION / JOIN SECTION */}
               <div className="mt-8 lg:mt-10">
                 <div className="flex items-center gap-2 mb-3">
                   <Compass size={14} className="text-neutral-400 dark:text-white/40" />
                   <span className="text-[11px] md:text-[13px] font-semibold text-neutral-500 dark:text-white/50 tracking-[0.06em] uppercase">
-                    Location
+                    {isOnline ? 'How to join' : 'Location'}
                   </span>
                 </div>
-                <div
-                  className="rounded-2xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4 overflow-hidden relative"
-                  style={{ height: 250 }}
-                >
-                  {coords.lat && coords.lng ? (
-                    <>
-                      {!mapLoaded && (
-                        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-neutral-50 dark:bg-[#111118]">
-                          <div className="w-6 h-6 border-2 border-neutral-200 dark:border-white/10 border-t-neutral-500 dark:border-t-white/50 rounded-full animate-spin" />
-                          <p className="text-xs text-neutral-400 dark:text-white/35 mt-3">Loading map...</p>
-                        </div>
-                      )}
-                      <iframe
-                        title="Event Location"
-                        src={`https://maps.google.com/maps?q=${coords.lat},${coords.lng}&z=17&output=embed`}
-                        className={`w-full h-full border-0 transition-opacity duration-500 ${mapLoaded ? 'opacity-100' : 'opacity-0'}`}
-                        style={{
-                          filter: isDark
-                            ? 'grayscale(1) invert(1) brightness(0.85) contrast(1.15)'
-                            : 'grayscale(1) contrast(1.1)'
-                        }}
-                        onLoad={() => setMapLoaded(true)}
-                        allowFullScreen
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                      />
-                    </>
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      {isGeocoding ? (
-                        <div className="flex flex-col items-center gap-3">
-                          <div className="w-6 h-6 border-2 border-white/10 border-t-white/50 rounded-full animate-spin" />
-                          <p className="text-xs text-neutral-400 dark:text-white/35">Locating venue...</p>
-                        </div>
-                      ) : (
-                        <p className="text-xs text-neutral-300 dark:text-white/25">Map preview unavailable</p>
-                      )}
+
+                {isOnline ? (
+                  /* ── ONLINE EVENT: Join UI ── */
+                  <div className="rounded-2xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4 overflow-hidden px-5 py-6 flex flex-col gap-4">
+                    {/* Online badge */}
+                    <div className="flex items-center gap-2.5">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-[0.07em] uppercase px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-400/10 text-amber-600 dark:text-amber-400">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400 animate-pulse" />
+                        Online Event
+                      </span>
                     </div>
-                  )}
-                </div>
+
+                    <p className="text-xs md:text-[13px] text-neutral-500 dark:text-white/50 leading-relaxed">
+                      This event is hosted online.{' '}
+                      {joinLink
+                        ? 'Use the link below to join when the event begins.'
+                        : 'Join details will be shared with you after booking.'}
+                    </p>
+
+                    {joinLink && (
+                      <a
+                        href={joinLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 self-start text-[13px] font-semibold text-neutral-900 dark:text-white underline underline-offset-4 hover:opacity-70 transition-opacity"
+                      >
+                        <ExternalLink size={13} />
+                        Open join link
+                      </a>
+                    )}
+
+                    {event.platform && (
+                      <p className="text-[11px] text-neutral-400 dark:text-white/30 uppercase tracking-widest">
+                        Platform: {event.platform}
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  /* ── PHYSICAL EVENT: Map ── */
+                  <div
+                    className="rounded-2xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4 overflow-hidden relative"
+                    style={{ height: 250 }}
+                  >
+                    {coords.lat && coords.lng ? (
+                      <>
+                        {!mapLoaded && (
+                          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-neutral-50 dark:bg-[#111118]">
+                            <div className="w-6 h-6 border-2 border-neutral-200 dark:border-white/10 border-t-neutral-500 dark:border-t-white/50 rounded-full animate-spin" />
+                            <p className="text-xs text-neutral-400 dark:text-white/35 mt-3">Loading map...</p>
+                          </div>
+                        )}
+                        <iframe
+                          title="Event Location"
+                          src={`https://maps.google.com/maps?q=${coords.lat},${coords.lng}&z=17&output=embed`}
+                          className={`w-full h-full border-0 transition-opacity duration-500 ${mapLoaded ? 'opacity-100' : 'opacity-0'}`}
+                          style={{
+                            filter: isDark
+                              ? 'grayscale(1) invert(1) brightness(0.85) contrast(1.15)'
+                              : 'grayscale(1) contrast(1.1)'
+                          }}
+                          onLoad={() => setMapLoaded(true)}
+                          allowFullScreen
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                        />
+                      </>
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        {isGeocoding ? (
+                          <div className="flex flex-col items-center gap-3">
+                            <div className="w-6 h-6 border-2 border-white/10 border-t-white/50 rounded-full animate-spin" />
+                            <p className="text-xs text-neutral-400 dark:text-white/35">Locating venue...</p>
+                          </div>
+                        ) : (
+                          <p className="text-xs text-neutral-300 dark:text-white/25">Map preview unavailable</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* RSVP BUTTON (Desktop/Tablet) */}
@@ -384,9 +434,7 @@ const EventDetails = () => {
         {/* FIXED BOTTOM — RSVP BUTTON (Mobile Only) */}
         <div
           className="fixed bottom-0 left-0 right-0 z-20 flex justify-center md:hidden bg-gradient-to-t from-background/98 via-background/80 to-transparent"
-          style={{
-            paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-          }}
+          style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
         >
           <div className="w-full px-5 pb-8 pt-6">
             <button
