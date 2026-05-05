@@ -74,9 +74,9 @@ const NotificationToggle = ({ icon, title, desc, enabled, onToggle }) => (
     </div>
     <button 
       onClick={onToggle}
-      className={`relative w-12 h-6 rounded-full transition-colors ${enabled ? 'bg-black dark:bg-white' : 'bg-neutral-200 dark:bg-neutral-800'}`}
+      className={`relative w-11 h-6 rounded-full transition-colors ${enabled ? 'bg-green-500' : 'bg-neutral-200 dark:bg-neutral-800'}`}
     >
-      <div className={`absolute top-1 w-4 h-4 bg-white dark:bg-black rounded-full transition-transform ${enabled ? 'translate-x-7' : 'translate-x-1'}`} />
+      <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${enabled ? 'translate-x-5' : 'translate-x-0'}`} />
     </button>
   </div>
 );
