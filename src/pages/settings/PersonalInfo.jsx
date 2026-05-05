@@ -62,7 +62,7 @@ const PersonalInfo = () => {
       <main className="max-w-2xl mx-auto px-4 mt-8">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 p-6 shadow-sm">
-            <h2 className="text-lg font-bold mb-6 flex items-center gap-2">
+            <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
               <User className="w-5 h-5 text-neutral-400" />
               Basic Details
             </h2>
@@ -118,7 +118,7 @@ const PersonalInfo = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-black dark:bg-white text-white dark:text-black rounded-2xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-[0.98] shadow-lg disabled:opacity-50"
+            className="w-full py-4 bg-black dark:bg-white text-white dark:text-black rounded-2xl font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-[0.98] shadow-lg disabled:opacity-50"
           >
             {loading ? (
               <Loader2 className="w-5 h-5 animate-spin" />

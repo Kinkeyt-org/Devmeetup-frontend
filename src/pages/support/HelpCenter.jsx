@@ -28,17 +28,17 @@ const HelpCenter = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <button className="p-6 bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 text-left hover:shadow-md transition-shadow">
             <MessageSquare className="w-6 h-6 text-purple-500 mb-3" />
-            <h3 className="font-bold">Contact Support</h3>
+            <h3 className="font-semibold">Contact Support</h3>
             <p className="text-xs text-neutral-500 mt-1">Chat with our team for help.</p>
           </button>
           <button className="p-6 bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 text-left hover:shadow-md transition-shadow">
             <FileText className="w-6 h-6 text-blue-500 mb-3" />
-            <h3 className="font-bold">Documentation</h3>
+            <h3 className="font-semibold">Documentation</h3>
             <p className="text-xs text-neutral-500 mt-1">Guides for using the platform.</p>
           </button>
         </div>
 
-        <h2 className="text-sm font-bold text-neutral-400 uppercase tracking-widest mb-4 ml-4">Popular Topics</h2>
+        <h2 className="text-sm font-semibold text-neutral-400 uppercase tracking-widest mb-4 ml-4">Popular Topics</h2>
         <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 overflow-hidden">
           {["How to buy tickets", "Organizing your first event", "Refund policy", "Account verification"].map((topic, i) => (
             <button key={topic} className="w-full flex items-center justify-between p-5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors border-b last:border-0 border-neutral-100 dark:border-white/5">

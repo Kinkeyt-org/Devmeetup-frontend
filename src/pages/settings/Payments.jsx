@@ -20,31 +20,31 @@ const Payments = () => {
           {/* PAYMENT METHODS */}
           <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 p-6 shadow-sm">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-bold flex items-center gap-2">
+              <h2 className="text-lg font-semibold flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-neutral-400" />
                 Payment Methods
               </h2>
-              <button className="text-sm font-bold text-black dark:text-white flex items-center gap-1 hover:underline">
+              <button className="text-sm font-semibold text-black dark:text-white flex items-center gap-1 hover:underline">
                 <Plus className="w-4 h-4" /> Add
               </button>
             </div>
             
             <div className="p-4 rounded-2xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-8 bg-neutral-200 dark:bg-neutral-700 rounded flex items-center justify-center font-bold text-[10px] text-neutral-500">VISA</div>
+                <div className="w-12 h-8 bg-neutral-200 dark:bg-neutral-700 rounded flex items-center justify-center font-semibold text-[10px] text-neutral-500">VISA</div>
                 <div>
                   <p className="font-semibold">•••• 4242</p>
                   <p className="text-xs text-neutral-500">Expires 12/26</p>
                 </div>
               </div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Default</span>
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400">Default</span>
             </div>
           </div>
 
           {/* HISTORY */}
           <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 overflow-hidden shadow-sm">
             <div className="p-6 border-b border-neutral-100 dark:border-white/5">
-              <h2 className="text-lg font-bold flex items-center gap-2">
+              <h2 className="text-lg font-semibold flex items-center gap-2">
                 <History className="w-5 h-5 text-neutral-400" />
                 Transaction History
               </h2>
