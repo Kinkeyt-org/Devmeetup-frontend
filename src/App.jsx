@@ -30,6 +30,12 @@ import Education from "./pages/categories/Education";
 import Health from "./pages/categories/Health";
 import Music from "./pages/categories/Music";
 import Social from "./pages/categories/Social";
+import PersonalInfo from "./pages/settings/PersonalInfo";
+import Security from "./pages/settings/Security";
+import Payments from "./pages/settings/Payments";
+import Notifications from "./pages/settings/Notifications";
+import HelpCenter from "./pages/support/HelpCenter";
+import Terms from "./pages/support/Terms";
 
 
 /* ================= APP CONTENT ================= */
@@ -66,6 +72,12 @@ const AppContent = () => {
     "/upgrade",
     "/become-organizer",
     "/events/create",
+    "/settings/personal-info",
+    "/settings/security",
+    "/settings/payments",
+    "/settings/notifications",
+    "/support/help",
+    "/support/terms",
   ];
 
   const shouldHideNavbar =
@@ -127,6 +139,12 @@ const AppContent = () => {
           <Route path="/events/:id" element={<EventDetails />} />
           <Route path="/upgrade" element={<Upgrade />} />
           <Route path="/become-organizer" element={<OrganizerOnboarding />} />
+          <Route path="/settings/personal-info" element={<PersonalInfo />} />
+          <Route path="/settings/security" element={<Security />} />
+          <Route path="/settings/payments" element={<Payments />} />
+          <Route path="/settings/notifications" element={<Notifications />} />
+          <Route path="/support/help" element={<HelpCenter />} />
+          <Route path="/support/terms" element={<Terms />} />
         </Routes>
 
       </div>

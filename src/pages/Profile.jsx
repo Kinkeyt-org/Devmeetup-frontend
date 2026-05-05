@@ -21,15 +21,15 @@ import { updateProfile } from "../api/user";
 import { logout } from "../api/auth";
 
 const MENU_ITEMS = [
-  { icon: Settings, label: "Personal Information" },
-  { icon: Shield, label: "Login & Security" },
-  { icon: CreditCard, label: "Payments & Payouts" },
-  { icon: Bell, label: "Notifications" },
+  { icon: Settings, label: "Personal Information", path: "/settings/personal-info" },
+  { icon: Shield, label: "Login & Security", path: "/settings/security" },
+  { icon: CreditCard, label: "Payments & Payouts", path: "/settings/payments" },
+  { icon: Bell, label: "Notifications", path: "/settings/notifications" },
 ];
 
 const SUPPORT_ITEMS = [
-  { icon: HelpCircle, label: "Help Center" },
-  { icon: FileText, label: "Terms & Privacy" },
+  { icon: HelpCircle, label: "Help Center", path: "/support/help" },
+  { icon: FileText, label: "Terms & Privacy", path: "/support/terms" },
 ];
 
 const Profile = () => {
@@ -231,7 +231,7 @@ const Profile = () => {
             <React.Fragment key={item.label}>
               <button 
                 className="w-full flex items-center justify-between p-4 hover:bg-neutral-50 dark:hover:bg-neutral-800/80 transition-colors group"
-                onClick={() => {}} // Placeholder for future navigation
+                onClick={() => navigate(item.path)}
               >
                 <div className="flex items-center gap-3.5">
                   <div className="p-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 group-hover:bg-white dark:group-hover:bg-neutral-700 group-hover:shadow-sm transition-all">
@@ -257,6 +257,7 @@ const Profile = () => {
             <React.Fragment key={item.label}>
               <button 
                 className="w-full flex items-center justify-between p-4 hover:bg-neutral-50 dark:hover:bg-neutral-800/80 transition-colors group"
+                onClick={() => navigate(item.path)}
               >
                 <div className="flex items-center gap-3.5">
                   <div className="p-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 group-hover:bg-white dark:group-hover:bg-neutral-700 group-hover:shadow-sm transition-all">
