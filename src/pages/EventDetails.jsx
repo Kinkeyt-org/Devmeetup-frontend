@@ -5,7 +5,8 @@ import { bookEvent } from '../api/ticket';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import { toast } from 'react-hot-toast';
 import {
-  ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon,  Share2, MoreHorizontal, ExternalLink, Compass, ImageDown, Globe, Video
+  ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon,  Share2, MoreHorizontal, ExternalLink, Compass, ImageDown, Globe, Video,
+  Plus
 } from 'lucide-react';
 import { Helmet } from "react-helmet-async";
 import EventDetailsSkeleton from '../components/EventDetailsSkeleton';
@@ -257,7 +258,7 @@ const EventDetails = () => {
                     </button>
 
                     <div className="px-4 py-2 text-[10px] font-semibold text-neutral-400 dark:text-white/30 uppercase tracking-wider">
-                      Add to Calendar
+                      <Plus size={12} className="shrink-0" />
                     </div>
                     {generateCalendarLinks(event).map((cal) => (
                       <a
