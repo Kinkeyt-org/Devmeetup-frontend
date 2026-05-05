@@ -25,7 +25,7 @@ const Notifications = () => {
       <main className="max-w-2xl mx-auto px-4 mt-8">
         <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 overflow-hidden shadow-sm">
           <div className="p-6 border-b border-neutral-100 dark:border-white/5">
-            <h2 className="text-xl font-semibold flex items-center gap-2">
+            <h2 className="text-lg md:text-xl font-semibold flex items-center gap-2">
               <Bell className="w-5 h-5 text-neutral-400" />
               Preferences
             </h2>

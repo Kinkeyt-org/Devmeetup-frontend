@@ -20,7 +20,7 @@ const Payments = () => {
           {/* PAYMENT METHODS */}
           <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 p-6 shadow-sm">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
+              <h2 className="text-lg md:text-xl font-semibold flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-neutral-400" />
                 Payment Methods
               </h2>
@@ -44,7 +44,7 @@ const Payments = () => {
           {/* HISTORY */}
           <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 overflow-hidden shadow-sm">
             <div className="p-6 border-b border-neutral-100 dark:border-white/5">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
+              <h2 className="text-lg md:text-xl font-semibold flex items-center gap-2">
                 <History className="w-5 h-5 text-neutral-400" />
                 Transaction History
               </h2>

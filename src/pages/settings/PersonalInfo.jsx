@@ -62,7 +62,7 @@ const PersonalInfo = () => {
       <main className="max-w-2xl mx-auto px-4 mt-8">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 p-6 shadow-sm">
-            <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
+            <h2 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
               <User className="w-5 h-5 text-neutral-400" />
               Basic Details
             </h2>

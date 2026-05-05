@@ -156,7 +156,7 @@ const Profile = () => {
             />
           </div>
 
-          <h1 className="mt-5 text-2xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white text-center">
+          <h1 className="mt-5 text-3xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white text-center">
             {user.name}
           </h1>
           <p className="text-neutral-500 dark:text-neutral-400 text-sm md:text-base mt-1 text-center">
@@ -223,7 +223,7 @@ const Profile = () => {
         )}
 
         {/* ACCOUNT SETTINGS */}
-        <h2 className="text-xl font-semibold text-neutral-900 dark:text-white mb-4 px-4">
+        <h2 className="text-lg md:text-xl font-semibold text-neutral-900 dark:text-white mb-4 px-4">
           Account Settings
         </h2>
         <div className="bg-white dark:bg-neutral-900/50 rounded-[1.5rem] border border-neutral-200/60 dark:border-neutral-800/60 overflow-hidden mb-8 shadow-sm">
@@ -249,7 +249,7 @@ const Profile = () => {
         </div>
 
         {/* SUPPORT */}
-        <h2 className="text-xl font-semibold text-neutral-900 dark:text-white mb-4 px-4 mt-4">
+        <h2 className="text-lg md:text-xl font-semibold text-neutral-900 dark:text-white mb-4 px-4 mt-4">
           Support & About
         </h2>
         <div className="bg-white dark:bg-neutral-900/50 rounded-[1.5rem] border border-neutral-200/60 dark:border-neutral-800/60 overflow-hidden mb-8 shadow-sm">

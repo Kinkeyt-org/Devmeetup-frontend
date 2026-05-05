@@ -38,7 +38,7 @@ const HelpCenter = () => {
           </button>
         </div>
 
-        <h2 className="text-xl font-semibold text-neutral-900 dark:text-white mb-4 ml-4">Popular Topics</h2>
+        <h2 className="text-lg md:text-xl font-semibold text-neutral-900 dark:text-white mb-4 ml-4">Popular Topics</h2>
         <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 overflow-hidden">
           {["How to buy tickets", "Organizing your first event", "Refund policy", "Account verification"].map((topic, i) => (
             <button key={topic} className="w-full flex items-center justify-between p-5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors border-b last:border-0 border-neutral-100 dark:border-white/5">
