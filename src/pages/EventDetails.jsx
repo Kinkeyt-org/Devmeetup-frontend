@@ -339,14 +339,6 @@ const EventDetails = () => {
                         {value}
                       </span>
                     </div>
-                    {Icon === Calendar && event && (
-                      <button
-                        onClick={() => setShowMenu(true)}
-                        className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-white/5 text-neutral-500 dark:text-white/40 hover:bg-neutral-200 dark:hover:bg-white/10 transition"
-                      >
-                        <Plus size={12} className="shrink-0" />
-                      </button>
-                    )}
                   </div>
                 ))}
               </div>
