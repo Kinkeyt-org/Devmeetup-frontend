@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { getEventDetails } from '../api/event';
 import { bookEvent } from '../api/ticket';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; 
 import { toast } from 'react-hot-toast';
 import {
-  ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon, Share2, MoreHorizontal, ExternalLink, Compass, ImageDown, Globe
+  ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon,  Share2, MoreHorizontal, ExternalLink, Compass, ImageDown
 } from 'lucide-react';
 import { Helmet } from "react-helmet-async";
 import EventDetailsSkeleton from '../components/EventDetailsSkeleton';
@@ -79,25 +79,13 @@ const EventDetails = () => {
         const eventData = await getEventDetails(id);
         setEvent(eventData);
 
-        const hasUrlInLocation = eventData?.location?.match(/https?:\/\/[^\s]+/);
-        const isOnlineEvent =
-          eventData?.type?.toLowerCase() === "virtual" ||
-          eventData?.type?.toLowerCase() === "online" ||
-          eventData?.is_online === true ||
-          eventData?.is_virtual === true ||
-          hasUrlInLocation ||
-          eventData?.location?.toLowerCase()?.includes('online') ||
-          eventData?.location?.toLowerCase()?.includes('virtual');
-
         const eventLat = eventData.lat || eventData.latitude;
         const eventLng = eventData.lng || eventData.longitude;
 
-        if (!isOnlineEvent) {
-          if (eventLat && eventLng) {
-            setCoords({ lat: parseFloat(eventLat), lng: parseFloat(eventLng) });
-          } else if (eventData.location) {
-            geocodeLocation(eventData.location);
-          }
+        if (eventLat && eventLng) {
+          setCoords({ lat: parseFloat(eventLat), lng: parseFloat(eventLng) });
+        } else if (eventData.location) {
+          geocodeLocation(eventData.location);
         }
       } catch (error) {
         console.error('Error fetching event details:', error);
@@ -131,7 +119,7 @@ const EventDetails = () => {
 
   const handleShare = async () => {
     const shareText = `${event?.title}\n📍 ${event?.location || 'Online'}\n📅 ${event?.event_date_human || ''}`;
-
+    
     const shareData = {
       title: event?.title || 'Check out this event!',
       text: shareText,
@@ -146,7 +134,7 @@ const EventDetails = () => {
             const response = await fetch(bannerSrc);
             const blob = await response.blob();
             const file = new File([blob], 'event-preview.jpg', { type: blob.type });
-
+            
             if (navigator.canShare({ files: [file] })) {
               await navigator.share({
                 ...shareData,
@@ -190,27 +178,14 @@ const EventDetails = () => {
         <p className="text-neutral-400 dark:text-white/40 text-sm">Event not found</p>
       </div>
     );
-  }
-  const bannerSrc = event.banner || event.image || event.avatar;
-  const hasUrlInLocation = event?.location?.match(/https?:\/\/[^\s]+/);
-  const isOnline = 
-    event?.type?.toLowerCase() === "virtual" || 
-    event?.type?.toLowerCase() === "online" || 
-    event?.is_online === true || 
-    event?.is_virtual === true ||
-    hasUrlInLocation ||
-    event?.location?.toLowerCase()?.includes('online') ||
-    event?.location?.toLowerCase()?.includes('virtual');
-  const meetingLink =
-    event?.meeting_link ||
-    (hasUrlInLocation ? hasUrlInLocation[0] : null);
+  }  const bannerSrc = event.banner || event.image || event.avatar;
 
   return (
     <>
       <Helmet>
         <title>{event.title} | DevMeet</title>
         <meta name="description" content={event.description || "Join this amazing event on DevMeet."} />
-
+        
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={window.location.href} />
@@ -272,7 +247,7 @@ const EventDetails = () => {
           </div>
 
           <div className="flex flex-col md:flex-row md:gap-10 lg:gap-16 mt-4 md:mt-8">
-
+            
             {/* LEFT: HERO IMAGE */}
             <div className="w-full md:w-[45%] lg:w-[42%] shrink-0">
               <div
@@ -295,7 +270,7 @@ const EventDetails = () => {
 
             {/* RIGHT: DETAILS */}
             <div className="flex-1 flex flex-col mt-6 md:mt-0 md:pt-2">
-
+              
               {/* TITLE */}
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                 <h1 className="text-neutral-900 dark:text-white leading-tight flex-1 font-semibold text-xl md:text-2xl lg:text-3xl tracking-tight">
@@ -306,7 +281,7 @@ const EventDetails = () => {
               {/* META ROW — location / date / price */}
               <div className="mt-6 space-y-3">
                 {[
-                  { Icon: isOnline ? Globe : MapPin, value: event.location || (isOnline ? 'Virtual Event' : 'TBA') },
+                  { Icon: MapPin, value: event.location || 'Online' },
                   { Icon: Calendar, value: event.event_date_human || 'TBA' },
                   {
                     Icon: Banknote,
@@ -337,81 +312,54 @@ const EventDetails = () => {
                 </div>
               )}
 
-              {/* MAP SECTION OR ONLINE INFO */}
+              {/* MAP SECTION */}
               <div className="mt-8 lg:mt-10">
                 <div className="flex items-center gap-2 mb-3">
-                  {isOnline ? (
-                    <Globe size={14} className="text-neutral-400 dark:text-white/40" />
-                  ) : (
-                    <Compass size={14} className="text-neutral-400 dark:text-white/40" />
-                  )}
+                  <Compass size={14} className="text-neutral-400 dark:text-white/40" />
                   <span className="text-[11px] md:text-[13px] font-semibold text-neutral-500 dark:text-white/50 tracking-[0.06em] uppercase">
-                    {isOnline ? 'Online Event' : 'Location'}
+                    Location
                   </span>
                 </div>
-
-                {isOnline ? (
-                  <div className="rounded-2xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4 p-8 flex flex-col items-center justify-center text-center" style={{ height: 250 }}>
-                    <div className="w-14 h-14 rounded-full bg-neutral-100 dark:bg-white/5 flex items-center justify-center mb-4">
-                      <Globe size={24} className="text-neutral-400 dark:text-white/40" />
+                <div
+                  className="rounded-2xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4 overflow-hidden relative"
+                  style={{ height: 250 }}
+                >
+                  {coords.lat && coords.lng ? (
+                    <>
+                      {!mapLoaded && (
+                        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-neutral-50 dark:bg-[#111118]">
+                          <div className="w-6 h-6 border-2 border-neutral-200 dark:border-white/10 border-t-neutral-500 dark:border-t-white/50 rounded-full animate-spin" />
+                          <p className="text-xs text-neutral-400 dark:text-white/35 mt-3">Loading map...</p>
+                        </div>
+                      )}
+                      <iframe
+                        title="Event Location"
+                        src={`https://maps.google.com/maps?q=${coords.lat},${coords.lng}&z=17&output=embed`}
+                        className={`w-full h-full border-0 transition-opacity duration-500 ${mapLoaded ? 'opacity-100' : 'opacity-0'}`}
+                        style={{
+                          filter: isDark
+                            ? 'grayscale(1) invert(1) brightness(0.85) contrast(1.15)'
+                            : 'grayscale(1) contrast(1.1)'
+                        }}
+                        onLoad={() => setMapLoaded(true)}
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                      />
+                    </>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      {isGeocoding ? (
+                        <div className="flex flex-col items-center gap-3">
+                          <div className="w-6 h-6 border-2 border-white/10 border-t-white/50 rounded-full animate-spin" />
+                          <p className="text-xs text-neutral-400 dark:text-white/35">Locating venue...</p>
+                        </div>
+                      ) : (
+                        <p className="text-xs text-neutral-300 dark:text-white/25">Map preview unavailable</p>
+                      )}
                     </div>
-                    <h3 className="text-neutral-900 dark:text-white font-medium mb-1">This is a virtual event</h3>
-                    {meetingLink ? (
-                      <a
-                        href={meetingLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-black text-sm font-semibold hover:opacity-90 transition"
-                      >
-                        <ExternalLink size={14} />
-                        Join Event
-                      </a>
-                    ) : (
-                      <p className="text-xs text-neutral-500 dark:text-white/40 max-w-[240px]">The joining link will be available after RSVP.</p>
-                    )}
-                  </div>
-                ) : (
-                  <div
-                    className="rounded-2xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4 overflow-hidden relative"
-                    style={{ height: 250 }}
-                  >
-                    {coords.lat && coords.lng ? (
-                      <>
-                        {!mapLoaded && (
-                          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-neutral-50 dark:bg-[#111118]">
-                            <div className="w-6 h-6 border-2 border-neutral-200 dark:border-white/10 border-t-neutral-500 dark:border-t-white/50 rounded-full animate-spin" />
-                            <p className="text-xs text-neutral-400 dark:text-white/35 mt-3">Loading map...</p>
-                          </div>
-                        )}
-                        <iframe
-                          title="Event Location"
-                          src={`https://maps.google.com/maps?q=${coords.lat},${coords.lng}&z=17&output=embed`}
-                          className={`w-full h-full border-0 transition-opacity duration-500 ${mapLoaded ? 'opacity-100' : 'opacity-0'}`}
-                          style={{
-                            filter: isDark
-                              ? 'grayscale(1) invert(1) brightness(0.85) contrast(1.15)'
-                              : 'grayscale(1) contrast(1.1)'
-                          }}
-                          onLoad={() => setMapLoaded(true)}
-                          allowFullScreen
-                          loading="lazy"
-                          referrerPolicy="no-referrer-when-downgrade"
-                        />
-                      </>
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        {isGeocoding ? (
-                          <div className="flex flex-col items-center gap-3">
-                            <div className="w-6 h-6 border-2 border-white/10 border-t-white/50 rounded-full animate-spin" />
-                            <p className="text-xs text-neutral-400 dark:text-white/35">Locating venue...</p>
-                          </div>
-                        ) : (
-                          <p className="text-xs text-neutral-300 dark:text-white/25">Map preview unavailable</p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
 
               {/* RSVP BUTTON (Desktop/Tablet) */}
