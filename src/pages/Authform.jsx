@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { login, signup } from "../api/auth";
 import { updateProfile } from "../api/user";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 const GOOGLE_ICON = (
@@ -290,6 +290,11 @@ export default function Authform() {
                 >
                   {loading ? <Spinner /> : "Create account"}
                 </button>
+
+                <p className="text-[11px] text-neutral-400 mt-4 leading-relaxed text-center">
+                  By signing up you agree to our{" "}
+                  <Link to="/support/terms" className="text-black underline">terms and conditions</Link>.
+                </p>
               </form>
             )}
 
