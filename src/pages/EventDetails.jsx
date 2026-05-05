@@ -10,6 +10,7 @@ import {
 import { Helmet } from "react-helmet-async";
 import EventDetailsSkeleton from '../components/EventDetailsSkeleton';
 import { toPng } from 'html-to-image';
+import { generateCalendarLinks } from '../utils/calendar';
 
 
 const EventDetails = () => {
@@ -249,11 +250,27 @@ const EventDetails = () => {
                     <button
                       onClick={handleDownloadPng}
                       disabled={isDownloading}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 dark:text-white/80 hover:bg-neutral-100 dark:hover:bg-white/10 transition disabled:opacity-50"
+                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 dark:text-white/80 hover:bg-neutral-100 dark:hover:bg-white/10 transition disabled:opacity-50 border-b border-neutral-100 dark:border-white/5"
                     >
                       <ImageDown size={15} className="shrink-0" />
                       {isDownloading ? 'Downloading...' : 'Download as PNG'}
                     </button>
+
+                    <div className="px-4 py-2 text-[10px] font-semibold text-neutral-400 dark:text-white/30 uppercase tracking-wider">
+                      Add to Calendar
+                    </div>
+                    {generateCalendarLinks(event).map((cal) => (
+                      <a
+                        key={cal.name}
+                        href={cal.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 dark:text-white/80 hover:bg-neutral-100 dark:hover:bg-white/10 transition"
+                      >
+                        <Calendar size={15} className="shrink-0" />
+                        {cal.name}
+                      </a>
+                    ))}
                   </div>
                 )}
               </div>
@@ -310,15 +327,25 @@ const EventDetails = () => {
                       : `₦${Number(event.price || 0).toLocaleString()}`
                   },
                 ].map(({ Icon, value }, i) => (
-                  <div key={i} className="flex items-center gap-2.5">
-                    <Icon
-                      size={14}
-                      strokeWidth={2}
-                      className="text-neutral-400 dark:text-white/45 shrink-0"
-                    />
-                    <span className="text-[12px] md:text-[13.5px] font-normal text-neutral-600 dark:text-white/70 leading-[1.4]">
-                      {value}
-                    </span>
+                  <div key={i} className="flex items-center justify-between gap-2.5">
+                    <div className="flex items-center gap-2.5">
+                      <Icon
+                        size={14}
+                        strokeWidth={2}
+                        className="text-neutral-400 dark:text-white/45 shrink-0"
+                      />
+                      <span className="text-[12px] md:text-[13.5px] font-normal text-neutral-600 dark:text-white/70 leading-[1.4]">
+                        {value}
+                      </span>
+                    </div>
+                    {Icon === Calendar && event && (
+                      <button
+                        onClick={() => setShowMenu(true)}
+                        className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-white/5 text-neutral-500 dark:text-white/40 hover:bg-neutral-200 dark:hover:bg-white/10 transition"
+                      >
+                        Add to Calendar
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
