@@ -298,24 +298,6 @@ const Dashboard = () => {
 
                 </div>
               </div>
-
-              {user?.role !== "organizer" && (
-                <div className="rounded-2xl bg-neutral-900 text-white p-6">
-                  <h3 className="font-medium mb-2">
-                    Become an organizer
-                  </h3>
-                  <p className="text-white/60 text-sm mb-4">
-                    Start hosting your own events.
-                  </p>
-
-                  <button
-                    onClick={() => navigate("/become-organizer")}
-                    className="w-full px-4 py-2.5 rounded-full bg-white text-black text-sm hover:opacity-90 transition"
-                  >
-                    Get started
-                  </button>
-                </div>
-              )}
             </div>
 
           </div>
