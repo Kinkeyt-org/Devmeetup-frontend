@@ -5,12 +5,11 @@ import { bookEvent } from '../api/ticket';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import { toast } from 'react-hot-toast';
 import {
-  ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon,  Share2, MoreHorizontal, ExternalLink, Compass, ImageDown, Globe, Video,
+  ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon,  Share2, MoreHorizontal, ExternalLink, Compass, Globe, Video,
   Plus
 } from 'lucide-react';
 import { Helmet } from "react-helmet-async";
 import EventDetailsSkeleton from '../components/EventDetailsSkeleton';
-import { toPng } from 'html-to-image';
 import { generateCalendarLinks } from '../utils/calendar';
 
 
@@ -26,27 +25,8 @@ const EventDetails = () => {
   const [coords, setCoords] = useState({ lat: null, lng: null });
   const [isGeocoding, setIsGeocoding] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
 
-  const handleDownloadPng = async () => {
-    setShowMenu(false);
-    setIsDownloading(true);
-    try {
-      const node = document.getElementById('event-details-page');
-      const dataUrl = await toPng(node, { cacheBust: true, quality: 1 });
-      const link = document.createElement('a');
-      link.download = `${event?.title?.replace(/\s+/g, '-') || 'event'}.png`;
-      link.href = dataUrl;
-      link.click();
-      toast.success('Page downloaded!');
-    } catch (err) {
-      console.error('Download failed:', err);
-      toast.error('Could not download page.');
-    } finally {
-      setIsDownloading(false);
-    }
-  };
 
   const handleBookEvent = async () => {
     setIsBooking(true);
@@ -223,7 +203,7 @@ const EventDetails = () => {
         <meta property="twitter:image" content={bannerSrc} />
       </Helmet>
 
-      <div id="event-details-page" className="min-h-screen relative overflow-x-hidden font-sans bg-background">
+      <div className="min-h-screen relative overflow-x-hidden font-sans bg-background">
 
         {/* Scrollable content */}
         <div className="relative z-10 max-w-7xl mx-auto min-h-screen pb-32 px-5 md:px-8 lg:px-12">
@@ -248,14 +228,6 @@ const EventDetails = () => {
                   <div
                     className="absolute right-0 top-11 z-50 min-w-[180px] rounded-2xl border border-neutral-200 dark:border-white/10 overflow-hidden bg-white dark:bg-neutral-900/95 backdrop-blur-2xl"
                   >
-                    <button
-                      onClick={handleDownloadPng}
-                      disabled={isDownloading}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 dark:text-white/80 hover:bg-neutral-100 dark:hover:bg-white/10 transition disabled:opacity-50 border-b border-neutral-100 dark:border-white/5"
-                    >
-                      <ImageDown size={15} className="shrink-0" />
-                      {isDownloading ? 'Downloading...' : 'Download as PNG'}
-                    </button>
 
                     <div className="px-4 py-2 text-[10px] font-semibold text-neutral-400 dark:text-white/30 uppercase tracking-wider">
                       Add to Calendar
@@ -470,7 +442,7 @@ const EventDetails = () => {
 
         {/* FIXED BOTTOM — RSVP BUTTON (Mobile Only) */}
         <div
-          className="fixed bottom-0 left-0 right-0 z-20 flex justify-center md:hidden bg-gradient-to-t from-background/98 via-background/80 to-transparent"
+          className="fixed bottom-0 left-0 right-0 z-20 flex justify-center md:hidden bg-linear-to-t from-background/98 via-background/80 to-transparent"
           style={{
             paddingBottom: 'env(safe-area-inset-bottom, 0px)',
           }}
