@@ -178,6 +178,7 @@ const EventDetails = () => {
         <p className="text-neutral-400 dark:text-white/40 text-sm">Event not found</p>
       </div>
     );
+  }
   const bannerSrc = event.banner || event.image || event.avatar;
   const isOnline = 
     event?.type === "virtual" || 
