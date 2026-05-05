@@ -56,34 +56,20 @@ const MOCK_EVENTS = [
 
 export default function Business() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const isModal = !!location.state?.backgroundLocation;
-
-  // Lock body scroll when modal is open
-  useEffect(() => {
-    if (isModal) {
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isModal]);
 
   const handleClose = () => {
     navigate(-1);
   };
 
-  const content = (
-    <div className="w-full h-full flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
-      {/* Modal Close Button */}
-      {isModal && (
-        <button
-          onClick={handleClose}
-          className="absolute top-4 right-4 md:top-6 md:right-6 z-60 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full backdrop-blur-md"
-        >
-          <X size={24} />
-        </button>
-      )}
+  return (
+    <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
+      {/* Close Button */}
+      <button
+        onClick={handleClose}
+        className="fixed top-4 right-4 md:top-6 md:right-6 z-60 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full backdrop-blur-md transition-all duration-300"
+      >
+        <X size={24} />
+      </button>
 
       {/* HERO SECTION */}
       <section className="relative w-full h-[85vh] min-h-[500px]">
@@ -133,23 +119,6 @@ export default function Business() {
           ))}
         </div>
       </section>
-    </div>
-  );
-
-  if (isModal) {
-    return (
-      <div className="fixed inset-0 z-100 flex bg-neutral-50 dark:bg-[#111111]">
-        <div className="w-full h-full relative">
-          {content}
-        </div>
-      </div>
-    );
-  }
-
-  // Regular Page Rendering
-  return (
-    <div className="min-h-screen pt-16">
-      {content}
     </div>
   );
 }

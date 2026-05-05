@@ -191,7 +191,6 @@ const EventsPage = () => {
                 <Link
                   key={cat.name}
                   to={`/categories/${cat.path}`}
-                  state={{ backgroundLocation: location }}
                   className="flex flex-col items-center gap-3 p-4 rounded-2xl border border-neutral-100 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition group"
                 >
                   <div className="w-12 h-12 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center group-hover:scale-110 transition duration-300">

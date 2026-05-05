@@ -134,7 +134,7 @@ const Navbar = () => {
 
             <button
               onClick={() => navigate("/events")}
-              className="hidden md:flex w-40 py-2 items-center justify-center gap-2 text-sm font-medium rounded-full bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-800 transition"
+              className="hidden md:flex w-40 py-2 cursor-pointer items-center justify-center gap-2 text-sm font-medium rounded-full bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-800 transition"
             >
               Explore Events <ArrowRight size={16} />
             </button>
@@ -175,7 +175,7 @@ const Navbar = () => {
                   className="px-4 md:hidden py-2 text-sm font-medium rounded-full flex gap-1  items-center bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-800 transition"
                   to="/login"
                 >
-                  sign in <ArrowRight size={14}/>
+                  sign in <ArrowRight size={12}/>
                 </Link>
               ):(
               <div className="flex md:hidden items-center gap-2">

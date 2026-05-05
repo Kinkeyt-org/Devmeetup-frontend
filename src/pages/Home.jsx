@@ -168,7 +168,7 @@ const Home = () => {
               <button
                 onClick={() => navigate("/events")}
                 aria-label="View all upcoming events"
-                className="text-[0.7rem] px-4 py-2 rounded-full border border-neutral-200 dark:border-white/10 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition"
+                className="text-[0.7rem] cursor-pointer px-4 py-2 rounded-full border border-neutral-200 dark:border-white/10 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition"
               >
                 View all
               </button>

@@ -56,39 +56,25 @@ const MOCK_EVENTS = [
 
 export default function Education() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const isModal = !!location.state?.backgroundLocation;
-
-  // Lock body scroll when modal is open
-  useEffect(() => {
-    if (isModal) {
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isModal]);
 
   const handleClose = () => {
     navigate(-1);
   };
 
-  const content = (
-    <div className="w-full h-full flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
-      {/* Modal Close Button */}
-      {isModal && (
-        <button
-          onClick={handleClose}
-          className="absolute top-4 right-4 md:top-6 md:right-6 z-60 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full backdrop-blur-md"
-        >
-          <X size={24} />
-        </button>
-      )}
+  return (
+    <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
+      {/* Close Button */}
+      <button
+        onClick={handleClose}
+        className="fixed top-4 right-4 md:top-6 md:right-6 z-60 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full backdrop-blur-md transition-all duration-300"
+      >
+        <X size={24} />
+      </button>
 
       {/* HERO SECTION */}
       <section className="relative w-full h-[85vh] min-h-[500px]">
         <img
-          src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop"
+          src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop"
           alt="Education banner"
           className="w-full h-full object-cover"
         />
@@ -99,15 +85,15 @@ export default function Education() {
             <div className="flex flex-wrap items-center gap-4 text-sm md:text-base text-neutral-300 font-medium mb-4 md:mb-6">
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <GraduationCap size={18} className="md:w-5 md:h-5" />
-                <span><strong className="text-white">6K</strong> Events</span>
+                <span><strong className="text-white">1.2K</strong> Events</span>
               </div>
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <Users size={18} className="md:w-5 md:h-5" />
-                <span><strong className="text-white">50K</strong> Students</span>
+                <span><strong className="text-white">12K</strong> Students</span>
               </div>
             </div>
             <p className="text-neutral-300 text-sm md:text-lg mb-8 max-w-md md:max-w-xl leading-relaxed">
-              Unlock your potential with academic conferences, skill-building bootcamps, and inspiring lectures from world-class educators.
+              Expand your horizons, learn new skills, and connect with fellow learners through our curated educational workshops and seminars.
             </p>
             <div className="flex flex-row w-full max-w-md">
               <input
@@ -133,23 +119,6 @@ export default function Education() {
           ))}
         </div>
       </section>
-    </div>
-  );
-
-  if (isModal) {
-    return (
-      <div className="fixed inset-0 z-100 flex bg-neutral-50 dark:bg-[#111111]">
-        <div className="w-full h-full relative">
-          {content}
-        </div>
-      </div>
-    );
-  }
-
-  // Regular Page Rendering
-  return (
-    <div className="min-h-screen pt-16">
-      {content}
     </div>
   );
 }

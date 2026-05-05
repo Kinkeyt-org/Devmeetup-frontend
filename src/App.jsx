@@ -68,6 +68,10 @@ const AppContent = () => {
     "/events/create",
   ];
 
+  const shouldHideNavbar =
+    hideNavbarRoutes.includes(location.pathname) ||
+    location.pathname.startsWith("/categories/");
+
   /* ================= INIT GA ON FIRST LOAD ================= */
   useEffect(() => {
     initGA();
@@ -82,7 +86,7 @@ const AppContent = () => {
     <>
 
       <div className="relative z-10">
-        {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
+        {!shouldHideNavbar && <Navbar />}
 
         <Routes location={backgroundLocation || location}>
           <Route
@@ -125,19 +129,6 @@ const AppContent = () => {
           <Route path="/become-organizer" element={<OrganizerOnboarding />} />
         </Routes>
 
-        {backgroundLocation && (
-          <Routes>
-            <Route path="/categories/tech" element={<Tech />} />
-            <Route path="/categories/design" element={<Design />} />
-            <Route path="/categories/business" element={<Business />} />
-            <Route path="/categories/lifestyle" element={<Lifestyle />} />
-            <Route path="/categories/workshops" element={<Workshops />} />
-            <Route path="/categories/education" element={<Education />} />
-            <Route path="/categories/health" element={<Health />} />
-            <Route path="/categories/music" element={<Music />} />
-            <Route path="/categories/social" element={<Social />} />
-          </Routes>
-        )}
       </div>
     </>
   );
