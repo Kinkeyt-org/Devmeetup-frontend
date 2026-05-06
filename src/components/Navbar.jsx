@@ -16,7 +16,8 @@ import {
   X,
   LogOut,
   ArrowRight,
-  ArrowUp
+  ArrowUp,
+  ArrowUpRight
 } from "lucide-react";
 
 
@@ -170,12 +171,12 @@ const Navbar = () => {
             )}
 
             {/* MOBILE BUTTON */}
-              {!user?(
+            {!user?(
                 <Link
                   className="px-4 md:hidden py-2 text-sm font-medium rounded-full flex gap-1  items-center bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-800 transition"
                   to="/login"
                 >
-                  sign in <ArrowRight size={12}/>
+                  sign in <ArrowUpRight size={12}/>
                 </Link>
               ):(
               <div className="flex md:hidden items-center gap-2">

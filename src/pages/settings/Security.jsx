@@ -16,7 +16,7 @@ const Security = () => {
         >
           <ArrowLeft className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />
         </button>
-        <span className="text-[16px] font-semibold tracking-tight">Login & Security</span>
+        <span className="text-sm md:text-[16px] font-semibold tracking-tight">Login & Security</span>
         <div className="w-9" />
       </nav>
 
@@ -25,11 +25,11 @@ const Security = () => {
           {/* PASSWORD SECTION */}
           <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 overflow-hidden shadow-sm">
             <div className="p-6 border-b border-neutral-100 dark:border-white/5">
-              <h2 className="text-lg md:text-xl font-semibold flex items-center gap-2">
+              <h2 className="text-base md:text-xl font-semibold flex items-center gap-2">
                 <Lock className="w-5 h-5 text-neutral-400" />
                 Password
               </h2>
-              <p className="text-sm text-neutral-500 mt-1">Change your password regularly to keep your account secure.</p>
+              <p className="text-xs md:text-sm text-neutral-500 mt-1">Change your password regularly to keep your account secure.</p>
             </div>
             
             <button className="w-full flex items-center justify-between p-6 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors group">
@@ -38,8 +38,8 @@ const Security = () => {
                   <Key className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
                 </div>
                 <div className="text-left">
-                  <p className="font-semibold">Update Password</p>
-                  <p className="text-xs text-neutral-500">Last changed 3 months ago</p>
+                  <p className="text-sm md:text-base font-semibold">Update Password</p>
+                  <p className="text-[10px] md:text-xs text-neutral-500">Last changed 3 months ago</p>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-neutral-300" />
@@ -49,11 +49,11 @@ const Security = () => {
           {/* TWO-FACTOR SECTION */}
           <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 overflow-hidden shadow-sm">
             <div className="p-6 border-b border-neutral-100 dark:border-white/5">
-              <h2 className="text-lg md:text-xl font-semibold flex items-center gap-2">
+              <h2 className="text-base md:text-xl font-semibold flex items-center gap-2">
                 <Smartphone className="w-5 h-5 text-neutral-400" />
                 Two-Factor Authentication
               </h2>
-              <p className="text-sm text-neutral-500 mt-1">Add an extra layer of security to your account.</p>
+              <p className="text-xs md:text-sm text-neutral-500 mt-1">Add an extra layer of security to your account.</p>
             </div>
             
             <div className="p-6 flex items-center justify-between">
@@ -62,8 +62,8 @@ const Security = () => {
                   <ShieldCheck className="w-5 h-5 text-green-600 dark:text-green-400" />
                 </div>
                 <div className="text-left">
-                  <p className="font-semibold">SMS Authentication</p>
-                  <p className="text-xs text-neutral-500">Currently enabled</p>
+                  <p className="text-sm md:text-base font-semibold">SMS Authentication</p>
+                  <p className="text-[10px] md:text-xs text-neutral-500">Currently enabled</p>
                 </div>
               </div>
               <div className="relative inline-flex items-center cursor-pointer">
@@ -76,11 +76,11 @@ const Security = () => {
           {/* SESSIONS SECTION */}
           <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 overflow-hidden shadow-sm">
             <div className="p-6 border-b border-neutral-100 dark:border-white/5">
-              <h2 className="text-lg md:text-xl font-semibold flex items-center gap-2">
+              <h2 className="text-base md:text-xl font-semibold flex items-center gap-2">
                 <Smartphone className="w-5 h-5 text-neutral-400" />
                 Recent Devices
               </h2>
-              <p className="text-sm text-neutral-500 mt-1">Check where you're currently logged in.</p>
+              <p className="text-xs md:text-sm text-neutral-500 mt-1">Check where you're currently logged in.</p>
             </div>
             
             <div className="p-6 space-y-4">
@@ -88,8 +88,8 @@ const Security = () => {
                 <div className="flex gap-3">
                   <Smartphone className="w-5 h-5 text-neutral-400 mt-1" />
                   <div>
-                    <p className="font-medium">iPhone 15 Pro • London, UK</p>
-                    <p className="text-xs text-neutral-500">Current Session</p>
+                    <p className="text-sm md:text-base font-medium">iPhone 15 Pro • London, UK</p>
+                    <p className="text-[10px] md:text-xs text-neutral-500">Current Session</p>
                   </div>
                 </div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-green-600 bg-green-100 dark:bg-green-500/10 px-2 py-1 rounded">Online</span>

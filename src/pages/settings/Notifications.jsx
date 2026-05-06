@@ -18,18 +18,18 @@ const Notifications = () => {
         <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors">
           <ArrowLeft className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />
         </button>
-        <span className="text-[16px] font-semibold tracking-tight">Notifications</span>
+        <span className="text-sm md:text-[16px] font-semibold tracking-tight">Notifications</span>
         <div className="w-9" />
       </nav>
 
       <main className="max-w-2xl mx-auto px-4 mt-8">
         <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 overflow-hidden shadow-sm">
           <div className="p-6 border-b border-neutral-100 dark:border-white/5">
-            <h2 className="text-lg md:text-xl font-semibold flex items-center gap-2">
+            <h2 className="text-base md:text-xl font-semibold flex items-center gap-2">
               <Bell className="w-5 h-5 text-neutral-400" />
               Preferences
             </h2>
-            <p className="text-sm text-neutral-500 mt-1">Control how you want to be notified about events.</p>
+            <p className="text-xs md:text-sm text-neutral-500 mt-1">Control how you want to be notified about events.</p>
           </div>
 
           <div className="divide-y divide-neutral-100 dark:divide-white/5">
@@ -68,8 +68,8 @@ const NotificationToggle = ({ icon, title, desc, enabled, onToggle }) => (
         {icon}
       </div>
       <div>
-        <p className="font-semibold">{title}</p>
-        <p className="text-xs text-neutral-500 max-w-[200px]">{desc}</p>
+        <p className="text-sm md:text-base font-semibold">{title}</p>
+        <p className="text-[10px] md:text-xs text-neutral-500 max-w-[200px]">{desc}</p>
       </div>
     </div>
     <button 

@@ -156,7 +156,7 @@ const Profile = () => {
             />
           </div>
 
-          <h1 className="mt-5 text-3xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white text-center">
+          <h1 className="mt-5 text-2xl md:text-3xl font-semibold tracking-tight text-neutral-900 dark:text-white text-center">
             {user.name}
           </h1>
           <p className="text-neutral-500 dark:text-neutral-400 text-sm md:text-base mt-1 text-center">

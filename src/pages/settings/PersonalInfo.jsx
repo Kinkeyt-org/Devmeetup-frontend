@@ -55,21 +55,21 @@ const PersonalInfo = () => {
         >
           <ArrowLeft className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />
         </button>
-        <span className="text-[16px] font-semibold tracking-tight">Personal Information</span>
+        <span className="text-sm md:text-[16px] font-semibold tracking-tight">Personal Information</span>
         <div className="w-9" />
       </nav>
 
       <main className="max-w-2xl mx-auto px-4 mt-8">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 p-6 shadow-sm">
-            <h2 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
+            <h2 className="text-base md:text-xl font-semibold mb-6 flex items-center gap-2">
               <User className="w-5 h-5 text-neutral-400" />
               Basic Details
             </h2>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-1.5 ml-1">
+                <label className="block text-xs md:text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-1.5 ml-1">
                   Full Name
                 </label>
                 <input
@@ -83,7 +83,7 @@ const PersonalInfo = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-1.5 ml-1">
+                <label className="block text-xs md:text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-1.5 ml-1">
                   Email Address
                 </label>
                 <input
@@ -93,14 +93,14 @@ const PersonalInfo = () => {
                   disabled
                   className="w-full px-4 py-3 rounded-xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 text-neutral-500 cursor-not-allowed"
                 />
-                <p className="mt-1.5 text-xs text-neutral-400 ml-1 flex items-center gap-1">
+                <p className="mt-1.5 text-[10px] md:text-xs text-neutral-400 ml-1 flex items-center gap-1">
                   <Shield className="w-3 h-3" />
                   Email cannot be changed directly for security.
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-1.5 ml-1">
+                <label className="block text-xs md:text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-1.5 ml-1">
                   Bio
                 </label>
                 <textarea
@@ -118,7 +118,7 @@ const PersonalInfo = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-black dark:bg-white text-white dark:text-black rounded-2xl font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-[0.98] shadow-lg disabled:opacity-50"
+            className="w-full py-4 bg-black dark:bg-white text-white dark:text-black rounded-2xl text-sm md:text-base font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-[0.98] shadow-lg disabled:opacity-50"
           >
             {loading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
