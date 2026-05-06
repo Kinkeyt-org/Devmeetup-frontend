@@ -341,7 +341,7 @@ const EventDetails = () => {
                       <p className="text-[15px] font-semibold text-neutral-900 dark:text-white leading-none">
                         {event?.user?.name || event?.organizer || "Jane Doe"}
                       </p>
-                      <BadgeCheck size={15} className="text-neutral-500 fill-blue-100 dark:fill-blue-900/30" />
+                      <BadgeCheck size={15} className="text-neutral-500 fill-neutral-100 dark:fill-neutral-900/30" />
                     </div>
                     <p className="text-[13px] text-neutral-500 dark:text-white/50 mt-1">
                       Event Organizer 
