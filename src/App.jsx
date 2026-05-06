@@ -37,6 +37,8 @@ import Notifications from "./pages/settings/Notifications";
 import HelpCenter from "./pages/support/HelpCenter";
 import Terms from "./pages/support/Terms";
 
+import ScrollToTop from "./components/ScrollToTop";
+
 
 /* ================= APP CONTENT ================= */
 const AppContent = () => {
@@ -96,7 +98,7 @@ const AppContent = () => {
 
   return (
     <>
-
+      <ScrollToTop />
       <div className="relative z-10">
         {!shouldHideNavbar && <Navbar />}
 
