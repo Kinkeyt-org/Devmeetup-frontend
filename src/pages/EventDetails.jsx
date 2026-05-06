@@ -319,7 +319,7 @@ const EventDetails = () => {
               </div>
 
               {/* Organizer Profile - Shows who's hosting with that sweet verified badge and a follow button! */}
-              <div className="mt-8 flex items-center justify-between border-y border-neutral-200/60 dark:border-white/5 py-5">
+              <div className="mt-8 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-neutral-200 dark:bg-neutral-800 overflow-hidden flex-shrink-0">
                     <img 
@@ -347,7 +347,7 @@ const EventDetails = () => {
 
               {/* Event Description - The meat and potatoes of the event details */}
               {event.description && (
-                <div className="mt-8">
+                <div className="mt-3">
                   <p className="text-xs md:text-sm font-normal text-neutral-500 dark:text-white/60 leading-[1.7] lg:text-[15px]">
                     {event.description}
                   </p>
