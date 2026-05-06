@@ -6,8 +6,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import {
   ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon,  Share2, MoreHorizontal, ExternalLink, Compass, Globe, Video,
-  Plus, BadgeCheck
+  Plus, BadgeCheck, BookmarkIcon
 } from 'lucide-react';
+import { Badge } from '../components/ui/badge';
 import { Helmet } from "react-helmet-async";
 import EventDetailsSkeleton from '../components/EventDetailsSkeleton';
 import { generateCalendarLinks } from '../utils/calendar';
@@ -337,13 +338,22 @@ const EventDetails = () => {
                     />
                   </div>
                   <div>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-2 mb-1">
                       <p className="text-[15px] font-semibold text-neutral-900 dark:text-white leading-none">
                         {event?.user?.name || event?.organizer || "Jane Doe"}
                       </p>
-                      <BadgeCheck size={16} className="text-blue-500 fill-blue-100 dark:fill-blue-900/30" />
+                      <div className="flex flex-wrap gap-1.5">
+                        <Badge variant="secondary" className="text-[10px] h-5 px-1.5">
+                          <BadgeCheck size={12} className="mr-1 text-blue-500" />
+                          Verified
+                        </Badge>
+                        <Badge variant="outline" className="text-[10px] h-5 px-1.5 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition">
+                          Bookmark
+                          <BookmarkIcon size={12} className="ml-1 text-neutral-500" />
+                        </Badge>
+                      </div>
                     </div>
-                    <p className="text-[13px] text-neutral-500 dark:text-white/50 mt-1">
+                    <p className="text-[13px] text-neutral-500 dark:text-white/50">
                       Event Organizer • 24K followers
                     </p>
                   </div>
