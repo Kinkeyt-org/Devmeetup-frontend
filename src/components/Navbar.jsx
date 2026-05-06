@@ -182,14 +182,6 @@ const Navbar = () => {
               <div className="flex md:hidden items-center gap-2">
 
                 <ThemeToggle />
-                {user && !isMobileMenuOpen && (
-                  <Link
-                    to="/profile"
-                    className="w-8 h-8 rounded-full overflow-hidden border border-neutral-200 dark:border-neutral-800"
-                  >
-                    <img src={avatarSrc} className="w-full h-full object-cover" />
-                  </Link>
-                )}           
                 <button
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                   className="w-9 h-9 flex items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
