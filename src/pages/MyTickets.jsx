@@ -168,7 +168,7 @@ const MyTickets = () => {
           {t.location}
         </p>
 
-        <div className="flex flex-wrap items-center justify-between gap-y-2 mt-3 pt-1">
+        <div className="flex flex-nowrap items-center justify-between gap-2 mt-3 pt-1 overflow-hidden">
           <span className="text-[10px] font-mono text-neutral-500 px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-white/5 truncate min-w-0">
             {t.code}
           </span>

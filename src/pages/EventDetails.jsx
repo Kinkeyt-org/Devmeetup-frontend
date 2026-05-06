@@ -20,12 +20,19 @@ const EventDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // state to hold the event data from the API
   const [event, setEvent] = useState(null);
+  // state for the loading skeleton
   const [loading, setLoading] = useState(true);
+  // state to disable the RSVP button while the API request is happening
   const [isBooking, setIsBooking] = useState(false);
+  // state for the map coordinates (latitude and longitude)
   const [coords, setCoords] = useState({ lat: null, lng: null });
+  // state to show a small loader while we translate a text location into map coordinates
   const [isGeocoding, setIsGeocoding] = useState(false);
+  // state to toggle the "Add to Calendar" dropdown menu
   const [showMenu, setShowMenu] = useState(false);
+  // state to track when the Google Maps iframe finishes loading
   const [mapLoaded, setMapLoaded] = useState(false);
 
 
@@ -57,12 +64,15 @@ const EventDetails = () => {
     }
   };
 
+  // This useEffect runs once when the component mounts (or if the 'id' changes).
+  // It fetches the event data and decides if we need to hit the Mapbox API for coordinates.
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
         const eventData = await getEventDetails(id);
         setEvent(eventData);
 
+        // Check if the API already returned exact coordinates
         const eventLat = eventData.lat || eventData.latitude;
         const eventLng = eventData.lng || eventData.longitude;
 
@@ -107,6 +117,7 @@ const EventDetails = () => {
     if (id) fetchEventDetails();
   }, [id]);
 
+  // Handle sharing the event (uses native Web Share API on mobile, or copies link to clipboard on desktop)
   const handleShare = async () => {
     const shareText = `${event?.title}\n📍 ${event?.location || 'Online'}\n📅 ${event?.event_date_human || ''}`;
     
@@ -153,17 +164,14 @@ const EventDetails = () => {
     }
   };
 
-  const parsedTags = event?.tags
-    ? (typeof event.tags === 'string' ? event.tags.split(',') : event.tags)
-    : [];
-
-  // Detect if this is an online/virtual event
+  // Clever logic to detect if this is an online/virtual event.
+  // It checks explicit types, lack of coordinates, or known URL structures (like zoom.us)
   const isOnlineEvent = (() => {
-    // If the event explicitly has an event_type field
+    // If the event explicitly has an event_type field set to virtual
     if (event?.event_type === 'virtual' || event?.event_type === 'online') return true;
-    // If there are coordinates, it's a physical event
+    // If there are exact map coordinates, it's definitely a physical event
     if (coords.lat && coords.lng) return false;
-    // Check if the location looks like a URL or known virtual platform
+    // Check if the location string looks like a URL or contains known virtual platform keywords
     const loc = (event?.location || '').toLowerCase().trim();
     if (!loc) return false;
     const urlPattern = /^https?:\/\//i;

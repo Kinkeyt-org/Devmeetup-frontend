@@ -30,8 +30,11 @@ const CATEGORIES = [
 ];
 
 /* ================= PAGE ================= */
+// EventsPage handles displaying the list of upcoming events and a category browser.
 const EventsPage = () => {
+  // state to hold the list of events returned from the API
   const [events, setEvents] = useState([]);
+  // state to track if we are currently fetching data (used to show skeletons)
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
@@ -41,25 +44,28 @@ const EventsPage = () => {
 
 
   /* ================= FETCH EVENTS ================= */
+  // This function hits the backend API to grab the latest upcoming events.
   const fetchEvents = async (isNewFilter = false) => {
     if (isNewFilter) {
-      setLoading(true);
+      setLoading(true); // show skeletons if we are loading fresh data
     }
 
     try {
+      // Fetch upcoming events from the API (page 1, up to 9 events)
       const data = await getEvents("upcoming", 1, 9);
-      // Update state with fetched events
+      
+      // Ensure the response is an array before setting it in state to prevent crashes
       const newEvents = Array.isArray(data.events) ? data.events : [];
-
-      setEvents(newEvents.slice(0, 9));
+      setEvents(newEvents.slice(0, 9)); // keep only the first 9
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      setLoading(false); // turn off loading skeletons once data is fetched (or if it fails)
     }
   };
 
   /* ================= TRIGGER FETCH ON PAGE/FILTER CHANGE ================= */
+  // The useEffect hook runs when the component first loads, or whenever the 'filter' changes.
   useEffect(() => {
     fetchEvents(true);
   }, [filter]);
@@ -103,12 +109,13 @@ const EventsPage = () => {
         </div>
       </section>
 
-      {/* EVENTS */}
+      {/* EVENTS SECTION */}
       <section>
         <div className="max-w-7xl mx-auto px-6">
 
-          {/* MOBILE: Horizontal scroll with EventCard */}
+          {/* MOBILE VIEW: We use a horizontal scrolling row (overflow-x-auto) so users can swipe through cards on small screens */}
           <div className="md:hidden grid grid-rows-3 grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
+            {/* Loop through the fetched events and render an EventCard for each one */}
             {events.map((event) => (
               <div
                 key={event.id}
@@ -127,7 +134,7 @@ const EventsPage = () => {
               ))}
           </div>
 
-          {/* DESKTOP: Compact row cards in a 3-col wrapping grid (like Dashboard) */}
+          {/* DESKTOP VIEW: We use a standard 3-column grid layout (md:grid-cols-3) for larger screens */}
           <div className="hidden md:grid md:grid-cols-3 gap-3 pb-6">
             {events.map((event) => (
               <div
@@ -176,7 +183,8 @@ const EventsPage = () => {
         </div>
       </section>
 
-      {/* CATEGORIES */}
+      {/* CATEGORIES SECTION */}
+      {/* This maps over the hardcoded CATEGORIES array to display clickable icons to filter events */}
       <section className="mt-20  border-neutral-100 dark:border-white/5 pt-16">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-8">
