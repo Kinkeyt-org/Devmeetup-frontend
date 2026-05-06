@@ -6,13 +6,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import {
   ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon,  Share2, MoreHorizontal, ExternalLink, Compass, Globe, Video,
-  Plus
+  Plus, BadgeCheck
 } from 'lucide-react';
 import { Helmet } from "react-helmet-async";
 import EventDetailsSkeleton from '../components/EventDetailsSkeleton';
 import { generateCalendarLinks } from '../utils/calendar';
 
-
+// EventDetails Component: This is the main page where users view all the info about a specific event.
+// It fetches the data, handles RSVPing, and figures out if we need to show a map or a virtual link!
 const EventDetails = () => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
@@ -28,6 +29,7 @@ const EventDetails = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
 
 
+  // Let's handle booking an event. We'll show a nice toast when it succeeds and redirect the user.
   const handleBookEvent = async () => {
     setIsBooking(true);
     try {
@@ -81,6 +83,7 @@ const EventDetails = () => {
       }
     };
 
+    // Time to fetch the coordinates if it's a physical event so we can drop a pin on the map.
     const geocodeLocation = async (locationName) => {
       const token = import.meta.env.VITE_MAPBOX_TOKEN;
       if (!token) return;
@@ -315,9 +318,36 @@ const EventDetails = () => {
                 ))}
               </div>
 
-              {/* DESCRIPTION */}
+              {/* Organizer Profile - Shows who's hosting with that sweet verified badge and a follow button! */}
+              <div className="mt-8 flex items-center justify-between border-y border-neutral-200/60 dark:border-white/5 py-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-neutral-200 dark:bg-neutral-800 overflow-hidden flex-shrink-0">
+                    <img 
+                      src={event?.user?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Organizer"} 
+                      alt="Organizer avatar" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <p className="text-[15px] font-semibold text-neutral-900 dark:text-white leading-none">
+                        {event?.user?.name || event?.organizer || "Jane Doe"}
+                      </p>
+                      <BadgeCheck size={16} className="text-blue-500 fill-blue-100 dark:fill-blue-900/30" />
+                    </div>
+                    <p className="text-[13px] text-neutral-500 dark:text-white/50 mt-1">
+                      Event Organizer • 24K followers
+                    </p>
+                  </div>
+                </div>
+                <button className="px-5 py-2 rounded-full bg-neutral-100 dark:bg-white/10 text-neutral-900 dark:text-white text-sm font-semibold hover:bg-neutral-200 dark:hover:bg-white/20 transition-colors active:scale-95">
+                  Follow
+                </button>
+              </div>
+
+              {/* Event Description - The meat and potatoes of the event details */}
               {event.description && (
-                <div className="mt-6 lg:mt-8">
+                <div className="mt-8">
                   <p className="text-xs md:text-sm font-normal text-neutral-500 dark:text-white/60 leading-[1.7] lg:text-[15px]">
                     {event.description}
                   </p>
