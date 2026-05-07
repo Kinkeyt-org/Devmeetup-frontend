@@ -350,7 +350,7 @@ const EventDetails = () => {
                   </div>
                 </div>
                 <button 
-                onClick={() => setFollow(true)}
+                onClick={() => setFollow(!follow)}
                 className={`${follow ? 'text-green-600 dark:text-green-500': 'text-neutral-900 dark:text-white'} cursor-pointer px-5 py-2 rounded-full bg-neutral-100 dark:bg-white/10  text-sm font-semibold hover:bg-neutral-200 dark:hover:bg-white/20 transition-colors active:scale-95`}>
                   {follow? 'Following' : 'Follow'}
                 </button>
