@@ -330,7 +330,7 @@ const EventDetails = () => {
               {/* Organizer Profile - Shows who's hosting with that sweet verified badge and a follow button! */}
               <div className="mt-8 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-neutral-200 dark:bg-neutral-800 overflow-hidden flex-shrink-0">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-neutral-200 dark:bg-neutral-800 overflow-hidden shrink-0">
                     <img 
                       src={event?.user?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Organizer"} 
                       alt="Organizer avatar" 
@@ -351,7 +351,7 @@ const EventDetails = () => {
                 </div>
                 <button 
                 onClick={() => setFollow(true)}
-                className={`${follow ? 'text-green-500': 'text-neutral-900'} cursor-pointer px-5 py-2 rounded-full bg-neutral-100 dark:bg-white/10  dark:text-white text-sm font-semibold hover:bg-neutral-200 dark:hover:bg-white/20 transition-colors active:scale-95`}>
+                className={`${follow ? 'text-green-600 dark:text-green-500': 'text-neutral-900'} cursor-pointer px-5 py-2 rounded-full bg-neutral-100 dark:bg-white/10  dark:text-white text-sm font-semibold hover:bg-neutral-200 dark:hover:bg-white/20 transition-colors active:scale-95`}>
                   {follow? 'Following' : 'Follow'}
                 </button>
               </div>
