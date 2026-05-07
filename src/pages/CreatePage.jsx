@@ -390,7 +390,7 @@ const CreatePage = () => {
                 ) : (
                   <UploadCloud size={20} className="text-neutral-400" />
                 )}
-                <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" />
+                <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" required/>
               </div>
             </div>
 

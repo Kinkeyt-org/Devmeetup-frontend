@@ -3,6 +3,7 @@ import { login, signup } from "../api/auth";
 import { updateProfile } from "../api/user";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { Loader } from "lucide-react";
 
 const GOOGLE_ICON = (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -29,14 +30,7 @@ const EyeHidden = () => (
   </svg>
 );
 
-const Spinner = () => (
-  <div className="flex items-center justify-center">
-    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-    </svg>
-  </div>
-);
+
 
 export default function Authform() {
   const navigate = useNavigate();
@@ -227,7 +221,7 @@ export default function Authform() {
                   disabled={loading}
                   className="w-full bg-black text-white py-3 rounded-xl text-sm transition active:scale-[0.98] disabled:opacity-60"
                 >
-                  {loading ? <Spinner /> : "Sign in"}
+                  {loading ? <Loader className="animate-spin" /> : "Sign in"}
                 </button>
               </form>
             ) : (
@@ -288,7 +282,7 @@ export default function Authform() {
                   disabled={loading}
                   className="w-full bg-black text-white py-3 rounded-xl text-sm transition active:scale-[0.98] disabled:opacity-60"
                 >
-                  {loading ? <Spinner /> : "Create account"}
+                  {loading ? <Loader className="animate-spin" /> : "Create account"}
                 </button>
 
                 <p className="text-[11px] text-neutral-400 mt-4 leading-relaxed text-center">
