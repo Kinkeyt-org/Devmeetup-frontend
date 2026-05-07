@@ -123,7 +123,7 @@ export default function Authform() {
               : "Create a DevMeet account to find and book tech events near you. Join our community of tech enthusiasts and start exploring today."
           }
         />
-        <link rel="canonical" href={`https://yourdomain.com/${mode === "signin" ? "login" : "signup"}`} />
+        <link rel="canonical" href={`https://devmeetup-frontend.vercel.app/${mode === "signin" ? "login" : "signup"}`} />
       </Helmet>
       <div className="min-h-screen grid md:grid-cols-2 bg-white">
 
@@ -161,7 +161,7 @@ export default function Authform() {
 
             {/* HEADER */}
             <div className="mb-8 space-y-2">
-              <h2 className="text-2xl text-black">
+              <h2 className="text-2xl font-medium text-black">
                 {mode === "signin" ? "Welcome back" : "Create account"}
               </h2>
               <p className="text-neutral-500 text-sm">
@@ -219,7 +219,7 @@ export default function Authform() {
 
                 <button
                   disabled={loading}
-                  className="w-full bg-black text-white py-3 rounded-xl text-sm transition active:scale-[0.98] disabled:opacity-60"
+                  className="w-full bg-black text-white py-3 flex justify-center rounded-xl text-sm transition active:scale-[0.98] disabled:opacity-60"
                 >
                   {loading ? <Loader className="animate-spin" /> : "Sign in"}
                 </button>
@@ -280,7 +280,7 @@ export default function Authform() {
 
                 <button
                   disabled={loading}
-                  className="w-full bg-black text-white py-3 rounded-xl text-sm transition active:scale-[0.98] disabled:opacity-60"
+                  className="w-full bg-black text-white py-3 rounded-xl flex justify-center text-sm transition active:scale-[0.98] disabled:opacity-60"
                 >
                   {loading ? <Loader className="animate-spin" /> : "Create account"}
                 </button>
