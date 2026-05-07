@@ -34,8 +34,7 @@ const EventDetails = () => {
   const [showMenu, setShowMenu] = useState(false);
   // state to track when the Google Maps iframe finishes loading
   const [mapLoaded, setMapLoaded] = useState(false);
-
-
+  const [follow, setFollow] = useState(false)
   // Let's handle booking an event. We'll show a nice toast when it succeeds and redirect the user.
   const handleBookEvent = async () => {
     setIsBooking(true);
@@ -126,6 +125,8 @@ const EventDetails = () => {
       text: shareText,
       url: window.location.href,
     };
+
+    
 
     try {
       if (navigator.share) {
@@ -348,8 +349,10 @@ const EventDetails = () => {
                     </p>
                   </div>
                 </div>
-                <button className="px-5 py-2 rounded-full bg-neutral-100 dark:bg-white/10 text-neutral-900 dark:text-white text-sm font-semibold hover:bg-neutral-200 dark:hover:bg-white/20 transition-colors active:scale-95">
-                  Follow
+                <button 
+                onClick={() => setFollow(true)}
+                className="px-5 py-2 rounded-full bg-neutral-100 dark:bg-white/10 text-neutral-900 dark:text-white text-sm font-semibold hover:bg-neutral-200 dark:hover:bg-white/20 transition-colors active:scale-95">
+                  {follow? 'Following' : 'Follow'}``
                 </button>
               </div>
 
