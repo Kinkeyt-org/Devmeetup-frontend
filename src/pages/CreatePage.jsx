@@ -24,7 +24,8 @@ import {
   Music as MusicIcon,
   GraduationCap,
   Heart,
-  Users as UsersIcon
+  Users as UsersIcon,
+  Loader
 } from "lucide-react";
 
 const CreatePage = () => {
@@ -463,12 +464,12 @@ const CreatePage = () => {
             <button
               type="submit"
               disabled={loading || success}
-              className={`w-full py-4 rounded-xl text-sm font-medium transition ${success
+              className={`w-full py-4 rounded-xl flex justify-center text-sm font-medium transition ${success
                 ? "bg-green-500 text-white"
                 : "bg-black text-white dark:bg-white dark:text-black"
                 }`}
             >
-              {loading ? "Publishing..." : success ? "Event Published!" : "Publish Event"}
+              {loading ? <Loader className="animate-spin"/> : success ? "Event Published!" : "Publish Event"}
             </button>
           </div>
 

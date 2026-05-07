@@ -6,7 +6,7 @@ import { ArrowRight, Calendar, MapPin, Navigation } from "lucide-react";
 import { useLocation } from "../hooks/useLocation";
 import Map from "../components/Map";
 
-const HERO_IMAGE = "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=1412&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+const HERO_IMAGE = "https://images.unsplash.com/photo-1561489396-888724a1543d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 const Home = () => {
   const navigate = useNavigate();
