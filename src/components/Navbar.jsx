@@ -143,7 +143,7 @@ const Navbar = () => {
             {/* USER */}
             {user ? (
               <>
-                <Notifications />
+                <Notifications classname='cursor-pointer'/>
 
                 <Link
                   to="/profile"

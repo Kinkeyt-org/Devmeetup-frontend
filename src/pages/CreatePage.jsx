@@ -228,10 +228,9 @@ const CreatePage = () => {
       <header className="sticky top-0 z-20 backdrop-blur bg-white/70 dark:bg-neutral-950/70 py-4 px-6 flex items-center justify-between">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition"
+          className="flex items-center gap-2 text-sm text-black cursor-pointer  p-2 dark:text-white transition"
         >
           <ArrowLeft size={16} />
-          Back
         </button>
         <div className="w-16"></div>
       </header>
