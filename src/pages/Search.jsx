@@ -4,6 +4,7 @@ import { IoMdSearch } from "react-icons/io";
 import Fuse from "fuse.js";
 import { getEvents } from "../api/event"; 
 import EventCard from "../components/EventCard";
+import SEO from "../components/SEO";
 
 const Search = () => {
   const navigate = useNavigate();
@@ -65,6 +66,7 @@ const Search = () => {
 
   return (
     <div className="min-h-screen bg-transparent font-sans text-neutral-900 dark:text-neutral-100 transition-colors duration-300 pb-20">
+      <SEO title="Search Events | DevMeet" description="Search for upcoming meetups and events." />
 
       {/* SEARCH HEADER */}
       <div className="sticky top-0 z-40 bg-white dark:bg-neutral-950 pt-5 pb-4 px-4 border-b border-neutral-100 dark:border-white/5 transition-colors duration-300">

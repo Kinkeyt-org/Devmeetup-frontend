@@ -8,7 +8,7 @@ import {
   ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon,  Share2, MoreHorizontal, ExternalLink, Compass, Globe, Video,
   Plus, BadgeCheck
 } from 'lucide-react';
-import { Helmet } from "react-helmet-async";
+import SEO from "../components/SEO";
 import EventDetailsSkeleton from '../components/EventDetailsSkeleton';
 import { generateCalendarLinks } from '../utils/calendar';
 
@@ -196,24 +196,12 @@ const EventDetails = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{event.title} | DevMeet</title>
-        <meta name="description" content={event.description || "Join this amazing event on DevMeet."} />
-        
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={window.location.href} />
-        <meta property="og:title" content={event.title} />
-        <meta property="og:description" content={event.description || "Join this amazing event on DevMeet."} />
-        <meta property="og:image" content={bannerSrc} />
-
-        {/* Twitter */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={window.location.href} />
-        <meta property="twitter:title" content={event.title} />
-        <meta property="twitter:description" content={event.description || "Join this amazing event on DevMeet."} />
-        <meta property="twitter:image" content={bannerSrc} />
-      </Helmet>
+      <SEO 
+        title={`${event.title} | DevMeet`}
+        description={event.description || "Join this amazing event on DevMeet."}
+        image={bannerSrc}
+        url={window.location.href}
+      />
 
       <div className="min-h-screen relative overflow-x-hidden font-sans bg-background">
 

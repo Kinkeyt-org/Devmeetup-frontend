@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { updateProfile } from "../api/user";
 import { logout } from "../api/auth";
+import SEO from "../components/SEO";
 
 const MENU_ITEMS = [
   { icon: Settings, label: "Personal Information", path: "/settings/personal-info" },
@@ -102,6 +103,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-transparent text-neutral-900 dark:text-neutral-100 font-sans pb-24 selection:bg-neutral-200 dark:selection:bg-neutral-800">
+      <SEO title="Your Profile | DevMeet" description="View and edit your DevMeet profile." />
       
       {/* NAVBAR */}
       <nav className="sticky top-0 z-40 bg-[#F9F9FB]/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-neutral-200/60 dark:border-white/5 px-4 h-16 flex items-center justify-between">

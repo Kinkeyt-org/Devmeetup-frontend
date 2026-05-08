@@ -2,7 +2,7 @@ import { useState } from "react";
 import { login, signup } from "../api/auth";
 import { updateProfile } from "../api/user";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import SEO from "../components/SEO";
 import { Loader } from "lucide-react";
 
 const GOOGLE_ICON = (
@@ -113,18 +113,14 @@ export default function Authform() {
 
   return (
     <>
-      <Helmet>
-        <title>{mode === "signin" ? "Sign In" : "Sign Up"} | DevMeet</title>
-        <meta
-          name="description"
-          content={
-            mode === "signin"
-              ? "Sign in to your DevMeet account and discover amazing tech events near you. Connect, explore, and never miss out on the action."
-              : "Create a DevMeet account to find and book tech events near you. Join our community of tech enthusiasts and start exploring today."
-          }
-        />
-        <link rel="canonical" href={`https://devmeetup-frontend.vercel.app/${mode === "signin" ? "login" : "signup"}`} />
-      </Helmet>
+      <SEO 
+        title={`${mode === "signin" ? "Sign In" : "Sign Up"} | DevMeet`}
+        description={mode === "signin"
+          ? "Sign in to your DevMeet account and discover amazing tech events near you. Connect, explore, and never miss out on the action."
+          : "Create a DevMeet account to find and book tech events near you. Join our community of tech enthusiasts and start exploring today."
+        }
+        url={`https://devmeetup-frontend.vercel.app/${mode === "signin" ? "login" : "signup"}`}
+      />
       <div className="min-h-screen grid md:grid-cols-2 bg-white">
 
         {/* LEFT */}
@@ -161,7 +157,7 @@ export default function Authform() {
 
             {/* HEADER */}
             <div className="mb-8 space-y-2">
-              <h2 className="text-2xl font-medium text-black">
+              <h2 className="text-2xl font-mediuma text-black">
                 {mode === "signin" ? "Welcome back" : "Create account"}
               </h2>
               <p className="text-neutral-500 text-sm">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import SEO from "../components/SEO";
 import {
   Calendar,
   MapPin,
@@ -90,19 +90,10 @@ const Dashboard = () => {
 
   return (
     <>
-      <Helmet>
-        <title>DevMeetup | Home</title>
-        <meta name="description" content="Welcome to DevMeetup, your go-to platform for discovering and booking events. Find the perfect event for you and join the community." />
-        <meta property="og:title" content="DevMeetup | Home" />
-        <meta property="og:description" content="Welcome to DevMeetup, your go-to platform for discovering and booking events. Find the perfect event for you and join the community." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://devmeetup-frontend.vercel.app" />
-        <meta property="og:image" content="https://images.unsplash.com/photo-1505373877841-8d25f7d46678" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="DevMeetup Events" />
-        <link rel="canonical" href="https://devmeetup-frontend.vercel.app" />
-      </Helmet>
+      <SEO 
+        title="DevMeetup | Home" 
+        description="Welcome to DevMeetup, your go-to platform for discovering and booking events. Find the perfect event for you and join the community." 
+      />
 
       <main className="min-h-screen bg-transparent text-neutral-900 dark:text-neutral-100 pb-20">
 

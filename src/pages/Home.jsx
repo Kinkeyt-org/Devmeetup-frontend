@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
+import SEO from "../components/SEO";
 import { useNavigate } from "react-router-dom";
 import { getEvents } from "../api/event";
 import { ArrowRight, Calendar, MapPin, Navigation } from "lucide-react";
@@ -56,17 +56,10 @@ const Home = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Discover Events</title>
-        <meta name="description" content="Discover events, connect with people, and host unforgettable moments happening around you." />
-        <meta name="keywords" content="events, meetups, hosting, tech events, local events" />
-        <meta property="og:title" content="Discover Events | DevMeet" />
-        <meta property="og:description" content="Find experiences, connect with people, and host unforgettable moments." />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Discover Events | DevMeet" />
-        <meta name="twitter:description" content="Discover events happening around you." />
-      </Helmet>
+      <SEO 
+        title="Discover Events | DevMeet" 
+        description="Discover events, connect with people, and host unforgettable moments happening around you." 
+      />
 
       <main className="relative min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 overflow-hidden" role="main">
 

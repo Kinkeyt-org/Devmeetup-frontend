@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getEvents } from "../api/event";
-import { Helmet } from "react-helmet-async";
+import SEO from "../components/SEO";
 import EventCard from "../components/EventCard";
 import EventSkeleton from "../components/EventSkeleton";
 import {
@@ -76,27 +76,11 @@ const EventsPage = () => {
     <div className="min-h-screen bg-transparent text-neutral-900 dark:text-neutral-100 font-sans pb-20">
 
       {/* SEO */}
-      <Helmet>
-        <title>DevMeetup | Upcoming Events Near You</title>
-        <meta
-          name="description"
-          content="Discover and book upcoming events near you. Explore a wide range of experiences, from tech meetups to workshops, happening soon in your area."
-        />
-        <link rel="canonical" href="https://devmeetup-frontend.vercel.app/events" />
-
-        {/* Open Graph */}
-        <meta property="og:title" content="Upcoming Events | Explore Events Near You" />
-        <meta
-          property="og:description"
-          content="Discover and book upcoming events near you. Explore a wide range of experiences, from tech meetups to workshops, happening soon in your area."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://devmeetup-frontend.vercel.app/events" />
-        <meta
-          property="og:image"
-          content="https://images.unsplash.com/photo-1505373877841-8d25f7d46678"
-        />
-      </Helmet>
+      <SEO 
+        title="DevMeetup | Upcoming Events Near You" 
+        description="Discover and book upcoming events near you. Explore a wide range of experiences, from tech meetups to workshops, happening soon in your area." 
+        url="https://devmeetup-frontend.vercel.app/events"
+      />
 
       {/* HERO */}
       <section className="pt-28 pb-10">
