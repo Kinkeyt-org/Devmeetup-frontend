@@ -201,7 +201,44 @@ const EventDetails = () => {
         description={event.description || "Join this amazing event on DevMeet."}
         image={bannerSrc}
         url={window.location.href}
-      />
+      >
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Event",
+            "name": event.title,
+            "description": event.description || "Join this amazing event on DevMeet.",
+            "image": bannerSrc,
+            "startDate": event.date || event.event_date || new Date().toISOString(),
+            "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": isOnlineEvent 
+              ? "https://schema.org/OnlineEventAttendanceMode" 
+              : "https://schema.org/OfflineEventAttendanceMode",
+            "location": isOnlineEvent ? {
+              "@type": "VirtualLocation",
+              "url": event.location && /^https?:\/\//i.test(event.location.trim()) ? event.location.trim() : window.location.href
+            } : {
+              "@type": "Place",
+              "name": event.location || "TBA",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": event.location || "TBA"
+              }
+            },
+            "offers": {
+              "@type": "Offer",
+              "price": event.is_free ? "0" : (event.price || "0"),
+              "priceCurrency": "NGN",
+              "availability": "https://schema.org/InStock",
+              "url": window.location.href
+            },
+            "organizer": {
+              "@type": "Person",
+              "name": event?.user?.name || event?.organizer || "DevMeet Organizer"
+            }
+          })}
+        </script>
+      </SEO>
 
       <div className="min-h-screen relative overflow-x-hidden font-sans bg-background">
 

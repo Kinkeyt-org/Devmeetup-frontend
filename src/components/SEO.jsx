@@ -8,10 +8,12 @@ const SEO = ({
   type = "website", 
   image = "https://images.unsplash.com/photo-1561489396-888724a1543d?q=80&w=2070&auto=format&fit=crop", 
   url = "https://devmeet.com",
-  keywords = "events, meetups, hosting, tech events, local events"
+  keywords = "events, meetups, hosting, tech events, local events",
+  children
 }) => {
   return (
     <Helmet>
+      {children}
       {/* Standard metadata tags */}
       <title>{title}</title>
       <meta name="description" content={description} />
