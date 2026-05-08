@@ -64,7 +64,7 @@ const Home = () => {
       <main className="relative min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 overflow-hidden" role="main">
 
         {/* HERO */}
-        <section className="relative h-[80vh] md:h-auto pt-55 md:pt-40 pb-16 md:pb-24" aria-label="Hero section">
+        <section className="relative pt-28 md:pt-40 pb-16 md:pb-24" aria-label="Hero section">
           <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
 
             {/* LEFT */}
@@ -136,7 +136,11 @@ const Home = () => {
                 </div>
               )}
             </div>
-            
+
+            {/* MOBILE IMAGE */}
+            <div className="md:hidden rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/10">
+              <img src={HERO_IMAGE} alt="Event attendees enjoying a meetup" className="h-56 w-full object-cover" />
+            </div>
           </div>
         </section>
 
