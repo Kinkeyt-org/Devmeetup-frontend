@@ -71,7 +71,7 @@ const Home = () => {
             <div className="text-center lg:text-left">
               <h1 className="text-4xl md:text-6xl font-semibold leading-[1.05] tracking-tight">
                 Discover events<br />
-                <span className="text-transparent bg-clip-text bg-linear-to-r from-amber-400 to-orange-500">
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-amber-500 to-orange-600">
                   that move you.
                 </span>
               </h1>
@@ -111,7 +111,7 @@ const Home = () => {
 
                   <div className="absolute bottom-0 p-8 text-white">
                     <div className="flex gap-2 mb-3">
-                      <span className="text-[10px] px-3 py-1 rounded-full bg-amber-400/20 text-amber-400 font-semibold backdrop-blur-md">
+                      <span className="text-[10px] px-3 py-1 rounded-full bg-white/10">
                         Featured
                       </span>
                     </div>
@@ -290,7 +290,7 @@ const Home = () => {
             <button
               onClick={handleHostEvent}
               aria-label="Start hosting an event"
-              className="mt-8 px-6 py-3 rounded-full bg-amber-400 text-black text-sm font-semibold hover:bg-amber-500 transition shadow-lg shadow-amber-400/20"
+              className="mt-8 px-6 py-3 rounded-full bg-white text-black text-sm hover:opacity-90 transition"
             >
               Host an Event
             </button>
