@@ -90,8 +90,8 @@ const Navbar = () => {
 
           {/* LOGO */}
           <Link to="/" className="flex items-center gap-2 z-50" onClick={closeMenu}>
-            <div className="w-9 h-9  flex items-center justify-center">
-              <Ticket className="w-5 h-5 text-black dark:text-white" />
+            <div className="w-9 h-9 flex items-center justify-center">
+              <Ticket className="w-5 h-5 text-amber-400" />
             </div>
           </Link>
 
@@ -135,7 +135,7 @@ const Navbar = () => {
 
             <button
               onClick={() => navigate("/events")}
-              className="hidden md:flex w-40 py-2 cursor-pointer items-center justify-center gap-2 text-sm font-medium rounded-full bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-800 transition"
+              className="hidden md:flex w-40 py-2 cursor-pointer items-center justify-center gap-2 text-sm font-medium rounded-full bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-white hover:text-amber-400 transition"
             >
               Explore Events <ArrowRight size={16} />
             </button>
@@ -298,8 +298,8 @@ const MenuLink = ({ to, icon: Icon, label, onClick, current }) => (
     onClick={onClick}
     className={`flex items-center gap-2.5 p-3 rounded-xl transition ${
       current
-        ? "bg-black text-white dark:bg-white dark:text-black"
-        : "bg-neutral-50 dark:bg-neutral-900/50 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+        ? "bg-amber-400 text-black shadow-lg shadow-amber-400/20"
+        : "bg-neutral-50 dark:bg-neutral-900/50 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-amber-400"
     }`}
   >
     <Icon className="w-5 h-5" />

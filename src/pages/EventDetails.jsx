@@ -342,7 +342,7 @@ const EventDetails = () => {
                       <Icon
                         size={14}
                         strokeWidth={2}
-                        className="text-neutral-400 dark:text-white/45 shrink-0"
+                        className="text-amber-400 shrink-0"
                       />
                       <span className="text-[12px] md:text-[13.5px] font-normal text-neutral-600 dark:text-white/70 leading-[1.4]">
                         {value}
@@ -434,7 +434,7 @@ const EventDetails = () => {
                           href={event.location.trim()}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-xs font-semibold tracking-wide uppercase hover:opacity-90 transition-opacity active:scale-[0.98]"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-400 text-black text-xs font-semibold tracking-wide uppercase hover:bg-amber-500 transition shadow-lg shadow-amber-400/20 active:scale-[0.98]"
                         >
                           <ExternalLink size={13} />
                           Join Event
@@ -492,7 +492,7 @@ const EventDetails = () => {
                 <button
                   onClick={handleBookEvent}
                   disabled={isBooking}
-                  className={`w-full flex items-center justify-center transition-opacity hover:opacity-90 active:scale-[0.98] font-semibold text-[15px] tracking-[0.06em] uppercase rounded-[14px] h-[54px] border-none bg-neutral-900 dark:bg-white text-white dark:text-[#0a0a0f] ${isBooking ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
+                  className={`w-full flex items-center justify-center transition-all hover:bg-amber-500 active:scale-[0.98] font-semibold text-[15px] tracking-[0.06em] uppercase rounded-[14px] h-[54px] border-none bg-amber-400 text-black shadow-lg shadow-amber-400/20 ${isBooking ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
                 >
                   {isBooking ? (
                     <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
@@ -517,7 +517,7 @@ const EventDetails = () => {
             <button
               onClick={handleBookEvent}
               disabled={isBooking}
-              className={`w-full flex items-center justify-center transition-opacity active:scale-[0.98] font-semibold text-[15px] tracking-[0.06em] uppercase rounded-[14px] h-[54px] border-none bg-neutral-900 dark:bg-white text-white dark:text-[#0a0a0f] ${isBooking ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
+              className={`w-full flex items-center justify-center transition-all active:scale-[0.98] font-semibold text-[15px] tracking-[0.06em] uppercase rounded-[14px] h-[54px] border-none bg-amber-400 text-black shadow-lg shadow-amber-400/20 ${isBooking ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
             >
               {isBooking ? (
                 <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
