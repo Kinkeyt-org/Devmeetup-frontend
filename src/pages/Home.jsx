@@ -6,7 +6,7 @@ import { ArrowRight, Calendar, MapPin, Navigation } from "lucide-react";
 import { useLocation } from "../hooks/useLocation";
 import Map from "../components/Map";
 
-const HERO_IMAGE = "https://images.unsplash.com/photo-1561489396-888724a1543d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+const HERO_IMAGE = "https://images.unsplash.com/photo-1596522354195-e84ae3c98731?q=80&w=2087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -195,7 +195,7 @@ const Home = () => {
                     <img
                       src={event.banner || event.image}
                       alt={`Event banner for ${event.title}`}
-                      className="h-40 w-full object-cover"
+                      className="h-25 md:h-40 w-full object-cover"
                     />
 
                     <div className="p-4">
@@ -217,68 +217,9 @@ const Home = () => {
           </div>
         </section>
 
-        {/* NEARBY EVENTS & MAP */}
-        {/* 
-        <section className="py-12 md:py-20 bg-neutral-50 dark:bg-neutral-900/50" aria-label="Nearby events">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="mb-10">
-              <h2 className="text-2xl md:text-3xl font-medium flex items-center gap-2">
-                <Navigation size={24} className="text-amber-500" />
-                Nearby Events
-              </h2>
-              <p className="text-neutral-500 text-sm mt-1">
-                {coords ? "Events happening in your area." : "Allow location access to see events near you."}
-              </p>
-            </div>
-
-            <div className="grid lg:grid-cols-3 gap-8 h-[500px]">
-              <div className="lg:col-span-1 overflow-y-auto pr-2 custom-scrollbar">
-                {nearbyLoading ? (
-                  <div className="space-y-4">
-                    {[...Array(3)].map((_, i) => (
-                      <div key={i} className="h-24 rounded-xl bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
-                    ))}
-                  </div>
-                ) : nearbyEvents.length > 0 ? (
-                  <div className="space-y-4">
-                    {nearbyEvents.map((event) => (
-                      <div
-                        key={event.id}
-                        onClick={() => navigate(`/events/${event.id}`)}
-                        className="p-4 rounded-xl border border-neutral-200 dark:border-white/5 bg-white dark:bg-neutral-950 hover:border-amber-500/50 transition cursor-pointer"
-                      >
-                        <h4 className="font-medium text-sm">{event.title}</h4>
-                        <p className="text-xs text-neutral-500 mt-1 flex items-center gap-1">
-                          <MapPin size={10} /> {event.location}
-                        </p>
-                        {event.distance && (
-                          <span className="inline-block mt-2 text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-500 font-semibold">
-                            {event.distance} away
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="h-full flex flex-col items-center justify-center text-center p-6 border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl">
-                    <p className="text-neutral-500 text-sm">
-                      {locationError ? "Location access denied." : "No events found nearby."}
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              <div className="lg:col-span-2 relative">
-                <Map events={nearbyEvents} userLocation={coords} />
-              </div>
-            </div>
-          </div>
-        </section>
-        */}
-
         {/* CTA */}
         <section className="py-20 px-6" aria-label="Call to action">
-          <div className="max-w-5xl mx-auto text-center bg-neutral-900 text-white rounded-3xl p-10 md:p-20">
+          <div className="max-w-5xl mx-auto text-center bg-neutral-950 border  text-white rounded-3xl p-10 md:p-20">
             <h2 className="text-3xl md:text-5xl font-medium">
               Build your community
             </h2>
