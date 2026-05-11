@@ -219,19 +219,18 @@ const Home = () => {
 
         {/* CTA */}
         <section className="py-20 px-6" aria-label="Call to action">
-          <div className="max-w-5xl mx-auto text-center bg-neutral-950 border  text-white rounded-3xl p-10 md:p-20">
-            <h2 className="text-3xl md:text-5xl font-medium">
+          <div className="max-w-5xl mx-auto text-center bg-white dark:bg-neutral-950 border shadow-sm text-white rounded-3xl p-10 md:p-20">
+            <h2 className="text-3xl md:text-5xl text-black dark:text-white font-medium">
               Build your community
             </h2>
-
-            <p className="mt-4 text-white/60 max-w-xl mx-auto">
+            <p className="mt-4 text-black/60 dark:text-white/60 max-w-xl mx-auto">
               Host events, sell tickets, and grow your audience.
             </p>
 
             <button
               onClick={handleHostEvent}
               aria-label="Start hosting an event"
-              className="mt-8 px-6 py-3 rounded-full bg-white text-black text-sm hover:opacity-90 transition"
+              className="mt-8 px-3 py-3 rounded-xl border cursor-pointer border-neutral-200 dark:border-white/5 bg-white text-black text-sm hover:opacity-90 transition"
             >
               Host an Event
             </button>

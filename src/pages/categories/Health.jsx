@@ -74,34 +74,34 @@ export default function Health() {
       {/* HERO SECTION */}
       <section className="relative w-full h-[85vh] min-h-[500px]">
         <img
-          src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2070&auto=format&fit=crop"
+          src="https://images.pexels.com/photos/8376307/pexels-photo-8376307.jpeg"
           alt="Health banner"
           className="w-full h-full object-cover"
         />
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-linear-to-t from-[#111111] via-[#111111]/80 to-transparent">
+        <div className="absolute inset-0 bg-linear-to-t from-white via-white/40 to-transparent dark:from-[#111111] dark:via-[#111111]/80 dark:to-transparent">
           <div className="w-full h-full max-w-7xl mx-auto flex flex-col justify-end px-6 pb-12 md:pb-20">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 md:mb-6">Health</h1>
-            <div className="flex flex-wrap items-center gap-4 text-sm md:text-base text-neutral-300 font-medium mb-4 md:mb-6">
+            <h1 className="text-5xl md:text-7xl font-bold text-neutral-900 dark:text-white mb-4 md:mb-6">Health</h1>
+            <div className="flex flex-wrap items-center gap-4 text-sm md:text-base text-neutral-600 dark:text-neutral-300 font-medium mb-4 md:mb-6">
               <div className="flex items-center gap-2 whitespace-nowrap">
-                <Heart size={18} className="md:w-5 md:h-5" />
-                <span><strong className="text-white">9K</strong> Events</span>
+                <Heart size={18} className="text-neutral-500 dark:text-neutral-400 md:w-5 md:h-5" />
+                <span><strong className="text-neutral-900 dark:text-white">9K</strong> Events</span>
               </div>
               <div className="flex items-center gap-2 whitespace-nowrap">
-                <Users size={18} className="md:w-5 md:h-5" />
-                <span><strong className="text-white">75K</strong> Enthusiasts</span>
+                <Users size={18} className="text-neutral-500 dark:text-neutral-400 md:w-5 md:h-5" />
+                <span><strong className="text-neutral-900 dark:text-white">75K</strong> Enthusiasts</span>
               </div>
             </div>
-            <p className="text-neutral-300 text-sm md:text-lg mb-8 max-w-md md:max-w-xl leading-relaxed">
+            <p className="text-neutral-600 dark:text-neutral-300 text-sm md:text-lg mb-8 max-w-md md:max-w-xl leading-relaxed">
               Focus on your well-being with fitness classes, mental health workshops, and groundbreaking medical symposiums.
             </p>
-            <div className="flex flex-row w-full max-w-md">
+            <div className="flex flex-row w-full max-w-md shadow-lg rounded-full overflow-hidden border border-neutral-200 dark:border-white/10">
               <input
                 type="email"
                 placeholder="me@email.com"
-                className="flex-1 min-w-0 bg-white/10 text-white placeholder-neutral-400 px-4 py-3 md:px-5 md:py-4 rounded-l-full outline-none border border-white/20 focus:border-white/40 backdrop-blur-md text-sm md:text-base"
+                className="flex-1 min-w-0 bg-white/70 dark:bg-white/10 text-neutral-900 dark:text-white placeholder-neutral-500 dark:placeholder-neutral-400 px-4 py-3 md:px-5 md:py-4 outline-none backdrop-blur-md text-sm md:text-base"
               />
-              <button className="shrink-0 bg-white text-black px-5 py-3 md:px-8 md:py-4 font-semibold rounded-r-full hover:bg-neutral-200 text-sm md:text-base">
+              <button className="shrink-0 bg-black dark:bg-white text-white dark:text-black px-5 py-3 md:px-8 md:py-4 font-semibold hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors text-sm md:text-base">
                 Subscribe
               </button>
             </div>
