@@ -195,7 +195,7 @@ const Home = () => {
                     <img
                       src={event.banner || event.image}
                       alt={`Event banner for ${event.title}`}
-                      className="h-25 md:h-40 w-full object-cover"
+                      className="h-25 md:h-30 w-full object-cover"
                     />
 
                     <div className="p-4">
