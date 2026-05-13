@@ -25,7 +25,6 @@ import Tech from "./pages/categories/Tech";
 import Design from "./pages/categories/Design";
 import Business from "./pages/categories/Business";
 import Lifestyle from "./pages/categories/Lifestyle";
-import Workshops from "./pages/categories/Workshops";
 import Education from "./pages/categories/Education";
 import Health from "./pages/categories/Health";
 import Music from "./pages/categories/Music";
@@ -132,7 +131,6 @@ const AppContent = () => {
           <Route path="/categories/design" element={<Design />} />
           <Route path="/categories/business" element={<Business />} />
           <Route path="/categories/lifestyle" element={<Lifestyle />} />
-          <Route path="/categories/workshops" element={<Workshops />} />
           <Route path="/categories/education" element={<Education />} />
           <Route path="/categories/health" element={<Health />} />
           <Route path="/categories/music" element={<Music />} />
