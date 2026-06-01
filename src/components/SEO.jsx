@@ -7,8 +7,9 @@ const SEO = ({
   name = "DevMeet", 
   type = "website", 
   image = "https://images.unsplash.com/photo-1561489396-888724a1543d?q=80&w=2070&auto=format&fit=crop", 
-  url = "https://devmeet.com",
+  url = "https://devmeetup-frontend.vercel.app",
   keywords = "events, meetups, hosting, tech events, local events",
+  schema,
   children
 }) => {
   return (
@@ -34,8 +35,16 @@ const SEO = ({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
+
+      {/* Schema.org Structured Data */}
+      {schema && (
+        <script type="application/ld+json">
+          {JSON.stringify(schema)}
+        </script>
+      )}
     </Helmet>
   );
 };
 
 export default SEO;
+

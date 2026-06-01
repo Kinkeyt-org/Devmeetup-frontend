@@ -54,11 +54,28 @@ const Home = () => {
     navigate("/events/create");
   };
 
+  const homeSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "DevMeet",
+    "alternateName": ["DevMeetup", "Dev Meet"],
+    "url": "https://devmeetup-frontend.vercel.app",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://devmeetup-frontend.vercel.app/search?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <>
       <SEO 
         title="Discover Events | DevMeet" 
         description="Discover events, connect with people, and host unforgettable moments happening around you." 
+        schema={homeSchema}
       />
 
       <main className="relative min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 overflow-hidden" role="main">
