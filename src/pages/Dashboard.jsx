@@ -91,8 +91,8 @@ const Dashboard = () => {
   return (
     <>
       <SEO 
-        title="DevMeetup | Home" 
-        description="Welcome to DevMeetup, your go-to platform for discovering and booking events. Find the perfect event for you and join the community." 
+        title="DevMeet | Home" 
+        description="Welcome to DevMeet, your go-to platform for discovering and booking events. Find the perfect event for you and join the community." 
       />
 
       <main className="min-h-screen bg-transparent text-neutral-900 dark:text-neutral-100 pb-20">

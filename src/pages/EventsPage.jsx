@@ -75,7 +75,7 @@ const EventsPage = () => {
 
       {/* SEO */}
       <SEO 
-        title="DevMeetup | Upcoming Events Near You" 
+        title="DevMeet | Upcoming Events Near You" 
         description="Discover and book upcoming events near you. Explore a wide range of experiences, from tech meetups to workshops, happening soon in your area." 
         url="https://devmeetup-frontend.vercel.app/events"
       />

@@ -58,7 +58,7 @@ const Home = () => {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "DevMeet",
-    "alternateName": ["DevMeetup", "Dev Meet"],
+    "alternateName": ["DevMeet", "Dev Meet"],
     "url": "https://devmeetup-frontend.vercel.app",
     "potentialAction": {
       "@type": "SearchAction",
