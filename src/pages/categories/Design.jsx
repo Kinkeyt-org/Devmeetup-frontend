@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { X, Palette, Users } from "lucide-react";
 import EventCard from "../../components/EventCard";
+import SEO from "../../components/SEO";
 
 const MOCK_EVENTS = [
   {
@@ -63,6 +64,12 @@ export default function Design() {
 
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
+      <SEO 
+        title="Design Events | DevMeet" 
+        description="Discover creative design events, UI/UX workshops, and typography meetups. Connect with top creators." 
+        url="https://devmeetup-frontend.vercel.app/categories/design"
+        keywords="design events, UI/UX, product design, creative meetups, graphic design"
+      />
       {/* Close Button */}
       <button
         onClick={handleClose}

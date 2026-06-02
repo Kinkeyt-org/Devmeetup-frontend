@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { X, Briefcase, Users } from "lucide-react";
 import EventCard from "../../components/EventCard";
+import SEO from "../../components/SEO";
 
 const MOCK_EVENTS = [
   {
@@ -63,6 +64,12 @@ export default function Business() {
 
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
+      <SEO 
+        title="Business Events | DevMeet" 
+        description="Discover professional business events, startup pitch nights, and networking meetups. Scale your career." 
+        url="https://devmeetup-frontend.vercel.app/categories/business"
+        keywords="business events, networking, startup pitch, entrepreneurship, professional development"
+      />
       {/* Close Button */}
       <button
         onClick={handleClose}

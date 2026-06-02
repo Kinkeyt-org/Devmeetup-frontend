@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { X, Calendar, Users } from "lucide-react";
 import EventCard from "../../components/EventCard";
+import SEO from "../../components/SEO";
 
 const MOCK_EVENTS = [
   {
@@ -63,6 +64,12 @@ export default function Tech() {
 
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
+      <SEO 
+        title="Tech Events | DevMeet" 
+        description="Discover popular Tech events, workshops, hackathons, and meetups. Join the builder community today." 
+        url="https://devmeetup-frontend.vercel.app/categories/tech"
+        keywords="tech events, programming, hackathons, developer meetups, software engineering"
+      />
       {/* Close Button */}
       <button
         onClick={handleClose}

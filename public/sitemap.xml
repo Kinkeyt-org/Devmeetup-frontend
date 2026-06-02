@@ -45,11 +45,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://devmeetup-frontend.vercel.app/categories/workshops</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://devmeetup-frontend.vercel.app/categories/education</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
@@ -73,11 +68,6 @@
   <!-- Auth & Onboarding -->
   <url>
     <loc>https://devmeetup-frontend.vercel.app/login</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://devmeetup-frontend.vercel.app/become-organizer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

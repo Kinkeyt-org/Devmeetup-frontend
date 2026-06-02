@@ -56,18 +56,64 @@ const Home = () => {
 
   const homeSchema = {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "DevMeet",
-    "alternateName": ["DevMeet", "Dev Meet"],
-    "url": "https://devmeetup-frontend.vercel.app",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://devmeetup-frontend.vercel.app/search?q={search_term_string}"
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://devmeetup-frontend.vercel.app/#website",
+        "name": "DevMeet",
+        "alternateName": ["DevMeet", "Dev Meet"],
+        "url": "https://devmeetup-frontend.vercel.app",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://devmeetup-frontend.vercel.app/search?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
       },
-      "query-input": "required name=search_term_string"
-    }
+      {
+        "@type": "Organization",
+        "@id": "https://devmeetup-frontend.vercel.app/#organization",
+        "name": "DevMeet",
+        "url": "https://devmeetup-frontend.vercel.app",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://devmeetup-frontend.vercel.app/icon.png"
+        }
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://devmeetup-frontend.vercel.app/#navigation",
+        "name": "Main Navigation",
+        "itemListElement": [
+          {
+            "@type": "SiteNavigationElement",
+            "position": 1,
+            "name": "Explore Events",
+            "url": "https://devmeetup-frontend.vercel.app/events"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 2,
+            "name": "Search Events",
+            "url": "https://devmeetup-frontend.vercel.app/search"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 3,
+            "name": "Help Center",
+            "url": "https://devmeetup-frontend.vercel.app/support/help"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 4,
+            "name": "Terms & Privacy",
+            "url": "https://devmeetup-frontend.vercel.app/support/terms"
+          }
+        ]
+      }
+    ]
   };
 
   return (

@@ -1,5 +1,11 @@
 User-agent: *
 Allow: /
+Disallow: /profile
+Disallow: /my-tickets
+Disallow: /events/create
+Disallow: /upgrade
+Disallow: /become-organizer
+Disallow: /settings/
 
 # Sitemaps
 Sitemap: https://devmeetup-frontend.vercel.app/sitemap.xml

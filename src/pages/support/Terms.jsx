@@ -1,12 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, FileText, Shield } from "lucide-react";
+import SEO from "../../components/SEO";
 
 const Terms = () => {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-[#F9F9FB] dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans pb-24">
+      <SEO 
+        title="Terms of Service & Privacy Policy | DevMeet" 
+        description="Review the Terms of Service and Privacy Policy for using the DevMeet platform, including user conduct, ticketing, and data usage." 
+        url="https://devmeetup-frontend.vercel.app/support/terms"
+        keywords="terms of service, privacy policy, user conduct, ticket sales, data protection"
+      />
       <nav className="sticky top-0 z-40 bg-[#F9F9FB]/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-neutral-200/60 dark:border-white/5 px-4 h-16 flex items-center justify-between">
         <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors">
           <ArrowLeft className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />

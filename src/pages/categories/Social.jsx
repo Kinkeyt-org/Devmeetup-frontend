@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { X, Users } from "lucide-react";
 import EventCard from "../../components/EventCard";
+import SEO from "../../components/SEO";
 
 const MOCK_EVENTS = [
   {
@@ -63,6 +64,12 @@ export default function Social() {
 
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
+      <SEO 
+        title="Social Events & Meetups | DevMeet" 
+        description="Discover social gatherings, speed networking mixers, expat meetups, and board game nights near you." 
+        url="https://devmeetup-frontend.vercel.app/categories/social"
+        keywords="social events, mixers, networking, board game night, community gatherings"
+      />
       {/* Close Button */}
       <button
         onClick={handleClose}

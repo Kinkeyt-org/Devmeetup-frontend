@@ -1,12 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, HelpCircle, MessageSquare, Search, ChevronRight, FileText } from "lucide-react";
+import SEO from "../../components/SEO";
 
 const HelpCenter = () => {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-[#F9F9FB] dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans pb-24">
+      <SEO 
+        title="Help Center | DevMeet" 
+        description="Find guides, documentation, and answers to common questions about hosting and attending events on DevMeet." 
+        url="https://devmeetup-frontend.vercel.app/support/help"
+        keywords="help center, support, event guides, ticket refunds, organizer documentation"
+      />
       <nav className="sticky top-0 z-40 bg-[#F9F9FB]/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-neutral-200/60 dark:border-white/5 px-4 h-16 flex items-center justify-between">
         <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors">
           <ArrowLeft className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />

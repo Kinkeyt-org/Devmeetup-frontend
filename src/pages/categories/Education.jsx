@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { X, GraduationCap, Users } from "lucide-react";
 import EventCard from "../../components/EventCard";
+import SEO from "../../components/SEO";
 
 const MOCK_EVENTS = [
   {
@@ -63,6 +64,12 @@ export default function Education() {
 
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
+      <SEO 
+        title="Education Events | DevMeet" 
+        description="Discover educational events, academic workshops, language learning meetups, and student research seminars." 
+        url="https://devmeetup-frontend.vercel.app/categories/education"
+        keywords="education events, academic seminars, edtech conference, workshops, learning"
+      />
       {/* Close Button */}
       <button
         onClick={handleClose}
