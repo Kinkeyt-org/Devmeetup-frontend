@@ -1,6 +1,9 @@
-import React from "react";
-import { Music as MusicIcon } from "lucide-react";
-import CategoryTemplate from "../../components/CategoryTemplate";
+import React, { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { X, Music as MusicIcon, Users } from "lucide-react";
+import EventCard from "../../components/EventCard";
+import SEO from "../../components/SEO";
+import SubscribeForm from "../../components/SubscribeForm";
 
 const MOCK_EVENTS = [
   {
@@ -54,22 +57,67 @@ const MOCK_EVENTS = [
 ];
 
 export default function Music() {
+  const navigate = useNavigate();
+
+  const handleClose = () => {
+    navigate(-1);
+  };
+
   return (
-    <CategoryTemplate
-      name="Music"
-      seoDescription="Discover electronic music festivals, acoustic sessions, jazz nights, and music production masterclasses."
-      seoKeywords="music events, concerts, live music, jazz night, music production, festivals"
-      heroImage="https://4kwallpapers.com/images/walls/thumbs_3t/413.jpg"
-      description="Feel the rhythm at live concerts, intimate acoustic sessions, and massive electronic festivals around the globe."
-      accentGradient="from-emerald-500 to-indigo-600 dark:from-emerald-400 dark:to-indigo-500"
-      accentColor="text-emerald-500 dark:text-emerald-400"
-      accentGlow="focus-within:ring-emerald-500 dark:focus-within:ring-emerald-400 shadow-emerald-500/10 dark:shadow-emerald-400/5"
-      statIcon={MusicIcon}
-      statCount="20K"
-      statLabel="Events"
-      subCount="150K"
-      subLabel="Fans"
-      events={MOCK_EVENTS}
-    />
+    <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
+      <SEO 
+        title="Music Events & Concerts" 
+        description="Discover electronic music festivals, acoustic sessions, jazz nights, and music production masterclasses." 
+        url="https://devmeetup-frontend.vercel.app/categories/music"
+        keywords="music events, concerts, live music, jazz night, music production, festivals"
+      />
+      {/* Close Button */}
+      <button
+        onClick={handleClose}
+        className="fixed top-4 right-4 md:top-6 md:right-6 z-60 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full backdrop-blur-md transition-all duration-300"
+      >
+        <X size={24} />
+      </button>
+
+      {/* HERO SECTION */}
+      <section className="relative w-full h-[85vh] min-h-[500px]">
+        <img
+          src="https://4kwallpapers.com/images/walls/thumbs_3t/413.jpg"
+          alt="Music banner"
+          className="w-full h-full object-cover"
+        />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-linear-to-t from-white via-white/40 to-transparent dark:from-[#111111] dark:via-[#111111]/80 dark:to-transparent">
+          <div className="w-full h-full max-w-7xl mx-auto flex flex-col justify-end px-6 pb-12 md:pb-20">
+            <h1 className="text-5xl md:text-7xl font-bold text-neutral-900 dark:text-white mb-4 md:mb-6">Music</h1>
+            <div className="flex flex-wrap items-center gap-4 text-sm md:text-base text-neutral-600 dark:text-neutral-300 font-medium mb-4 md:mb-6">
+              <div className="flex items-center gap-2 whitespace-nowrap">
+                <MusicIcon size={18} className="text-neutral-500 dark:text-neutral-400 md:w-5 md:h-5" />
+                <span><strong className="text-neutral-900 dark:text-white">20K</strong> Events</span>
+              </div>
+              <div className="flex items-center gap-2 whitespace-nowrap">
+                <Users size={18} className="text-neutral-500 dark:text-neutral-400 md:w-5 md:h-5" />
+                <span><strong className="text-neutral-900 dark:text-white">150K</strong> Fans</span>
+              </div>
+            </div>
+            <p className="text-neutral-600 dark:text-neutral-300 text-sm md:text-lg mb-8 max-w-md md:max-w-xl leading-relaxed">
+              Feel the rhythm at live concerts, intimate acoustic sessions, and massive electronic festivals around the globe.
+            </p>
+            <SubscribeForm className="max-w-md shadow-lg" />
+          </div>
+        </div>
+      </section>
+
+      {/* EVENTS LISTING */}
+      <section className="max-w-7xl mx-auto px-6 py-12 lg:py-20 w-full">
+        <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-8">Popular Music Events</h2>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {MOCK_EVENTS.map((event) => (
+            <EventCard key={event.id} event={event} />
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }

@@ -12,18 +12,9 @@ import {
   FaInstagram, 
   FaLinkedin 
 } from "react-icons/fa";
+import SubscribeForm from "./SubscribeForm";
 
 const Footer = () => {
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (!email) return;
-    setSubscribed(true);
-    setEmail("");
-    setTimeout(() => setSubscribed(false), 3000);
-  };
 
   return (
     <footer className="w-full bg-neutral-50 dark:bg-neutral-950 text-neutral-500 dark:text-neutral-400 border-t border-neutral-200 dark:border-neutral-900 font-sans transition-colors duration-150">
@@ -121,31 +112,7 @@ const Footer = () => {
               Subscribe to get notified about trending meetups and exclusive events in your area.
             </p>
             
-            <form onSubmit={handleSubscribe} className="relative mt-2">
-              <div className="flex rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-1.5 focus-within:border-neutral-400 dark:focus-within:border-neutral-700 transition duration-300">
-                <div className="flex items-center pl-2.5 text-neutral-400 dark:text-neutral-500">
-                  <Mail size={16} />
-                </div>
-                <input
-                  type="email"
-                  required
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-transparent border-0 px-3 py-1.5 text-sm text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-500 focus:outline-none focus:ring-0"
-                />
-                <button
-                  type="submit"
-                  className="bg-neutral-950 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-200 dark:text-black text-xs font-medium px-4 py-2 rounded-lg transition duration-200 shrink-0 flex items-center gap-1.5 active:scale-95 cursor-pointer"
-                >
-                  {subscribed ? "Subscribed!" : (
-                    <>
-                      Subscribe <ArrowRight size={12} />
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
+            <SubscribeForm className="mt-2" />
           </div>
 
         </div>
