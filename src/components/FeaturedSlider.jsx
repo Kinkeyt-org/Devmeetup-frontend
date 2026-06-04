@@ -6,7 +6,7 @@ import {
   Calendar, 
   MapPin, 
   ArrowRight,
-  Sparkles 
+
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -123,11 +123,11 @@ export default function FeaturedSlider() {
 
   return (
     <section 
-      className="max-w-7xl mx-auto px-6 pt-24 pb-6 relative group overflow-hidden select-none"
+      className="max-w-7xl mx-auto hidden md:flex pt-24 pb-6 relative group overflow-hidden select-none"
       onMouseEnter={stopTimer}
       onMouseLeave={startTimer}
     >
-      <div className="relative h-[300px] md:h-[420px] w-full rounded-3xl overflow-hidden shadow-2xl border border-neutral-200 dark:border-neutral-900 bg-neutral-900">
+      <div className="relative h-[300px] md:h-[420px] w-full rounded-3xl overflow-hidden border border-neutral-200 dark:border-neutral-900 bg-neutral-900">
         
         {/* SLIDE IMAGE */}
         <AnimatePresence initial={false} custom={direction}>
@@ -146,7 +146,7 @@ export default function FeaturedSlider() {
               className="w-full h-full object-cover brightness-[0.7] scale-105"
             />
             {/* GRADIENT OVERLAY */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent md:bg-gradient-to-r md:from-black/90 md:via-black/40 md:to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent md:bg-linear-to-r md:from-black/90 md:via-black/40 md:to-transparent" />
           </motion.div>
         </AnimatePresence>
 
@@ -178,7 +178,6 @@ export default function FeaturedSlider() {
           >
             {/* CATEGORY TAG */}
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[10px] font-semibold uppercase tracking-wider text-amber-400 backdrop-blur-sm">
-              <Sparkles size={10} className="fill-amber-400 text-amber-400" />
               {activeSlide.category}
             </div>
 
