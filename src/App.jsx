@@ -17,7 +17,6 @@ import Profile from "./pages/Profile";
 import MyTickets from "./pages/MyTickets";
 import Search from "./pages/Search";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import EventsPage from "./pages/EventsPage";
 import EventDetails from "./pages/EventDetails";
 import Upgrade from "./pages/Upgrade";
@@ -147,8 +146,6 @@ const AppContent = () => {
           <Route path="/support/help" element={<HelpCenter />} />
           <Route path="/support/terms" element={<Terms />} />
         </Routes>
-
-        {!shouldHideNavbar && <Footer />}
       </div>
     </>
   );
