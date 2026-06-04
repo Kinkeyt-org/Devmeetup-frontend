@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { X, Briefcase, Users } from "lucide-react";
 import EventCard from "../../components/EventCard";
 import SEO from "../../components/SEO";
+import { getEvents } from "../../api/event";
 
 const MOCK_EVENTS = [
   {
@@ -57,6 +58,36 @@ const MOCK_EVENTS = [
 
 export default function Business() {
   const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLiveEvents = async () => {
+      try {
+        const data = await getEvents("upcoming", 1, 100);
+        const allEvents = data.events || [];
+        const filtered = allEvents.filter(e => {
+          let tags = [];
+          if (typeof e.tags === "string") {
+            try { tags = JSON.parse(e.tags); } catch {}
+          } else if (Array.isArray(e.tags)) {
+            tags = e.tags;
+          }
+          const cat = (e.category || "").toLowerCase();
+          return (
+            cat === "business" ||
+            tags.some(t => t.toLowerCase() === "business")
+          );
+        });
+        setEvents(filtered);
+      } catch (err) {
+        console.error("Failed to fetch business events:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLiveEvents();
+  }, []);
 
   const handleClose = () => {
     navigate(-1);
@@ -120,11 +151,23 @@ export default function Business() {
       <section className="max-w-7xl mx-auto px-6 py-12 lg:py-20 w-full">
         <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-8">Popular Business Events</h2>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {MOCK_EVENTS.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="h-80 bg-neutral-200 dark:bg-neutral-800 rounded-2xl animate-pulse" />
+            ))}
+          </div>
+        ) : events.length === 0 ? (
+          <div className="text-center py-20 text-neutral-500 border border-dashed rounded-4xl border-neutral-200 dark:border-neutral-800">
+            <p className="text-sm">No upcoming Business events found. Check back later!</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {events.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
