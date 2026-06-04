@@ -134,7 +134,7 @@ export default function Authform() {
 
           <div className="relative z-10 max-w-md space-y-4">
             <p className="text-xs tracking-[0.25em] text-neutral-400">
-              EventHub
+              Nexus
             </p>
             <h1 className="text-4xl leading-tight">
               Discover experiences you'll never forget.
@@ -157,7 +157,7 @@ export default function Authform() {
 
             {/* HEADER */}
             <div className="mb-8 space-y-2">
-              <h2 className="text-2xl font-mediuma text-black">
+              <h2 className="text-2xl font-medium text-black">
                 {mode === "signin" ? "Welcome back" : "Create account"}
               </h2>
               <p className="text-neutral-500 text-sm">

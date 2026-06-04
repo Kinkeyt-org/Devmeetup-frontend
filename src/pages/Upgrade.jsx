@@ -60,6 +60,7 @@ const Upgrade = () => {
             {loading ? "Processing..." : "Upgrade Account"}
           </button>
         </form>
+      </div>
     </div>
     </>
   );
