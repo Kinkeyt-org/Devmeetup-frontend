@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { 
   Ticket, 
-  Github, 
-  Twitter, 
-  Instagram, 
-  Linkedin, 
   Mail, 
   ArrowRight, 
   Sparkles 
 } from "lucide-react";
+import { 
+  FaGithub, 
+  FaTwitter, 
+  FaInstagram, 
+  FaLinkedin 
+} from "react-icons/fa";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -49,10 +51,10 @@ const Footer = () => {
             {/* Socials */}
             <div className="flex items-center gap-4">
               {[
-                { Icon: Twitter, href: "https://twitter.com", label: "Twitter" },
-                { Icon: Instagram, href: "https://instagram.com", label: "Instagram" },
-                { Icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-                { Icon: Github, href: "https://github.com", label: "GitHub" },
+                { Icon: FaTwitter, href: "https://twitter.com", label: "Twitter" },
+                { Icon: FaInstagram, href: "https://instagram.com", label: "Instagram" },
+                { Icon: FaLinkedin, href: "https://linkedin.com", label: "LinkedIn" },
+                { Icon: FaGithub, href: "https://github.com", label: "GitHub" },
               ].map(({ Icon, href, label }) => (
                 <a
                   key={label}
