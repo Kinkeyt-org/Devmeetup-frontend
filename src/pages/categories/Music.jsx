@@ -65,7 +65,7 @@ export default function Music() {
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
       <SEO 
-        title="Music Events & Concerts | Nexus" 
+        title="Music Events & Concerts" 
         description="Discover electronic music festivals, acoustic sessions, jazz nights, and music production masterclasses." 
         url="https://devmeetup-frontend.vercel.app/categories/music"
         keywords="music events, concerts, live music, jazz night, music production, festivals"

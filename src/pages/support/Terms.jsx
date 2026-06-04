@@ -9,7 +9,7 @@ const Terms = () => {
   return (
     <div className="min-h-screen bg-[#F9F9FB] dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans pb-24">
       <SEO 
-        title="Terms of Service & Privacy Policy | Nexus" 
+        title="Terms of Service & Privacy Policy" 
         description="Review the Terms of Service and Privacy Policy for using the Nexus platform, including user conduct, ticketing, and data usage." 
         url="https://devmeetup-frontend.vercel.app/support/terms"
         keywords="terms of service, privacy policy, user conduct, ticket sales, data protection"

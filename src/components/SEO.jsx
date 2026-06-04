@@ -12,11 +12,17 @@ const SEO = ({
   schema,
   children
 }) => {
+  const formattedTitle = !title || title.toLowerCase() === name.toLowerCase()
+    ? name
+    : title.includes(name) 
+      ? title 
+      : `${title} | ${name}`;
+
   return (
     <Helmet>
       {children}
       {/* Standard metadata tags */}
-      <title>{title}</title>
+      <title>{formattedTitle}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <link rel="canonical" href={url} />

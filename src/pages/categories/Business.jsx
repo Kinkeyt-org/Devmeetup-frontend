@@ -65,7 +65,7 @@ export default function Business() {
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
       <SEO 
-        title="Business Events | Nexus" 
+        title="Business Events" 
         description="Discover professional business events, startup pitch nights, and networking meetups. Scale your career." 
         url="https://devmeetup-frontend.vercel.app/categories/business"
         keywords="business events, networking, startup pitch, entrepreneurship, professional development"

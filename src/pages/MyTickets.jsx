@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import QRCode from "react-qr-code";
 import { X, Printer, AlertTriangle } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import SEO from "../components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
 import { getMyTickets, cancelEventTicket } from "../api/ticket";
 import toast from "react-hot-toast";
@@ -196,9 +197,7 @@ const MyTickets = () => {
 
   return (
     <>
-      <Helmet>
-        <title>My Tickets – Nexus</title>
-      </Helmet>
+      <SEO title="My Tickets" description="View and manage your booked event tickets on Nexus." />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-16">
         <h1 className="text-2xl font-semibold mb-6 dark:text-white">

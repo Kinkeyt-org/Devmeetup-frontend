@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const Upgrade = () => {
   const navigate = useNavigate();
@@ -31,7 +32,9 @@ const Upgrade = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-50 px-6 font-['Satoshi']">
+    <>
+      <SEO title="Become an Organizer" description="Upgrade your account to become an organizer on Nexus and host events." />
+      <div className="min-h-screen flex items-center justify-center bg-neutral-50 px-6 font-['Satoshi']">
       <div className="max-w-md w-full bg-white p-10 rounded-[2.5rem] shadow-xl text-center">
         <h2 className="text-3xl font-bold mb-4">Become an Organizer</h2>
         <p className="text-neutral-500 mb-8">
@@ -57,8 +60,8 @@ const Upgrade = () => {
             {loading ? "Processing..." : "Upgrade Account"}
           </button>
         </form>
-      </div>
     </div>
+    </>
   );
 };
 

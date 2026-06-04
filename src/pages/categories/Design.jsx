@@ -65,7 +65,7 @@ export default function Design() {
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
       <SEO 
-        title="Design Events | Nexus" 
+        title="Design Events" 
         description="Discover creative design events, UI/UX workshops, and typography meetups. Connect with top creators." 
         url="https://devmeetup-frontend.vercel.app/categories/design"
         keywords="design events, UI/UX, product design, creative meetups, graphic design"

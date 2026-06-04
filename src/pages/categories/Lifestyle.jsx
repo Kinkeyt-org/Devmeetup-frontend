@@ -65,7 +65,7 @@ export default function Lifestyle() {
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
       <SEO 
-        title="Lifestyle Events | Nexus" 
+        title="Lifestyle Events" 
         description="Discover local lifestyle events, cooking masterclasses, wellness retreats, and coffee tasting meetups." 
         url="https://devmeetup-frontend.vercel.app/categories/lifestyle"
         keywords="lifestyle events, wellness, cooking masterclass, coffee tasting, local gatherings"
