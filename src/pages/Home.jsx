@@ -60,8 +60,8 @@ const Home = () => {
       {
         "@type": "WebSite",
         "@id": "https://devmeetup-frontend.vercel.app/#website",
-        "name": "DevMeet",
-        "alternateName": ["DevMeet", "Dev Meet"],
+        "name": "Nexus",
+        "alternateName": ["Nexus", "Nexus App"],
         "url": "https://devmeetup-frontend.vercel.app",
         "potentialAction": {
           "@type": "SearchAction",
@@ -75,7 +75,7 @@ const Home = () => {
       {
         "@type": "Organization",
         "@id": "https://devmeetup-frontend.vercel.app/#organization",
-        "name": "DevMeet",
+        "name": "Nexus",
         "url": "https://devmeetup-frontend.vercel.app",
         "logo": {
           "@type": "ImageObject",
@@ -119,7 +119,7 @@ const Home = () => {
   return (
     <>
       <SEO 
-        title="Discover Events | DevMeet" 
+        title="Home" 
         description="Discover events, connect with people, and host unforgettable moments happening around you." 
         schema={homeSchema}
       />

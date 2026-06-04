@@ -197,7 +197,7 @@ const MyTickets = () => {
   return (
     <>
       <Helmet>
-        <title>My Tickets – DevMeet</title>
+        <title>My Tickets – Nexus</title>
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-16">

@@ -220,7 +220,7 @@ const CreatePage = () => {
 
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 selection:bg-neutral-300/40">
-      <SEO title="Create Event | DevMeet" description="Host your own event and reach a wider audience." />
+      <SEO title="Create Event | Nexus" description="Host your own event and reach a wider audience." />
 
       {/* Header */}
       <header className="sticky top-0 z-20 backdrop-blur bg-white/70 dark:bg-neutral-950/70 py-4 px-6 flex items-center justify-between">

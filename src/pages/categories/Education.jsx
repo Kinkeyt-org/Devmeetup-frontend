@@ -65,7 +65,7 @@ export default function Education() {
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
       <SEO 
-        title="Education Events | DevMeet" 
+        title="Education Events | Nexus" 
         description="Discover educational events, academic workshops, language learning meetups, and student research seminars." 
         url="https://devmeetup-frontend.vercel.app/categories/education"
         keywords="education events, academic seminars, edtech conference, workshops, learning"

@@ -65,7 +65,7 @@ export default function Health() {
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
       <SEO 
-        title="Health & Wellness Events | DevMeet" 
+        title="Health & Wellness Events | Nexus" 
         description="Discover wellness summits, mental health workshops, nutrition expos, and holistic healing gatherings." 
         url="https://devmeetup-frontend.vercel.app/categories/health"
         keywords="health events, wellness summit, mental health workshop, nutrition, holistic healing"

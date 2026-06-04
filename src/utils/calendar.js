@@ -5,7 +5,7 @@
 export const generateCalendarLinks = (event) => {
   if (!event) return null;
 
-  const title = encodeURIComponent(event.title || "DevMeet Event");
+  const title = encodeURIComponent(event.title || "Nexus Event");
   const description = encodeURIComponent(event.description || "");
   const location = encodeURIComponent(event.location || "Online");
   

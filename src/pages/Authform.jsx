@@ -114,10 +114,10 @@ export default function Authform() {
   return (
     <>
       <SEO 
-        title={`${mode === "signin" ? "Sign In" : "Sign Up"} | DevMeet`}
+        title={`${mode === "signin" ? "Sign In" : "Sign Up"}`}
         description={mode === "signin"
-          ? "Sign in to your DevMeet account and discover amazing tech events near you. Connect, explore, and never miss out on the action."
-          : "Create a DevMeet account to find and book tech events near you. Join our community of tech enthusiasts and start exploring today."
+          ? "Sign in to your Nexus account and discover amazing tech events near you. Connect, explore, and never miss out on the action."
+          : "Create a Nexus account to find and book tech events near you. Join our community of tech enthusiasts and start exploring today."
         }
         url={`https://devmeetup-frontend.vercel.app/${mode === "signin" ? "login" : "signup"}`}
       />
