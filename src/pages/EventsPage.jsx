@@ -52,7 +52,7 @@ const EventsPage = () => {
     try {
       // Fetch upcoming events from the API (page 1, up to 9 events)
       const data = await getEvents("upcoming", 1, 9);
-      
+
       // Ensure the response is an array before setting it in state to prevent crashes
       const newEvents = Array.isArray(data.events) ? data.events : [];
       setEvents(newEvents.slice(0, 9)); // keep only the first 9
@@ -75,9 +75,9 @@ const EventsPage = () => {
     <div className="min-h-screen bg-transparent text-neutral-900 dark:text-neutral-100 font-sans pb-20">
 
       {/* SEO */}
-      <SEO 
-        title="Explore Events" 
-        description="Discover and book upcoming events near you. Explore a wide range of experiences, from tech meetups to workshops, happening soon in your area." 
+      <SEO
+        title="Explore Events"
+        description="Discover and book upcoming events near you. Explore a wide range of experiences, from tech meetups to workshops, happening soon in your area."
         url="https://devmeetup-frontend.vercel.app/events"
       />
 
@@ -178,7 +178,7 @@ const EventsPage = () => {
             <p className="text-neutral-500 text-sm">Find events that match your interests.</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4 md:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-8 gap-4 ">
             {CATEGORIES.map((cat) => {
               const Icon = cat.icon;
               return (

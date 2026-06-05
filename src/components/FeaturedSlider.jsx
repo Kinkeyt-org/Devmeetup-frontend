@@ -1,16 +1,32 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Calendar, 
-  MapPin, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  Calendar,
+  MapPin,
   ArrowRight,
 
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { getEvents } from "@/api/event";
 
+const [events, setEvents] = useState([]);
 
+const fetchFeaturedEvents = async () => {
+  try {
+    const data = await getEvents();
+    const featured = data.filter((item) => item.isFeatured);
+    setEvents(featured);
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+
+useEffect(() => {
+  fetchFeaturedEvents();
+}, []);
 
 const SLIDES = [
   {
@@ -124,13 +140,13 @@ export default function FeaturedSlider() {
   const activeSlide = SLIDES[current];
 
   return (
-    <section 
+    <section
       className="max-w-7xl mx-auto p-5 pt-24 pb-6 relative group overflow-hidden select-none"
       onMouseEnter={stopTimer}
       onMouseLeave={startTimer}
     >
       <div className="relative h-[300px] md:h-[420px] w-full rounded-3xl overflow-hidden border border-neutral-200 dark:border-neutral-900 bg-neutral-900">
-        
+
         {/* SLIDE IMAGE */}
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
@@ -224,11 +240,10 @@ export default function FeaturedSlider() {
             <button
               key={index}
               onClick={() => handleDotClick(index)}
-              className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                index === current 
-                  ? "w-6 bg-white" 
+              className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${index === current
+                  ? "w-6 bg-white"
                   : "w-2.5 bg-white/40 hover:bg-white/70"
-              }`}
+                }`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}

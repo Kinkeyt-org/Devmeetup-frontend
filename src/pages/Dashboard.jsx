@@ -181,7 +181,7 @@ const Dashboard = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="grid grid-rows-2 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid sm:grid-cols-2 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
+                  <div className="grid grid-rows-3 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid sm:grid-cols-2 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
                     {nearbyEvents.map((event, i) => (
                       <div
                         key={event.id}
@@ -222,12 +222,12 @@ const Dashboard = () => {
                       Trending
                     </h2>
                     <p className="text-neutral-500 text-sm mt-1">
-                      What’s popular around you.
+                      What's popular around you.
                     </p>
                   </div>
                 </div>
 
-                <div className="grid grid-rows-2 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid sm:grid-cols-2 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
+                <div className="grid grid-rows-3 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid sm:grid-cols-2 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
                   {loadingEvents
                     ? [...Array(4)].map((_, i) => (
                       <div
@@ -265,32 +265,7 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* SIDEBAR */}
-            <div className="lg:w-[280px] space-y-6 hidden md:block">
-
-              <div className="relative rounded-2xl border border-neutral-200 dark:border-white/5 p-6 overflow-hidden">
-                {/* CONTENT */}
-                <div className="relative z-10">
-
-                  <h3 className="font-medium mb-2">
-                    {user?.name || "User"}
-                  </h3>
-
-                  <p className="text-sm text-neutral-500  capitalize">
-                    {user?.role || "Attendee"}
-                  </p>
-
-                  <button
-                    onClick={() => navigate("/profile")}
-                    className="mt-4 w-full px-4 py-2.5 rounded-full border border-neutral-200 dark:border-white/10 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900 transition"
-                  >
-                    View Profile
-                  </button>
-
-                </div>
-              </div>
-            </div>
-
+            
           </div>
         </section>
       </main>
