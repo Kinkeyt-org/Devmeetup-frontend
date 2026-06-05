@@ -30,9 +30,10 @@ const Dashboard = () => {
 
     const fetchEvents = async () => {
       try {
-        const data = await getEvents();
+        // Fetch up to 6 events for a 3x2 grid on desktop
+        const data = await getEvents("recent", 1, 6);
         const eventsList = Array.isArray(data.events) ? data.events : [];
-        setEvents(eventsList.slice(0, 4));
+        setEvents(eventsList.slice(0, 6));
       } catch (err) {
         console.error(err);
       } finally {
@@ -166,8 +167,8 @@ const Dashboard = () => {
                     </button>
                   </div>
                 ) : locationStatus === "loading" || loadingNearby ? (
-                  <div className="grid grid-rows-2 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid-cols-2 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
-                    {[...Array(4)].map((_, i) => (
+                  <div className="grid grid-rows-2 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid-cols-2 md:grid-cols-3 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
+                    {[...Array(6)].map((_, i) => (
                       <div
                         key={i}
                         className="flex-none w-[85vw] sm:w-full h-24 bg-neutral-100 dark:bg-neutral-900 rounded-2xl animate-pulse snap-start"
@@ -181,7 +182,7 @@ const Dashboard = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="grid grid-rows-2 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid sm:grid-cols-2 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
+                  <div className="grid grid-rows-2 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid sm:grid-cols-2 md:grid-cols-3 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
                     {nearbyEvents.map((event, i) => (
                       <div
                         key={event.id}
@@ -227,9 +228,9 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-rows-2 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid sm:grid-cols-2 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
+                <div className="grid grid-rows-2 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid sm:grid-cols-2 md:grid-cols-3 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
                   {loadingEvents
-                    ? [...Array(4)].map((_, i) => (
+                    ? [...Array(6)].map((_, i) => (
                       <div
                         key={i}
                         className="flex-none w-[85vw] sm:w-full h-24 bg-neutral-100 dark:bg-neutral-900 rounded-2xl animate-pulse snap-start"
