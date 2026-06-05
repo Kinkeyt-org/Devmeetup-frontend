@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 const SEO = ({ 
   title, 
   description, 
-  name = "Nexus", 
+  name = "DevMeet", 
   type = "website", 
   image = "https://images.unsplash.com/photo-1561489396-888724a1543d?q=80&w=2070&auto=format&fit=crop", 
   url = "https://devmeetup-frontend.vercel.app",
@@ -12,17 +12,11 @@ const SEO = ({
   schema,
   children
 }) => {
-  const formattedTitle = !title || title.toLowerCase() === name.toLowerCase()
-    ? name
-    : title.includes(name) 
-      ? title 
-      : `${title} | ${name}`;
-
   return (
     <Helmet>
       {children}
       {/* Standard metadata tags */}
-      <title>{formattedTitle}</title>
+
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <link rel="canonical" href={url} />

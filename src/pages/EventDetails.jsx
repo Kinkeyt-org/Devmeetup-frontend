@@ -198,7 +198,7 @@ const EventDetails = () => {
     "@context": "https://schema.org",
     "@type": "Event",
     "name": event.title,
-    "description": event.description || "Join this amazing event on Nexus.",
+    "description": event.description || "Join this amazing event on DevMeet.",
     "image": bannerSrc,
     "startDate": event.date || event.event_date || new Date().toISOString(),
     "eventStatus": "https://schema.org/EventScheduled",
@@ -225,7 +225,7 @@ const EventDetails = () => {
     },
     "organizer": {
       "@type": "Person",
-      "name": event?.user?.name || event?.organizer || "Nexus Organizer"
+      "name": event?.user?.name || event?.organizer || "DevMeet Organizer"
     }
   };
 
@@ -233,7 +233,7 @@ const EventDetails = () => {
     <>
       <SEO 
         title={`${event.title}`}
-        description={event.description || "Join this amazing event on Nexus."}
+        description={event.description || "Join this amazing event on DevMeet."}
         image={bannerSrc}
         url={window.location.href}
         schema={eventSchema}

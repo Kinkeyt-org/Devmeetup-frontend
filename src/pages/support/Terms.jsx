@@ -10,7 +10,7 @@ const Terms = () => {
     <div className="min-h-screen bg-[#F9F9FB] dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans pb-24">
       <SEO 
         title="Terms of Service & Privacy Policy" 
-        description="Review the Terms of Service and Privacy Policy for using the Nexus platform, including user conduct, ticketing, and data usage." 
+        description="Review the Terms of Service and Privacy Policy for using the DevMeet platform, including user conduct, ticketing, and data usage." 
         url="https://devmeetup-frontend.vercel.app/support/terms"
         keywords="terms of service, privacy policy, user conduct, ticket sales, data protection"
       />
@@ -30,9 +30,9 @@ const Terms = () => {
               Terms of Service
             </h2>
             <div className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-              <p>Welcome to Nexus. By using our platform, you agree to these terms.</p>
+              <p>Welcome to DevMeet. By using our platform, you agree to these terms.</p>
               <p>1. User Conduct: You are responsible for all content you post and events you organize.</p>
-              <p>2. Ticket Sales: Nexus acts as a facilitator for ticket sales. Refunds are subject to the organizer's policy.</p>
+              <p>2. Ticket Sales: DevMeet acts as a facilitator for ticket sales. Refunds are subject to the organizer's policy.</p>
               <p>3. Account Security: You are responsible for maintaining the confidentiality of your login credentials.</p>
             </div>
           </section>

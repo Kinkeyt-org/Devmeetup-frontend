@@ -123,7 +123,7 @@ export default function FeaturedSlider() {
 
   return (
     <section 
-      className="max-w-7xl mx-auto hidden md:flex pt-24 pb-6 relative group overflow-hidden select-none"
+      className="max-w-7xl mx-auto p-5 pt-24 pb-6 relative group overflow-hidden select-none"
       onMouseEnter={stopTimer}
       onMouseLeave={startTimer}
     >

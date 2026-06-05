@@ -60,8 +60,8 @@ const Home = () => {
       {
         "@type": "WebSite",
         "@id": "https://devmeetup-frontend.vercel.app/#website",
-        "name": "Nexus",
-        "alternateName": ["Nexus", "Nexus App"],
+        "name": "DevMeet",
+        "alternateName": ["DevMeet", "DevMeet App"],
         "url": "https://devmeetup-frontend.vercel.app",
         "potentialAction": {
           "@type": "SearchAction",
@@ -75,7 +75,7 @@ const Home = () => {
       {
         "@type": "Organization",
         "@id": "https://devmeetup-frontend.vercel.app/#organization",
-        "name": "Nexus",
+        "name": "DevMeet",
         "url": "https://devmeetup-frontend.vercel.app",
         "logo": {
           "@type": "ImageObject",

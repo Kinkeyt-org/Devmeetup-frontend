@@ -30,7 +30,7 @@ const Footer = () => {
                 <Ticket className="w-5 h-5 text-white dark:text-black" />
               </div>
               <span className="text-xl font-bold text-neutral-900 dark:text-white tracking-tight flex items-center gap-1.5">
-                Nexus
+                DevMeet
                 <Sparkles size={14} className="text-amber-500 fill-amber-500 animate-pulse" />
               </span>
             </Link>
@@ -119,7 +119,7 @@ const Footer = () => {
 
         {/* LOWER ROW: Copyright + Legal */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 text-xs text-neutral-400 dark:text-neutral-500">
-          <p>© {new Date().getFullYear()} Nexus. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} DevMeet. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link to="/support/terms" className="hover:text-neutral-900 dark:hover:text-white transition-colors">
               Terms & Conditions

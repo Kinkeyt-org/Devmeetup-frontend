@@ -10,7 +10,7 @@ const HelpCenter = () => {
     <div className="min-h-screen bg-[#F9F9FB] dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans pb-24">
       <SEO 
         title="Help Center" 
-        description="Find guides, documentation, and answers to common questions about hosting and attending events on Nexus." 
+        description="Find guides, documentation, and answers to common questions about hosting and attending events on DevMeet." 
         url="https://devmeetup-frontend.vercel.app/support/help"
         keywords="help center, support, event guides, ticket refunds, organizer documentation"
       />

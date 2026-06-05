@@ -92,7 +92,7 @@ const Dashboard = () => {
     <>
       <SEO 
         title="Home" 
-        description="Welcome to Nexus, your go-to platform for discovering and booking events. Find the perfect event for you and join the community." 
+        description="Welcome to DevMeet, your go-to platform for discovering and booking events. Find the perfect event for you and join the community." 
       />
 
       <main className="min-h-screen bg-transparent text-neutral-900 dark:text-neutral-100 pb-20">
@@ -116,7 +116,7 @@ const Dashboard = () => {
                       })()}, {user.name.split(" ")[0]}
                     </>
                   ) : (
-                    "Welcome to Nexus"
+                    "Welcome to DevMeet"
                   )}
                 </h1>
 

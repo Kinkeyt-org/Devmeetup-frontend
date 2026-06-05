@@ -103,7 +103,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-transparent text-neutral-900 dark:text-neutral-100 font-sans pb-24 selection:bg-neutral-200 dark:selection:bg-neutral-800">
-      <SEO title="Your Profile" description="View and edit your Nexus profile." />
+      <SEO title="Your Profile" description="View and edit your DevMeet profile." />
       
       {/* NAVBAR */}
       <nav className="sticky top-0 z-40 bg-[#F9F9FB]/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-neutral-200/60 dark:border-white/5 px-4 h-16 flex items-center justify-between">
@@ -287,7 +287,7 @@ const Profile = () => {
           </button>
           
           <p className="text-center text-xs text-neutral-400 mt-6 pb-6">
-            Nexus v1.0.0
+            DevMeet v1.0.0
           </p>
         </div>
 
