@@ -82,7 +82,7 @@ export default function Music() {
       {/* HERO SECTION */}
       <section className="relative w-full h-[85vh] min-h-[500px]">
         <img
-          src="https://4kwallpapers.com/images/walls/thumbs_3t/413.jpg"
+          src="https://i.pinimg.com/736x/31/81/17/31811734d6d0f3d1250dec1442093a99.jpg"
           alt="Music banner"
           className="w-full h-full object-cover"
         />

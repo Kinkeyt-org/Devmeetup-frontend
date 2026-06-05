@@ -15,9 +15,9 @@ export default function SubscribeForm({ className = "" }) {
 
   return (
     <form onSubmit={handleSubscribe} className={`w-full ${className}`}>
-      <div className="flex rounded-xl bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md border border-neutral-200/80 dark:border-neutral-800/80 p-1.5 focus-within:border-neutral-400 dark:focus-within:border-neutral-700 transition duration-300 shadow-sm">
+      <div className="flex rounded-xl bg-white/80 p-1.5 md:p-2 lg:p-3 dark:bg-neutral-900/80 backdrop-blur-md border border-neutral-200/80 dark:border-neutral-800/80  focus-within:border-neutral-400 dark:focus-within:border-neutral-700 transition duration-300 shadow-sm">
         <div className="flex items-center pl-2.5 text-neutral-400 dark:text-neutral-500">
-          <Mail size={16} />
+          <Mail size={18} />
         </div>
         <input
           type="email"
@@ -29,7 +29,7 @@ export default function SubscribeForm({ className = "" }) {
         />
         <button
           type="submit"
-          className="bg-neutral-950 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-200 dark:text-black text-xs font-medium px-4 py-2 rounded-lg transition duration-200 shrink-0 flex items-center gap-1.5 active:scale-95 cursor-pointer"
+          className="bg-neutral-950 hover:bg-neutral-800 p-1 md:p-2 lg:p-2.5 text-white dark:bg-white dark:hover:bg-neutral-200 dark:text-black text-xs font-medium px-4 py-2 rounded-lg transition duration-200 shrink-0 flex items-center gap-1.5 active:scale-95 cursor-pointer"
         >
           {subscribed ? "Subscribed!" : (
             <>

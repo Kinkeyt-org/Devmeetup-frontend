@@ -159,7 +159,7 @@ export default function Authform() {
             <div className="mb-8 space-y-2">
               <h2 className="text-2xl font-medium text-black">
                 {mode === "signin" ? "Welcome back" : "Create account"}
-              </h2>use this
+              </h2>
               <p className="text-neutral-500 text-sm">
                 {mode === "signin"
                   ? "Sign in to continue"

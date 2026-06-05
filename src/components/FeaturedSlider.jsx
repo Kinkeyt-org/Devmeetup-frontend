@@ -207,7 +207,7 @@ export default function FeaturedSlider() {
             <div className="pt-4">
               <button
                 onClick={() => navigate(`/events`)} // Standard redirect or modal
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-black text-xs font-semibold uppercase tracking-wider transition-all duration-300 transform active:scale-95 cursor-pointer shadow-lg shadow-black/20"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white hover:bg-neutral-200 text-black text-xs font-semibold uppercase tracking-wider transition-all duration-300 transform active:scale-95 cursor-pointer shadow-lg shadow-black/20"
               >
                 Learn More
                 <ArrowRight size={13} />
