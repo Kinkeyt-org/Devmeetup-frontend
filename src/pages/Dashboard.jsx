@@ -181,7 +181,7 @@ const Dashboard = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="grid grid-rows-3 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid sm:grid-cols-2 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
+                  <div className="grid grid-rows-2 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid sm:grid-cols-2 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
                     {nearbyEvents.map((event, i) => (
                       <div
                         key={event.id}
@@ -227,7 +227,7 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-rows-3 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid sm:grid-cols-2 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
+                <div className="grid grid-rows-2 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid sm:grid-cols-2 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
                   {loadingEvents
                     ? [...Array(4)].map((_, i) => (
                       <div
