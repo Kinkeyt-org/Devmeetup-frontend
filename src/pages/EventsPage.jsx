@@ -4,7 +4,7 @@ import { getEvents } from "../api/event";
 import SEO from "../components/SEO";
 import EventCard from "../components/EventCard";
 import EventSkeleton from "../components/EventSkeleton";
-import FeaturedSlider from "../components/FeaturedSlider";
+// import FeaturedSlider from "../components/FeaturedSlider";
 import {
   Cpu,
   Palette,
@@ -81,11 +81,11 @@ const EventsPage = () => {
         url="https://devmeetup-frontend.vercel.app/events"
       />
 
-      {/* FEATURED EVENTS SLIDER */}
-      <FeaturedSlider />
+      {/* FEATURED EVENTS SLIDER
+      <FeaturedSlider /> */}
 
       {/* HERO */}
-      <section className="pt-20 md:pt-6 pb-10">
+      <section className="pt-20 md:pt-25 pb-10">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-xl md:text-2xl font-semibold mb-2">Upcoming Events</h2>
 
