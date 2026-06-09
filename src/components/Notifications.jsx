@@ -17,7 +17,7 @@ const Notifications = () => {
       const demo = [
         {
           id: 1,
-          title: "Welcome to DevMeet!",
+          title: "Welcome to Nexus!",
           message: "Discover and book tech events near you.",
           time: "Just now",
           read: false,

@@ -33,12 +33,12 @@ const Upgrade = () => {
 
   return (
     <>
-      <SEO title="Become an Organizer" description="Upgrade your account to become an organizer on DevMeet and host events." />
+      <SEO title="Become an Organizer" description="Upgrade your account to become an organizer on Nexus and host events." />
       <div className="min-h-screen flex items-center justify-center bg-neutral-50 px-6 font-['Satoshi']">
       <div className="max-w-md w-full bg-white p-10 rounded-[2.5rem] shadow-xl text-center">
         <h2 className="text-3xl font-bold mb-4">Become an Organizer</h2>
         <p className="text-neutral-500 mb-8">
-          To host events on DevMeet, you need to upgrade your account. 
+          To host events on Nexus, you need to upgrade your account. 
           Organizers are required to have a profile picture.
         </p>
 

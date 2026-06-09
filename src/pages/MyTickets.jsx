@@ -197,7 +197,7 @@ const MyTickets = () => {
 
   return (
     <>
-      <SEO title="My Tickets" description="View and manage your booked event tickets on DevMeet." />
+      <SEO title="My Tickets" description="View and manage your booked event tickets on Nexus." />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-16">
         <h1 className="text-2xl font-semibold mb-6 dark:text-white">

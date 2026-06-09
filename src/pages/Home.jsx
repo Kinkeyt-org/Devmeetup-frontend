@@ -60,8 +60,8 @@ const Home = () => {
       {
         "@type": "WebSite",
         "@id": `${siteUrl}/#website`,
-        "name": "DevMeet",
-        "alternateName": ["DevMeet App"],
+        "name": "Nexus",
+        "alternateName": ["Nexus App"],
         "url": siteUrl,
         "potentialAction": {
           "@type": "SearchAction",
@@ -75,7 +75,7 @@ const Home = () => {
       {
         "@type": "Organization",
         "@id": `${siteUrl}/#organization`,
-        "name": "DevMeet",
+        "name": "Nexus",
         "url": siteUrl,
         "logo": {
           "@type": "ImageObject",
@@ -113,8 +113,8 @@ const Home = () => {
   return (
     <>
       <SEO
-        title="DevMeet - Discover & Host Events and Conferences"
-        description="Find and book local tech events, workshops, and conferences on DevMeet. Connect with developers and grow your tech community worldwide."
+        title="Nexus - Discover & Host Events and Conferences"
+        description="Find and book local tech events, workshops, and conferences on Nexus. Connect with developers and grow your tech community worldwide."
         schema={homeSchema}
       />
 
