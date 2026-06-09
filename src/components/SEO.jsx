@@ -13,7 +13,7 @@ const SEO = ({
   children
 }) => {
   // Graceful fallback if a page doesn't supply a unique title extension
-  const pageTitle = title ? `${title} | ${name}` : name;
+  const pageTitle = title ? `${title}` : name;
 
   return (
     <Helmet>
