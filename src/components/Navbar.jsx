@@ -143,7 +143,7 @@ const Navbar = () => {
             {/* USER */}
             {user ? (
               <>
-                <Notifications classname='cursor-pointer'/>
+                <Notifications classname='cursor-pointer' />
 
                 <Link
                   to="/profile"
@@ -163,7 +163,7 @@ const Navbar = () => {
 
                 <Link
                   className="px-4 py-2 text-sm font-medium rounded-full bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-800 transition"
-                  to="/login"
+                  to="/signup"
                 >
                   Sign up
                 </Link>
@@ -171,14 +171,14 @@ const Navbar = () => {
             )}
 
             {/* MOBILE BUTTON */}
-            {!user?(
-                <Link
-                  className="px-4 md:hidden py-2 text-sm font-medium rounded-full flex gap-1  items-center bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-800 transition"
-                  to="/login"
-                >
-                  sign in <ArrowUpRight size={12}/>
-                </Link>
-              ):(
+            {!user ? (
+              <Link
+                className="px-4 md:hidden py-2 text-sm font-medium rounded-full flex gap-1  items-center bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-800 transition"
+                to="/login"
+              >
+                sign in <ArrowUpRight size={12} />
+              </Link>
+            ) : (
               <div className="flex md:hidden items-center gap-2">
 
                 <ThemeToggle />
@@ -190,9 +190,9 @@ const Navbar = () => {
                 </button>
 
               </div>
-              )
-            
-              }
+            )
+
+            }
           </div>
         </div>
       </nav>
@@ -278,7 +278,7 @@ const Navbar = () => {
                   <Link to="/login" onClick={closeMenu} className="py-3 bg-neutral-100 dark:bg-neutral-800 rounded-xl dark:text-white text-center text-sm font-medium">
                     Log in
                   </Link>
-                  <Link to="/login" onClick={closeMenu} className="py-3 bg-neutral-100 dark:bg-neutral-800 rounded-xl dark:text-white text-center text-sm font-medium">
+                  <Link to="/signup" onClick={closeMenu} className="py-3 bg-neutral-100 dark:bg-neutral-800 rounded-xl dark:text-white text-center text-sm font-medium">
                     Sign up
                   </Link>
                 </div>
@@ -296,11 +296,10 @@ const MenuLink = ({ to, icon: Icon, label, onClick, current }) => (
   <Link
     to={to}
     onClick={onClick}
-    className={`flex items-center gap-2.5 p-3 rounded-xl transition ${
-      current
-        ? "bg-black text-white dark:bg-white dark:text-black"
-        : "bg-neutral-50 dark:bg-neutral-900/50 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-    }`}
+    className={`flex items-center gap-2.5 p-3 rounded-xl transition ${current
+      ? "bg-black text-white dark:bg-white dark:text-black"
+      : "bg-neutral-50 dark:bg-neutral-900/50 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+      }`}
   >
     <Icon className="w-5 h-5" />
     <span className="text-sm font-medium">{label}</span>

@@ -68,6 +68,7 @@ const AppContent = () => {
 
   const hideNavbarRoutes = [
     "/login",
+    "/signup",
     "/search",
     "/profile",
     "/upgrade",
@@ -124,6 +125,7 @@ const AppContent = () => {
           />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/login" element={<AuthForm />} />
+          <Route path="/signup" element={<AuthForm />} />
           <Route path="/search" element={<Search />} />
           <Route path="/events/create" element={<CreatePage />} />
           <Route path="/profile" element={<Profile />} />

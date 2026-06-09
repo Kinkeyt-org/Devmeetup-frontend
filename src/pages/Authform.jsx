@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { login, signup } from "../api/auth";
 import { updateProfile } from "../api/user";
 import { useNavigate, useLocation, Link } from "react-router-dom";
@@ -36,10 +36,20 @@ export default function Authform() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [mode, setMode] = useState("signin");
+  const [mode, setMode] = useState(() => {
+    return location.pathname === "/signup" ? "signup" : "signin";
+  });
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (location.pathname === "/signup") {
+      setMode("signup");
+    } else if (location.pathname === "/login") {
+      setMode("signin");
+    }
+  }, [location.pathname]);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -113,7 +123,7 @@ export default function Authform() {
 
   return (
     <>
-      <SEO 
+      <SEO
         title={`${mode === "signin" ? "Sign In" : "Sign Up"}`}
         description={mode === "signin"
           ? "Sign in to your DevMeet account and discover amazing tech events near you. Connect, explore, and never miss out on the action."
@@ -293,14 +303,14 @@ export default function Authform() {
               {mode === "signin" ? (
                 <p>
                   Don't have an account?{" "}
-                  <button onClick={() => setMode("signup")} className="text-black">
+                  <button onClick={() => navigate("/signup")} className="text-black">
                     Create one
                   </button>
                 </p>
               ) : (
                 <p>
                   Already have an account?{" "}
-                  <button onClick={() => setMode("signin")} className="text-black">
+                  <button onClick={() => navigate("/login")} className="text-black">
                     Sign in
                   </button>
                 </p>
