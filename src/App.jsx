@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 import { initGA, trackPageView } from "./analytics";
+import { Toaster } from "react-hot-toast";
 
 import AuthForm from "./pages/Authform";
 import Dashboard from "./pages/Dashboard";
@@ -99,6 +100,7 @@ const AppContent = () => {
   return (
     <>
       <ScrollToTop />
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="relative z-10">
         {!shouldHideNavbar && <Navbar />}
 
