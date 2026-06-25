@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Bell, Ticket, X } from "lucide-react";
+import { Bell, Ticket } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import toast from "react-hot-toast";
-// 1. Import your Echo setup instance (adjust the import path to where your echo.js file sits)
-// import Echo from '../utils/echo'; 
+
 
 const Notifications = () => {
   const [open, setOpen] = useState(false);
@@ -11,93 +9,35 @@ const Notifications = () => {
   const dropdownRef = useRef(null);
 
   // -----------------------------
-  // Load initial notifications & Connect Websocket
+  // Load notifications & re-sync when hook fires a new one
   // -----------------------------
   useEffect(() => {
-    // A. Load existing local notifications
-    const stored = JSON.parse(localStorage.getItem("notifications")) || [];
-    if (stored.length === 0) {
-      const demo = [
-        {
-          id: 1,
-          title: "Welcome to Nexus!",
-          message: "Discover and book tech events near you.",
-          time: "Just now",
-          read: false,
-          type: "system",
-        },
-      ];
-      setNotifications(demo);
-      localStorage.setItem("notifications", JSON.stringify(demo));
-    } else {
-      setNotifications(stored);
-    }
-
-    // B. Real-time Websocket Connection
-    // Replace 'notifications-channel' and '.NotificationEvent' with what your backend dev used.
-    if (window.Echo) {
-      const channel = window.Echo.channel('notifications-channel')
-        .listen('.NotificationEvent', (data) => {
-          
-          // Create a new notification object from incoming live data
-          const newNotification = {
-            id: Date.now(), // Generate a unique ID
-            title: data.title || "New Notification",
-            message: data.message || "You received a real-time update.",
+    // Read from localStorage on mount
+    const readFromStorage = () => {
+      const stored = JSON.parse(localStorage.getItem("notifications")) || [];
+      if (stored.length === 0) {
+        const demo = [
+          {
+            id: 1,
+            title: "Welcome to Nexus!",
+            message: "Discover and book tech events near you.",
             time: "Just now",
             read: false,
-            type: data.type || "live",
-          };
+            type: "system",
+          },
+        ];
+        setNotifications(demo);
+        localStorage.setItem("notifications", JSON.stringify(demo));
+      } else {
+        setNotifications(stored);
+      }
+    };
 
-          // Update state and immediately save to localStorage
-          setNotifications((prevNotifications) => {
-            const updated = [newNotification, ...prevNotifications];
-            localStorage.setItem("notifications", JSON.stringify(updated));
-            return updated;
-          });
+    readFromStorage();
 
-          // Trigger custom pop-up toast
-          const imageUrl = data.picture || data.image || data.image_url;
-          if (imageUrl) {
-            toast.custom((t) => (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: -20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className="relative bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-2xl rounded-2xl overflow-hidden p-1.5 flex items-center justify-center max-w-sm pointer-events-auto"
-              >
-                <div className="relative rounded-xl overflow-hidden w-64 h-64 bg-neutral-100 dark:bg-neutral-950">
-                  <img
-                    src={imageUrl}
-                    alt="Notification"
-                    className="w-full h-full object-cover rounded-xl"
-                  />
-                  <button
-                    onClick={() => toast.dismiss(t.id)}
-                    className="absolute top-2.5 right-2.5 bg-neutral-900/60 hover:bg-neutral-950 text-white rounded-full p-1.5 transition backdrop-blur-xs shadow-md cursor-pointer"
-                  >
-                    <X className="w-4.5 h-4.5" />
-                  </button>
-                </div>
-              </motion.div>
-            ), {
-              duration: 5000,
-            });
-          } else {
-            toast(`${newNotification.title}: ${newNotification.message}`, {
-              duration: 4000,
-              icon: "🔔",
-              className: "bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-200 dark:border-neutral-800 rounded-xl",
-            });
-          }
-        });
-
-      // Cleanup listener when component unmounts
-      return () => {
-        channel.stopListening('.NotificationEvent');
-      };
-    }
+    // Re-read whenever the global hook writes a new notification
+    window.addEventListener("notificationsUpdated", readFromStorage);
+    return () => window.removeEventListener("notificationsUpdated", readFromStorage);
   }, []);
 
   // -----------------------------

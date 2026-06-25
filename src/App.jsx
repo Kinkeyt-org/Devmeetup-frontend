@@ -38,6 +38,7 @@ import HelpCenter from "./pages/support/HelpCenter";
 import Terms from "./pages/support/Terms";
 
 import ScrollToTop from "./components/ScrollToTop";
+import useRealtimeNotifications from "./hooks/useRealtimeNotifications";
 
 
 /* ================= APP CONTENT ================= */
@@ -52,6 +53,9 @@ const AppContent = () => {
       return null;
     }
   });
+
+  // Keep Echo listeners alive on every route (even when Navbar is hidden)
+  useRealtimeNotifications();
 
   useEffect(() => {
     const syncUser = () => {
