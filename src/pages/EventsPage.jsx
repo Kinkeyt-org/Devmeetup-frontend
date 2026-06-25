@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { getEvents } from "../api/event";
 import SEO from "../components/SEO";
 import EventCard from "../components/EventCard";
@@ -35,7 +35,6 @@ const EventsPage = () => {
   const [events, setEvents] = useState([]);
   // state to track if we are currently fetching data (used to show skeletons)
   const [loading, setLoading] = useState(true);
-  const location = useLocation();
   const navigate = useNavigate();
 
   // FILTER STATE
@@ -68,6 +67,31 @@ const EventsPage = () => {
   useEffect(() => {
     fetchEvents(true);
   }, [filter]);
+
+  /* ================= REAL-TIME EVENT UPDATES ================= */
+  // Listen for newly created events via Laravel Echo / Pusher
+  useEffect(() => {
+    if (window.Echo) {
+      const channel = window.Echo.channel("events")
+        .listen(".event.created", (data) => {
+          const newEvent = data.event;
+          if (newEvent) {
+            setEvents((prevEvents) => {
+              // Avoid duplicate events
+              if (prevEvents.some((e) => e.id === newEvent.id)) {
+                return prevEvents;
+              }
+              const updated = [newEvent, ...prevEvents];
+              return updated.slice(0, 9); // Keep only the first 9 events
+            });
+          }
+        });
+
+      return () => {
+        channel.stopListening(".event.created");
+      };
+    }
+  }, []);
 
 
 
