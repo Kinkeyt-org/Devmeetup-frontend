@@ -2,15 +2,23 @@ import React, { useState, useEffect, useRef } from "react";
 import { Bell, Ticket, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-// 1. Import your Echo setup instance (adjust the import path to where your echo.js file sits)
-// import Echo from '../utils/echo'; 
+
+// Converts an ISO timestamp (or legacy "Just now" string) to a relative label
+const formatTime = (time) => {
+  if (!time) return "";
+  // Legacy fallback for old entries stored as plain text
+  if (isNaN(Date.parse(time))) return time;
+  const diff = Math.floor((Date.now() - new Date(time).getTime()) / 1000);
+  if (diff < 60) return "Just now";
+  if (diff < 3600) return `${Math.floor(diff / 60)} min ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)} hr ago`;
+  return `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) > 1 ? "s" : ""} ago`;
+};
 
 const Notifications = () => {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const dropdownRef = useRef(null);
-  const navigate = useNavigate();
 
   // -----------------------------
   // Load initial notifications & Connect Websocket
@@ -18,22 +26,7 @@ const Notifications = () => {
   useEffect(() => {
     // A. Load existing local notifications
     const stored = JSON.parse(localStorage.getItem("notifications")) || [];
-    if (stored.length === 0) {
-      const demo = [
-        {
-          id: 1,
-          title: "Welcome to Nexus!",
-          message: "Discover and book tech events near you.",
-          time: "Just now",
-          read: false,
-          type: "system",
-        },
-      ];
-      setNotifications(demo);
-      localStorage.setItem("notifications", JSON.stringify(demo));
-    } else {
-      setNotifications(stored);
-    }
+    setNotifications(stored);
 
     // B. Sync with the global notifications listener using a custom event
     const handleNewNotification = (e) => {
@@ -149,13 +142,7 @@ const Notifications = () => {
                 notifications.map((n) => (
                   <button
                     key={n.id}
-                    onClick={() => {
-                      markOneAsRead(n.id);
-                      if (n.link) {
-                        navigate(n.link);
-                      }
-                      setOpen(false);
-                    }}
+                    onClick={() => markOneAsRead(n.id)}
                     className={`
                       w-full text-left flex gap-3 px-4 py-3
                       border-b border-neutral-100 dark:border-neutral-800
@@ -179,7 +166,7 @@ const Notifications = () => {
                       </p>
 
                       <p className="text-[10px] uppercase tracking-wider font-semibold text-blue-500 mt-1">
-                        {n.time}
+                        {formatTime(n.time)}
                       </p>
                     </div>
 
