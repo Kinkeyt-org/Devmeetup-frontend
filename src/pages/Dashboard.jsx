@@ -44,6 +44,31 @@ const Dashboard = () => {
     fetchEvents();
   }, []);
 
+  /* ================= REAL-TIME EVENTS FEED ================= */
+  useEffect(() => {
+    if (window.Echo) {
+      const channel = window.Echo.channel("events")
+        .listen(".event.created", (data) => {
+          console.log("New Event Data Received:", data.event);
+          const newEvent = data.event;
+          if (newEvent) {
+            setEvents((prevEvents) => {
+              // Avoid duplicate events
+              if (prevEvents.some((e) => e.id === newEvent.id)) {
+                return prevEvents;
+              }
+              const updated = [newEvent, ...prevEvents];
+              return updated.slice(0, 6); // Keep only the first 6 events
+            });
+          }
+        });
+
+      return () => {
+        window.Echo.leaveChannel("events");
+      };
+    }
+  }, []);
+
 
   const handleFindNearbyEvents = useCallback(() => {
     if (!navigator.geolocation) {
