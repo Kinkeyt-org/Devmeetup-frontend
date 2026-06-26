@@ -114,7 +114,7 @@ const Notifications = () => {
 
               bg-white dark:bg-neutral-900
               border border-neutral-200 dark:border-neutral-800
-              rounded-2xl shadow-xl overflow-auto no-scrollbar
+              rounded-2xl shadow-xl overflow-hidden
               z-50
             "
           >
@@ -133,7 +133,7 @@ const Notifications = () => {
             </div>
 
             {/* Body */}
-            <div className="max-h-[320px] overflow-y-auto">
+            <div className="max-h-[320px] overflow-y-auto scrollbar-none">
               {notifications.length === 0 ? (
                 <div className="py-10 text-center text-sm text-neutral-500">
                   No notifications yet
