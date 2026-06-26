@@ -12,6 +12,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { IoIosNotificationsOutline } from "react-icons/io";
+import { useTheme } from "./context/ThemeContext";
 
 import AuthForm from "./pages/Authform";
 import Dashboard from "./pages/Dashboard";
@@ -46,6 +47,8 @@ import ScrollToTop from "./components/ScrollToTop";
 /* ================= APP CONTENT ================= */
 const AppContent = () => {
   const location = useLocation();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const backgroundLocation = location.state?.backgroundLocation;
 
   const [user, setUser] = useState(() => {
@@ -153,8 +156,18 @@ const AppContent = () => {
           } else {
             toast(`${newNotification.title}: ${newNotification.message}`, {
               duration: 4000,
-              icon: <IoIosNotificationsOutline />,
-              className: "bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-200 dark:border-neutral-800 rounded-xl",
+              icon: <IoIosNotificationsOutline size={20} style={{ color: isDark ? "#a3a3a3" : "#404040" }} />,
+              style: {
+                background: isDark ? "#171717" : "#ffffff",
+                color: isDark ? "#ffffff" : "#171717",
+                border: `1px solid ${isDark ? "#262626" : "#e5e5e5"}`,
+                borderRadius: "12px",
+                fontSize: "14px",
+                padding: "12px 16px",
+                boxShadow: isDark
+                  ? "0 4px 24px rgba(0,0,0,0.6)"
+                  : "0 4px 24px rgba(0,0,0,0.08)",
+              },
             });
           }
         });
@@ -178,7 +191,22 @@ const AppContent = () => {
   return (
     <>
       <ScrollToTop />
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          style: {
+            background: isDark ? "#171717" : "#ffffff",
+            color: isDark ? "#ffffff" : "#171717",
+            border: `1px solid ${isDark ? "#262626" : "#e5e5e5"}`,
+            borderRadius: "12px",
+            fontSize: "14px",
+            boxShadow: isDark
+              ? "0 4px 24px rgba(0,0,0,0.6)"
+              : "0 4px 24px rgba(0,0,0,0.08)",
+          },
+        }}
+      />
       <div className="relative z-10">
         {!shouldHideNavbar && <Navbar />}
 
