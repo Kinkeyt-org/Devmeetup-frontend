@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Bell, Mail, Smartphone, Globe, Ticket, Trash2 } from "lucide-react";
+import { ArrowLeft, Bell, Mail, Smartphone, Globe, Ticket, Trash2, ChevronDown, SlidersHorizontal } from "lucide-react";
 
 // Converts an ISO timestamp (or legacy "Just now" string) to a relative label
 const formatTime = (time) => {
@@ -15,6 +15,7 @@ const formatTime = (time) => {
 
 const Notifications = () => {
   const navigate = useNavigate();
+  const [prefsOpen, setPrefsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [settings, setSettings] = useState({
     email: true,
@@ -76,7 +77,21 @@ const Notifications = () => {
           <ArrowLeft className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />
         </button>
         <span className="text-sm md:text-[16px] font-semibold tracking-tight">Notifications</span>
-        <div className="w-9" />
+        {/* Mobile preferences toggle — hidden on desktop */}
+        <button
+          onClick={() => setPrefsOpen((o) => !o)}
+          className="lg:hidden flex items-center gap-1 text-xs font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors px-2 py-1.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800"
+          aria-expanded={prefsOpen}
+          aria-controls="mobile-prefs-panel"
+        >
+          <SlidersHorizontal className="w-4 h-4" />
+          <span>Preferences</span>
+          <ChevronDown
+            className={`w-3.5 h-3.5 transition-transform duration-300 ${prefsOpen ? "rotate-180" : ""}`}
+          />
+        </button>
+        {/* Spacer so title stays centred on desktop */}
+        <div className="hidden lg:block w-9" />
       </nav>
 
       <main className="max-w-5xl mx-auto px-4 mt-8">
@@ -176,12 +191,17 @@ const Notifications = () => {
             </div>
           </div>
 
-          {/* Preferences Column (takes 1 column) */}
-          <div className="lg:col-span-1">
+          {/* Preferences Column — always visible on desktop, collapsible on mobile */}
+          <div
+            id="mobile-prefs-panel"
+            className={`lg:col-span-1 overflow-hidden transition-all duration-300 ease-in-out ${
+              prefsOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0 lg:max-h-none lg:opacity-100"
+            }`}
+          >
             <div className="bg-white dark:bg-neutral-900 rounded-[1.5rem] border border-neutral-200/60 dark:border-white/5 overflow-hidden shadow-sm">
               <div className="p-6 border-b border-neutral-100 dark:border-white/5">
                 <h2 className="text-base md:text-xl font-semibold flex items-center gap-2">
-                  <Bell className="w-5 h-5 text-neutral-400" />
+                  <SlidersHorizontal className="w-5 h-5 text-neutral-400" />
                   Preferences
                 </h2>
                 <p className="text-xs md:text-sm text-neutral-500 mt-1">Control how you want to be notified about events.</p>
