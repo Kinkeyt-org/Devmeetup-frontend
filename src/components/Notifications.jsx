@@ -15,7 +15,7 @@ const formatTime = (time) => {
   return `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) > 1 ? "s" : ""} ago`;
 };
 
-const Notifications = () => {
+const Notifications = ({ className }) => {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const dropdownRef = useRef(null);
@@ -79,12 +79,12 @@ const Notifications = () => {
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className={`relative ${className || ""}`} ref={dropdownRef}>
       {/* Bell */}
       <button
         onClick={() => setOpen(!open)}
         className="relative w-9 h-9 flex items-center justify-center rounded-full
-                   hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+                   hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer"
       >
         <Bell className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
 
@@ -133,7 +133,7 @@ const Notifications = () => {
             </div>
 
             {/* Body */}
-            <div className="max-h-[320px] overflow-y-auto scrollbar-none">
+            <div className="max-h-[320px] overflow-y-auto scrollbar-hide">
               {notifications.length === 0 ? (
                 <div className="py-10 text-center text-sm text-neutral-500">
                   No notifications yet
