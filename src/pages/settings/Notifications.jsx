@@ -13,6 +13,107 @@ const formatTime = (time) => {
   return `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) > 1 ? "s" : ""} ago`;
 };
 
+// ─── Swipeable notification row ───────────────────────────────────────────
+const SwipeableNotification = ({ n, onMarkRead, onDelete }) => {
+  const [offsetX, setOffsetX] = React.useState(0);
+  const [dragging, setDragging] = React.useState(false);
+  const startX = React.useRef(null);
+  const THRESHOLD = 80; // px before auto-delete
+  const MAX_DRAG = 120;
+
+  const handleTouchStart = (e) => {
+    startX.current = e.touches[0].clientX;
+    setDragging(false);
+  };
+
+  const handleTouchMove = (e) => {
+    if (startX.current === null) return;
+    const dx = e.touches[0].clientX - startX.current;
+    if (dx > 0) return; // only allow left swipe
+    setDragging(true);
+    setOffsetX(Math.max(dx, -MAX_DRAG));
+  };
+
+  const handleTouchEnd = () => {
+    if (offsetX <= -THRESHOLD) {
+      // Animate fully off then delete
+      setOffsetX(-MAX_DRAG);
+      setTimeout(() => onDelete(), 200);
+    } else {
+      setOffsetX(0);
+    }
+    setDragging(false);
+    startX.current = null;
+  };
+
+  const deleteProgress = Math.min(Math.abs(offsetX) / THRESHOLD, 1);
+
+  return (
+    <div className="relative overflow-hidden">
+      {/* Red delete backdrop */}
+      <div
+        className="absolute inset-y-0 right-0 flex items-center justify-center bg-red-500 px-6 transition-opacity duration-150"
+        style={{ opacity: deleteProgress, width: Math.abs(offsetX) + 16 }}
+        aria-hidden="true"
+      >
+        <Trash2 className="w-5 h-5 text-white" />
+      </div>
+
+      {/* Notification row */}
+      <div
+        onClick={() => { if (!dragging) onMarkRead(); }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        style={{
+          transform: `translateX(${offsetX}px)`,
+          transition: dragging ? "none" : "transform 0.25s ease",
+        }}
+        className={`
+          w-full text-left flex gap-4 p-6 cursor-pointer select-none
+          hover:bg-neutral-50 dark:hover:bg-neutral-800/40 transition-colors group relative
+          bg-white dark:bg-neutral-900
+          ${!n.read ? "bg-neutral-50/40 dark:bg-neutral-800/25" : ""}
+        `}
+      >
+        {/* Icon */}
+        <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0 mt-0.5">
+          <Ticket className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0 pr-8">
+          <div className="flex items-center gap-2">
+            <p className="text-sm md:text-base font-semibold text-neutral-900 dark:text-white truncate">
+              {n.title}
+            </p>
+            {!n.read && (
+              <span className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
+            )}
+          </div>
+
+          <p className="text-xs md:text-sm text-neutral-500 mt-1 wrap-break-word">
+            {n.message}
+          </p>
+
+          <p className="text-[10px] uppercase tracking-wider font-semibold text-blue-500 mt-2">
+            {formatTime(n.time)}
+          </p>
+        </div>
+
+        {/* Desktop delete button (hover only) */}
+        <button
+          onClick={(e) => { e.stopPropagation(); onDelete(); }}
+          className="absolute right-6 top-6 p-2 rounded-lg text-neutral-400 hover:text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition opacity-0 group-hover:opacity-100 focus:opacity-100 shrink-0"
+          title="Delete notification"
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const Notifications = () => {
   const navigate = useNavigate();
   const [prefsOpen, setPrefsOpen] = useState(false);
@@ -139,52 +240,12 @@ const Notifications = () => {
                   </div>
                 ) : (
                   notifications.map((n) => (
-                    <div
+                    <SwipeableNotification
                       key={n.id}
-                      onClick={() => markOneAsRead(n.id)}
-                      className={`
-                        w-full text-left flex gap-4 p-6 cursor-pointer
-                        hover:bg-neutral-50 dark:hover:bg-neutral-800/40 transition-colors group relative
-                        ${!n.read ? "bg-neutral-50/40 dark:bg-neutral-800/25" : ""}
-                      `}
-                    >
-                      {/* Icon */}
-                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0 mt-0.5">
-                        <Ticket className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1 min-w-0 pr-8">
-                        <div className="flex items-center gap-2">
-                          <p className="text-sm md:text-base font-semibold text-neutral-900 dark:text-white truncate">
-                            {n.title}
-                          </p>
-                          {!n.read && (
-                            <span className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
-                          )}
-                        </div>
-
-                        <p className="text-xs md:text-sm text-neutral-500 mt-1 wrap-break-word">
-                          {n.message}
-                        </p>
-
-                        <p className="text-[10px] uppercase tracking-wider font-semibold text-blue-500 mt-2">
-                          {formatTime(n.time)}
-                        </p>
-                      </div>
-
-                      {/* Delete button */}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          deleteOne(n.id);
-                        }}
-                        className="absolute right-6 top-6 p-2 rounded-lg text-neutral-450 hover:text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition opacity-0 group-hover:opacity-100 focus:opacity-100 shrink-0"
-                        title="Delete notification"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
+                      n={n}
+                      onMarkRead={() => markOneAsRead(n.id)}
+                      onDelete={() => deleteOne(n.id)}
+                    />
                   ))
                 )}
               </div>
