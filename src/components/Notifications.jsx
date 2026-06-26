@@ -114,7 +114,7 @@ const Notifications = () => {
 
               bg-white dark:bg-neutral-900
               border border-neutral-200 dark:border-neutral-800
-              rounded-2xl shadow-xl overflow-hidden
+              rounded-2xl shadow-xl overflow-auto no-scrollbar
               z-50
             "
           >
@@ -126,7 +126,7 @@ const Notifications = () => {
 
               <button
                 onClick={markAllAsRead}
-                className="text-xs text-neutral-500 hover:text-black dark:hover:text-white transition"
+                className="text-xs text-neutral-500 hover:text-black dark:hover:text-white cursor-pointer  transition"
               >
                 Mark all read
               </button>
@@ -181,7 +181,7 @@ const Notifications = () => {
 
             {/* Footer */}
             <div className="px-3 py-2 bg-neutral-50 dark:bg-neutral-900/60 text-center">
-              <button className="text-xs font-medium text-neutral-500 hover:text-black dark:hover:text-white transition">
+              <button className="text-xs font-medium text-neutral-500 cursor-pointer hover:text-black dark:hover:text-white transition">
                 View all activity
               </button>
             </div>
