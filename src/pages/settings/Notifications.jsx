@@ -149,7 +149,7 @@ const Notifications = () => {
                           )}
                         </div>
 
-                        <p className="text-xs md:text-sm text-neutral-500 mt-1 break-words">
+                        <p className="text-xs md:text-sm text-neutral-500 mt-1 wrap-break-word">
                           {n.message}
                         </p>
 
