@@ -13,13 +13,14 @@ const formatTime = (time) => {
   return `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) > 1 ? "s" : ""} ago`;
 };
 
-// ─── Swipeable notification row ───────────────────────────────────────────
+// ─── Swipeable notification row (peek-and-tap) ────────────────────────────
 const SwipeableNotification = ({ n, onMarkRead, onDelete }) => {
   const [offsetX, setOffsetX] = React.useState(0);
+  const [isOpen, setIsOpen] = React.useState(false);
   const [dragging, setDragging] = React.useState(false);
   const startX = React.useRef(null);
-  const THRESHOLD = 80; // px before auto-delete
-  const MAX_DRAG = 120;
+  const PEEK_WIDTH = 80;       // how far the row slides (px)
+  const OPEN_THRESHOLD = 40;   // minimum drag to lock open
 
   const handleTouchStart = (e) => {
     startX.current = e.touches[0].clientX;
@@ -29,45 +30,73 @@ const SwipeableNotification = ({ n, onMarkRead, onDelete }) => {
   const handleTouchMove = (e) => {
     if (startX.current === null) return;
     const dx = e.touches[0].clientX - startX.current;
-    if (dx > 0) return; // only allow left swipe
-    setDragging(true);
-    setOffsetX(Math.max(dx, -MAX_DRAG));
+
+    if (isOpen) {
+      // Already open: allow swiping back right to close
+      const adjusted = -PEEK_WIDTH + Math.max(dx, 0);
+      setDragging(true);
+      setOffsetX(Math.min(adjusted, 0));
+    } else {
+      if (dx > 0) return; // block right swipe when closed
+      setDragging(true);
+      setOffsetX(Math.max(dx, -PEEK_WIDTH));
+    }
   };
 
   const handleTouchEnd = () => {
-    if (offsetX <= -THRESHOLD) {
-      // Animate fully off then delete
-      setOffsetX(-MAX_DRAG);
-      setTimeout(() => onDelete(), 200);
+    if (isOpen) {
+      // If dragged back enough, close; otherwise stay open
+      if (offsetX > -OPEN_THRESHOLD) {
+        setOffsetX(0);
+        setIsOpen(false);
+      } else {
+        setOffsetX(-PEEK_WIDTH);
+      }
     } else {
-      setOffsetX(0);
+      if (offsetX <= -OPEN_THRESHOLD) {
+        setOffsetX(-PEEK_WIDTH);
+        setIsOpen(true);
+      } else {
+        setOffsetX(0);
+      }
     }
     setDragging(false);
     startX.current = null;
   };
 
-  const deleteProgress = Math.min(Math.abs(offsetX) / THRESHOLD, 1);
+  const handleRowClick = () => {
+    if (dragging) return;
+    if (isOpen) {
+      // Tapping the row while delete is revealed just snaps it closed
+      setOffsetX(0);
+      setIsOpen(false);
+    } else {
+      onMarkRead();
+    }
+  };
 
   return (
     <div className="relative overflow-hidden">
-      {/* Red delete backdrop */}
-      <div
-        className="absolute inset-y-0 right-0 flex items-center justify-center bg-red-500 px-6 transition-opacity duration-150"
-        style={{ opacity: deleteProgress, width: Math.abs(offsetX) + 16 }}
-        aria-hidden="true"
+      {/* Red delete button — fixed at right, always PEEK_WIDTH wide */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onDelete(); }}
+        className="absolute inset-y-0 right-0 flex flex-col items-center justify-center gap-1 bg-red-500 active:bg-red-600 transition-colors"
+        style={{ width: PEEK_WIDTH }}
+        aria-label="Delete notification"
       >
         <Trash2 className="w-5 h-5 text-white" />
-      </div>
+        <span className="text-[10px] font-semibold text-white uppercase tracking-wide">Delete</span>
+      </button>
 
       {/* Notification row */}
       <div
-        onClick={() => { if (!dragging) onMarkRead(); }}
+        onClick={handleRowClick}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         style={{
           transform: `translateX(${offsetX}px)`,
-          transition: dragging ? "none" : "transform 0.25s ease",
+          transition: dragging ? "none" : "transform 0.25s cubic-bezier(0.25,1,0.5,1)",
         }}
         className={`
           w-full text-left flex gap-4 p-6 cursor-pointer select-none
@@ -113,6 +142,7 @@ const SwipeableNotification = ({ n, onMarkRead, onDelete }) => {
     </div>
   );
 };
+
 
 const Notifications = () => {
   const navigate = useNavigate();
