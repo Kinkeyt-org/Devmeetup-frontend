@@ -5,12 +5,13 @@ import {
   Route,
   Navigate,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 
 import { initGA, trackPageView } from "./analytics";
 import toast, { Toaster } from "react-hot-toast";
 import { motion } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Bell } from "lucide-react";
 
 import AuthForm from "./pages/Authform";
 import Dashboard from "./pages/Dashboard";
@@ -46,6 +47,7 @@ import ScrollToTop from "./components/ScrollToTop";
 const AppContent = () => {
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
+  const navigate = useNavigate();
 
   const [user, setUser] = useState(() => {
     try {
@@ -98,6 +100,14 @@ const AppContent = () => {
         .listen(".NotificationEvent", (data) => {
           console.log("Notification Triggered:", data.title);
 
+          let link = data.link || data.url;
+          if (!link) {
+            const eventId = data.event_id || data.eventId || data.event?.id;
+            if (eventId) {
+              link = `/events/${eventId}`;
+            }
+          }
+
           const newNotification = {
             id: Date.now(),
             title: data.title || "New Notification",
@@ -105,6 +115,7 @@ const AppContent = () => {
             time: "Just now",
             read: false,
             type: data.type || "live",
+            link: link || null,
           };
 
           // Save to localStorage
@@ -130,7 +141,11 @@ const AppContent = () => {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: -20 }}
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className="relative bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-2xl rounded-2xl overflow-hidden p-1.5 flex items-center justify-center max-w-sm pointer-events-auto"
+                onClick={() => {
+                  if (newNotification.link) navigate(newNotification.link);
+                  toast.dismiss(t.id);
+                }}
+                className="relative bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-2xl rounded-2xl overflow-hidden p-1.5 flex items-center justify-center max-w-sm pointer-events-auto cursor-pointer"
               >
                 <div className="relative rounded-xl overflow-hidden w-64 h-64 bg-neutral-100 dark:bg-neutral-950">
                   <img
@@ -139,7 +154,10 @@ const AppContent = () => {
                     className="w-full h-full object-cover rounded-xl"
                   />
                   <button
-                    onClick={() => toast.dismiss(t.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toast.dismiss(t.id);
+                    }}
                     className="absolute top-2.5 right-2.5 bg-neutral-900/60 hover:bg-neutral-950 text-white rounded-full p-1.5 transition backdrop-blur-xs shadow-md cursor-pointer"
                   >
                     <X className="w-4.5 h-4.5" />
@@ -150,10 +168,29 @@ const AppContent = () => {
               duration: 5000,
             });
           } else {
-            toast(`${newNotification.title}: ${newNotification.message}`, {
+            toast((t) => (
+              <div
+                onClick={() => {
+                  if (newNotification.link) navigate(newNotification.link);
+                  toast.dismiss(t.id);
+                }}
+                className="flex items-center gap-3 w-full text-left"
+              >
+                <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
+                  <Bell className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-neutral-900 dark:text-white truncate">
+                    {newNotification.title}
+                  </p>
+                  <p className="text-xs text-neutral-500 line-clamp-2">
+                    {newNotification.message}
+                  </p>
+                </div>
+              </div>
+            ), {
               duration: 4000,
-              icon: "🔔",
-              className: "bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-200 dark:border-neutral-800 rounded-xl",
+              className: "bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border border-neutral-200 dark:border-neutral-800 rounded-xl cursor-pointer p-4 shadow-md pointer-events-auto",
             });
           }
         });

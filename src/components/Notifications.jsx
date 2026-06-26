@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Bell, Ticket, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 // 1. Import your Echo setup instance (adjust the import path to where your echo.js file sits)
 // import Echo from '../utils/echo'; 
 
@@ -9,6 +10,7 @@ const Notifications = () => {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   // -----------------------------
   // Load initial notifications & Connect Websocket
@@ -147,7 +149,13 @@ const Notifications = () => {
                 notifications.map((n) => (
                   <button
                     key={n.id}
-                    onClick={() => markOneAsRead(n.id)}
+                    onClick={() => {
+                      markOneAsRead(n.id);
+                      if (n.link) {
+                        navigate(n.link);
+                      }
+                      setOpen(false);
+                    }}
                     className={`
                       w-full text-left flex gap-3 px-4 py-3
                       border-b border-neutral-100 dark:border-neutral-800
