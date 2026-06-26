@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Bell, Ticket, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 // Converts an ISO timestamp (or legacy "Just now" string) to a relative label
 const formatTime = (time) => {
@@ -19,6 +20,15 @@ const Notifications = ({ className }) => {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
+  // Sync state when dropdown opens
+  useEffect(() => {
+    if (open) {
+      const stored = JSON.parse(localStorage.getItem("notifications")) || [];
+      setNotifications(stored);
+    }
+  }, [open]);
 
   // -----------------------------
   // Load initial notifications & Connect Websocket
@@ -181,7 +191,13 @@ const Notifications = ({ className }) => {
 
             {/* Footer */}
             <div className="px-3 py-2 bg-neutral-50 dark:bg-neutral-900/60 text-center">
-              <button className="text-xs font-medium text-neutral-500 cursor-pointer hover:text-black dark:hover:text-white transition">
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  navigate("/settings/notifications");
+                }}
+                className="text-xs font-medium text-neutral-500 cursor-pointer hover:text-black dark:hover:text-white transition"
+              >
                 View all activity
               </button>
             </div>
