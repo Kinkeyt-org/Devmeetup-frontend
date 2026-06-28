@@ -389,6 +389,45 @@ const EventDetails = () => {
                 </div>
               )}
 
+              {/* Tags — shows categories assigned to this event */}
+              {event.tags && (() => {
+                const parsedTags = Array.isArray(event.tags) ? event.tags : (() => { try { return JSON.parse(event.tags); } catch { return []; } })();
+                return parsedTags.length > 0 ? (
+                  <div className="mt-5">
+                    <div className="flex items-center gap-2 mb-3">
+                      <TagIcon size={14} className="text-neutral-400 dark:text-white/40" />
+                      <span className="text-[11px] md:text-[13px] font-semibold text-neutral-500 dark:text-white/50 tracking-[0.06em] uppercase">
+                        Tags
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {parsedTags.map((tag) => {
+                        const tagRouteMap = {
+                          'Technology': 'tech',
+                          'Design': 'design',
+                          'Business': 'business',
+                          'Lifestyle': 'lifestyle',
+                          'Music': 'music',
+                          'Education': 'education',
+                          'Health': 'health',
+                          'Social': 'social',
+                        };
+                        const route = tagRouteMap[tag];
+                        return (
+                          <button
+                            key={tag}
+                            onClick={() => route && navigate(`/categories/${route}`)}
+                            className="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-neutral-100 dark:bg-white/8 text-neutral-600 dark:text-white/60 hover:bg-neutral-200 dark:hover:bg-white/15 transition-colors cursor-pointer"
+                          >
+                            {tag}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null;
+              })()}
+
               {/* LOCATION SECTION — Map for physical, Join UI for online */}
               <div className="mt-8 lg:mt-10">
                 <div className="flex items-center gap-2 mb-3">
