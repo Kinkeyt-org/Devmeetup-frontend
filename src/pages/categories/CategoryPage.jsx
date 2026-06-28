@@ -143,8 +143,18 @@ export default function CategoryPage() {
         const data = await getEvents("upcoming", 1, 100);
         const allEvents = Array.isArray(data.events) ? data.events : [];
         
-        // Filter events where tag matches the category's tagName (case-insensitive)
+        // Filter events where category matches or tags array/string matches
         const filtered = allEvents.filter((event) => {
+          // 1. Try matching category field first (returned by backend API)
+          const eventCategory = event.category ? String(event.category).toLowerCase().trim() : "";
+          const targetTag = config.tagName.toLowerCase().trim();
+          const targetName = config.name.toLowerCase().trim();
+
+          if (eventCategory === targetTag || eventCategory === targetName) {
+            return true;
+          }
+
+          // 2. Fallback to tags array/string
           let eventTags = [];
           if (Array.isArray(event.tags)) {
             eventTags = event.tags;
@@ -156,10 +166,9 @@ export default function CategoryPage() {
             }
           }
           
-          const targetTag = config.tagName.toLowerCase();
           return Array.isArray(eventTags)
-            ? eventTags.some((t) => typeof t === "string" && t.toLowerCase() === targetTag)
-            : typeof eventTags === "string" && eventTags.toLowerCase() === targetTag;
+            ? eventTags.some((t) => typeof t === "string" && t.toLowerCase().trim() === targetTag)
+            : typeof eventTags === "string" && eventTags.toLowerCase().trim() === targetTag;
         });
         
         setEvents(filtered);
