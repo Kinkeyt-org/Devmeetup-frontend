@@ -183,16 +183,7 @@ const CreatePage = () => {
         }
       });
 
-      // 1. Send the first selected tag as 'category' (matching the database column)
-      if (tags.length > 0) {
-        payload.append("category", tags[0]);
-      }
-
-      // 2. Send both formats of tags to cover all backend formats
       payload.append("tags", JSON.stringify(tags));
-      tags.forEach((tag, index) => {
-        payload.append(`tags[${index}]`, tag);
-      });
       payload.append("is_free", pricingType === "free" ? "1" : "0");
 
       if (pricingType === "paid") {
