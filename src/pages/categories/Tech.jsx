@@ -19,7 +19,7 @@ export default function Tech() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const data = await getEvents("upcoming", 10, 20, { tag: "Technology" }); // so per page is 20 
+        const data = await getEvents("upcoming", 3, 15, { tag: "Technology" });
         setEvents(Array.isArray(data.events) ? data.events : []);
       } catch (err) {
         console.error("Failed to fetch Technology events:", err);
