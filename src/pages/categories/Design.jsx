@@ -1,67 +1,34 @@
-import React, { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { X, Palette, Users } from "lucide-react";
+import { getEvents } from "../../api/event";
 import EventCard from "../../components/EventCard";
+import EventSkeleton from "../../components/EventSkeleton";
 import SEO from "../../components/SEO";
 import SubscribeForm from "../../components/SubscribeForm";
 
-const MOCK_EVENTS = [
-  {
-    id: "d1",
-    title: "Global UI/UX Summit 2024",
-    event_date_human: "Sat, Jun 22 • 10:00 AM",
-    location: "New York, NY",
-    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "d2",
-    title: "Figma Advanced Masterclass",
-    event_date_human: "Wed, Jul 15 • 9:00 AM",
-    location: "Online",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80",
-    type: "virtual",
-  },
-  {
-    id: "d3",
-    title: "The Typography Conference",
-    event_date_human: "Fri, Aug 12 • 6:00 PM",
-    location: "London, UK",
-    image: "https://images.unsplash.com/photo-1520085601670-ee14aa5fa3e8?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "d4",
-    title: "Brand Identity Workshop",
-    event_date_human: "Mon, Sep 05 • 2:00 PM",
-    location: "Online",
-    image: "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=800&q=80",
-    type: "virtual",
-  },
-  {
-    id: "d5",
-    title: "Creative Directors Meetup",
-    event_date_human: "Thu, Oct 10 • 7:00 PM",
-    location: "Berlin, DE",
-    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "d6",
-    title: "Future of Product Design",
-    event_date_human: "Tue, Nov 22 • 10:00 AM",
-    location: "San Francisco, CA",
-    image: "https://images.unsplash.com/photo-1694903089438-bf28d4697d9a?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    type: "physical",
-  }
-];
-
 export default function Design() {
   const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleClose = () => {
     navigate(-1);
   };
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const data = await getEvents("upcoming", 1, 12, { tag: "Design" });
+        setEvents(Array.isArray(data.events) ? data.events : []);
+      } catch (err) {
+        console.error("Failed to fetch Design events:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
@@ -113,10 +80,22 @@ export default function Design() {
         <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-8">Popular Design Events</h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {MOCK_EVENTS.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
+          {loading &&
+            Array.from({ length: 6 }).map((_, i) => (
+              <EventSkeleton key={`skeleton-${i}`} />
+            ))}
+
+          {!loading && events.length > 0 &&
+            events.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
         </div>
+
+        {!loading && events.length === 0 && (
+          <div className="text-center py-20 text-neutral-500 border border-dashed rounded-4xl border-neutral-200 dark:border-neutral-800">
+            <p className="text-sm">No design events found yet. Be the first to create one!</p>
+          </div>
+        )}
       </section>
     </div>
   );

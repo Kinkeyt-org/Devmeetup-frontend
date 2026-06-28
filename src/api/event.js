@@ -43,11 +43,15 @@ export const getEvents = async (
   perPage = 10,
   options = {}
 ) => {
-  const { lat, lng, radius} = options;
+  const { lat, lng, radius, tag } = options;
 
   // Start building the request URL with basic params
   let url = `/events?sort=${type}&page=${page}&perPage=${perPage}`;
 
+  // Filter by tag/category if specified
+  if (tag) {
+    url += `&tag=${encodeURIComponent(tag)}`;
+  }
 
   // If user location is available, send it so backend can return nearby events
   if (lat && lng) {

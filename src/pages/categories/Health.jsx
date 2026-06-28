@@ -1,67 +1,34 @@
-import React, { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { X, Heart, Users } from "lucide-react";
+import { getEvents } from "../../api/event";
 import EventCard from "../../components/EventCard";
+import EventSkeleton from "../../components/EventSkeleton";
 import SEO from "../../components/SEO";
 import SubscribeForm from "../../components/SubscribeForm";
 
-const MOCK_EVENTS = [
-  {
-    id: "h1",
-    title: "Global Wellness Summit",
-    event_date_human: "Sat, Aug 20 • 8:00 AM",
-    location: "Miami, FL",
-    image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "h2",
-    title: "Mental Health First Aid",
-    event_date_human: "Mon, Sep 12 • 1:00 PM",
-    location: "Online",
-    image: "https://images.unsplash.com/photo-1544027993-37dbd58eae8e?w=800&q=80",
-    type: "virtual",
-  },
-  {
-    id: "h3",
-    title: "Nutrition & Dietetics Expo",
-    event_date_human: "Fri, Oct 07 • 10:00 AM",
-    location: "Los Angeles, CA",
-    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "h4",
-    title: "Yoga Instructor Training",
-    event_date_human: "Sat, Nov 05 • 7:00 AM",
-    location: "Online",
-    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80",
-    type: "virtual",
-  },
-  {
-    id: "h5",
-    title: "Medical Tech Innovations",
-    event_date_human: "Wed, Dec 14 • 9:00 AM",
-    location: "San Diego, CA",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "h6",
-    title: "Holistic Healing Workshop",
-    event_date_human: "Sun, Jan 22 • 2:00 PM",
-    location: "Denver, CO",
-    image: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=800&q=80",
-    type: "physical",
-  }
-];
-
 export default function Health() {
   const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleClose = () => {
     navigate(-1);
   };
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const data = await getEvents("upcoming", 1, 12, { tag: "Health" });
+        setEvents(Array.isArray(data.events) ? data.events : []);
+      } catch (err) {
+        console.error("Failed to fetch Health events:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
@@ -113,10 +80,22 @@ export default function Health() {
         <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-8">Popular Health Events</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {MOCK_EVENTS.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
+          {loading &&
+            Array.from({ length: 6 }).map((_, i) => (
+              <EventSkeleton key={`skeleton-${i}`} />
+            ))}
+
+          {!loading && events.length > 0 &&
+            events.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
         </div>
+
+        {!loading && events.length === 0 && (
+          <div className="text-center py-20 text-neutral-500 border border-dashed rounded-4xl border-neutral-200 dark:border-neutral-800">
+            <p className="text-sm">No health events found yet. Be the first to create one!</p>
+          </div>
+        )}
       </section>
     </div>
   );

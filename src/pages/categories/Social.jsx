@@ -1,67 +1,34 @@
-import React, { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { X, Users } from "lucide-react";
+import { getEvents } from "../../api/event";
 import EventCard from "../../components/EventCard";
+import EventSkeleton from "../../components/EventSkeleton";
 import SEO from "../../components/SEO";
 import SubscribeForm from "../../components/SubscribeForm";
 
-const MOCK_EVENTS = [
-  {
-    id: "s1",
-    title: "Singles Mixer & Rooftop Party",
-    event_date_human: "Fri, Jul 22 • 8:00 PM",
-    location: "New York, NY",
-    image: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "s2",
-    title: "Virtual Speed Networking",
-    event_date_human: "Tue, Aug 09 • 7:00 PM",
-    location: "Online",
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
-    type: "virtual",
-  },
-  {
-    id: "s3",
-    title: "Board Game Night",
-    event_date_human: "Thu, Sep 01 • 6:00 PM",
-    location: "Seattle, WA",
-    image: "https://images.unsplash.com/photo-1610890716171-6b1bb98ffaed?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "s4",
-    title: "Global Expats Meetup",
-    event_date_human: "Sat, Oct 15 • 5:00 PM",
-    location: "London, UK",
-    image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "s5",
-    title: "Book Club: Fiction Lovers",
-    event_date_human: "Sun, Nov 06 • 11:00 AM",
-    location: "Online",
-    image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&q=80",
-    type: "virtual",
-  },
-  {
-    id: "s6",
-    title: "Holiday Charity Gala",
-    event_date_human: "Fri, Dec 16 • 7:30 PM",
-    location: "Chicago, IL",
-    image: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=800&q=80",
-    type: "physical",
-  }
-];
-
 export default function Social() {
   const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleClose = () => {
     navigate(-1);
   };
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const data = await getEvents("upcoming", 1, 12, { tag: "Social" });
+        setEvents(Array.isArray(data.events) ? data.events : []);
+      } catch (err) {
+        console.error("Failed to fetch Social events:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
@@ -113,10 +80,22 @@ export default function Social() {
         <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-8">Popular Social Events</h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {MOCK_EVENTS.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
+          {loading &&
+            Array.from({ length: 6 }).map((_, i) => (
+              <EventSkeleton key={`skeleton-${i}`} />
+            ))}
+
+          {!loading && events.length > 0 &&
+            events.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
         </div>
+
+        {!loading && events.length === 0 && (
+          <div className="text-center py-20 text-neutral-500 border border-dashed rounded-4xl border-neutral-200 dark:border-neutral-800">
+            <p className="text-sm">No social events found yet. Be the first to create one!</p>
+          </div>
+        )}
       </section>
     </div>
   );

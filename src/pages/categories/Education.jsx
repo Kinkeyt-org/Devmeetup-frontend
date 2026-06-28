@@ -1,67 +1,34 @@
-import React, { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { X, GraduationCap, Users } from "lucide-react";
+import { getEvents } from "../../api/event";
 import EventCard from "../../components/EventCard";
+import EventSkeleton from "../../components/EventSkeleton";
 import SEO from "../../components/SEO";
 import SubscribeForm from "../../components/SubscribeForm";
 
-const MOCK_EVENTS = [
-  {
-    id: "e1",
-    title: "Future of EdTech Conference",
-    event_date_human: "Wed, Aug 10 • 9:00 AM",
-    location: "Boston, MA",
-    image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "e2",
-    title: "Global Student Symposium",
-    event_date_human: "Fri, Sep 16 • 10:00 AM",
-    location: "Online",
-    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80",
-    type: "virtual",
-  },
-  {
-    id: "e3",
-    title: "Ivy League Admissions Workshop",
-    event_date_human: "Sat, Oct 08 • 2:00 PM",
-    location: "New York, NY",
-    image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "e4",
-    title: "Machine Learning for Researchers",
-    event_date_human: "Mon, Nov 14 • 1:00 PM",
-    location: "Online",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80",
-    type: "virtual",
-  },
-  {
-    id: "e5",
-    title: "Higher Ed Leadership Summit",
-    event_date_human: "Thu, Dec 01 • 9:30 AM",
-    location: "Chicago, IL",
-    image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "e6",
-    title: "Language Learning Mastery",
-    event_date_human: "Tue, Jan 17 • 6:00 PM",
-    location: "Online",
-    image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80",
-    type: "virtual",
-  }
-];
-
 export default function Education() {
   const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleClose = () => {
     navigate(-1);
   };
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const data = await getEvents("upcoming", 1, 12, { tag: "Education" });
+        setEvents(Array.isArray(data.events) ? data.events : []);
+      } catch (err) {
+        console.error("Failed to fetch Education events:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
@@ -113,10 +80,22 @@ export default function Education() {
         <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-8">Popular Education Events</h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {MOCK_EVENTS.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
+          {loading &&
+            Array.from({ length: 6 }).map((_, i) => (
+              <EventSkeleton key={`skeleton-${i}`} />
+            ))}
+
+          {!loading && events.length > 0 &&
+            events.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
         </div>
+
+        {!loading && events.length === 0 && (
+          <div className="text-center py-20 text-neutral-500 border border-dashed rounded-4xl border-neutral-200 dark:border-neutral-800">
+            <p className="text-sm">No education events found yet. Be the first to create one!</p>
+          </div>
+        )}
       </section>
     </div>
   );

@@ -1,67 +1,34 @@
-import React, { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { X, Smile, Users } from "lucide-react";
+import { getEvents } from "../../api/event";
 import EventCard from "../../components/EventCard";
+import EventSkeleton from "../../components/EventSkeleton";
 import SEO from "../../components/SEO";
 import SubscribeForm from "../../components/SubscribeForm";
 
-const MOCK_EVENTS = [
-  {
-    id: "l1",
-    title: "Morning Yoga Retreat",
-    event_date_human: "Sat, Jul 02 • 7:00 AM",
-    location: "Malibu, CA",
-    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "l2",
-    title: "Urban Photography Walk",
-    event_date_human: "Sun, Jul 10 • 4:00 PM",
-    location: "New York, NY",
-    image: "https://images.unsplash.com/photo-1516961642265-531546e84af2?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "l3",
-    title: "Mindfulness & Meditation Online",
-    event_date_human: "Wed, Aug 05 • 8:00 PM",
-    location: "Online",
-    image: "https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=800&q=80",
-    type: "virtual",
-  },
-  {
-    id: "l4",
-    title: "Gourmet Cooking Masterclass",
-    event_date_human: "Fri, Sep 15 • 6:30 PM",
-    location: "Paris, FR",
-    image: "https://images.unsplash.com/photo-1556910103-1c02745a872f?w=800&q=80",
-    type: "physical",
-  },
-  {
-    id: "l5",
-    title: "Minimalist Living Workshop",
-    event_date_human: "Thu, Oct 20 • 7:00 PM",
-    location: "Online",
-    image: "https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=800&q=80",
-    type: "virtual",
-  },
-  {
-    id: "l6",
-    title: "Coffee Tasting Experience",
-    event_date_human: "Sat, Nov 12 • 10:00 AM",
-    location: "Seattle, WA",
-    image: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&q=80",
-    type: "physical",
-  }
-];
-
 export default function Lifestyle() {
   const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleClose = () => {
     navigate(-1);
   };
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const data = await getEvents("upcoming", 1, 12, { tag: "Lifestyle" });
+        setEvents(Array.isArray(data.events) ? data.events : []);
+      } catch (err) {
+        console.error("Failed to fetch Lifestyle events:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
@@ -113,10 +80,22 @@ export default function Lifestyle() {
         <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-8">Popular Lifestyle Events</h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {MOCK_EVENTS.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
+          {loading &&
+            Array.from({ length: 6 }).map((_, i) => (
+              <EventSkeleton key={`skeleton-${i}`} />
+            ))}
+
+          {!loading && events.length > 0 &&
+            events.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
         </div>
+
+        {!loading && events.length === 0 && (
+          <div className="text-center py-20 text-neutral-500 border border-dashed rounded-4xl border-neutral-200 dark:border-neutral-800">
+            <p className="text-sm">No lifestyle events found yet. Be the first to create one!</p>
+          </div>
+        )}
       </section>
     </div>
   );
