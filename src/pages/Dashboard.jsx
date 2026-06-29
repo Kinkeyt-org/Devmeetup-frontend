@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import SEO from "../components/SEO";
+import { Badge } from "../components/ui/badge";
 import {
   Calendar,
   MapPin,
@@ -215,7 +216,7 @@ const Dashboard = () => {
                       <div
                         key={event.id}
                         onClick={() => navigate(`/events/${event.id}`)}
-                        className="flex-none w-[80vw] sm:w-full snap-start flex flex-row cursor-pointer rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 sm:hover:scale-[1.02] transition"
+                        className="flex-none w-[80vw] sm:w-full snap-start flex flex-col cursor-pointer rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 sm:hover:scale-[1.02] transition"
                       >
                         <img
                           src={event.banner || event.image}
@@ -223,17 +224,34 @@ const Dashboard = () => {
                           className="h-20 w-20 object-cover shrink-0 rounded-xl m-1"
                         />
 
-                        <div className="p-2 flex-1 flex flex-col justify-center">
-                          <p className="text-[10px] text-neutral-500 mb-0.5">
-                            {event.event_date_human}
-                          </p>
-                          <h3 className="font-semibold line-clamp-1 text-sm">
-                            {event.title}
-                          </h3>
-                          <p className="text-[10px] text-neutral-500 mt-0.5 flex items-center gap-1">
-                            <MapPin size={10} className="shrink-0" />
-                            <span className="line-clamp-1">{event.location}</span>
-                          </p>
+                        <div className="p-2 flex-1 flex flex-col justify-between">
+                          <div>
+                            <p className="text-[10px] text-neutral-500 mb-0.5">
+                              {event.event_date_human}
+                            </p>
+                            <h3 className="font-semibold line-clamp-1 text-sm">
+                              {event.title}
+                            </h3>
+                            <p className="text-[10px] text-neutral-500 mt-0.5 flex items-center gap-1">
+                              <MapPin size={10} className="shrink-0" />
+                              <span className="line-clamp-1">{event.location}</span>
+                            </p>
+                          </div>
+
+                          {/* TAGS */}
+                          {(event.tags || event.categories) && (event.tags || event.categories).length > 0 && (
+                            <div className="flex gap-1 mt-2 flex-wrap">
+                              {(event.tags || event.categories).slice(0, 2).map((tag, idx) => (
+                                <Badge
+                                  key={idx}
+                                  variant="outline"
+                                  className="text-[8px] bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border-neutral-300 dark:border-neutral-600 px-1.5 py-0"
+                                >
+                                  {typeof tag === "string" ? tag : tag.name}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -268,7 +286,7 @@ const Dashboard = () => {
                       <div
                         key={event.id}
                         onClick={() => navigate(`/events/${event.id}`)}
-                        className="flex-none w-[80vw] sm:w-full snap-start flex flex-row cursor-pointer rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 sm:hover:scale-[1.02] transition"
+                        className="flex-none w-[80vw] sm:w-full snap-start flex flex-col cursor-pointer rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 sm:hover:scale-[1.02] transition"
                       >
                         <img
                           src={event.banner || event.image}
@@ -276,17 +294,34 @@ const Dashboard = () => {
                           className="h-20 w-20 object-cover shrink-0 rounded-xl m-1"
                         />
 
-                        <div className="p-2 flex-1 flex flex-col justify-center">
-                          <p className="text-[10px] text-neutral-500 mb-0.5">
-                            {event.event_date_human}
-                          </p>
-                          <h3 className="font-semibold line-clamp-1 text-sm">
-                            {event.title}
-                          </h3>
-                          <p className="text-[10px] text-neutral-500 mt-0.5 flex items-center gap-1">
-                            <MapPin size={10} className="shrink-0" />
-                            <span className="line-clamp-1">{event.location}</span>
-                          </p>
+                        <div className="p-2 flex-1 flex flex-col justify-between">
+                          <div>
+                            <p className="text-[10px] text-neutral-500 mb-0.5">
+                              {event.event_date_human}
+                            </p>
+                            <h3 className="font-semibold line-clamp-1 text-sm">
+                              {event.title}
+                            </h3>
+                            <p className="text-[10px] text-neutral-500 mt-0.5 flex items-center gap-1">
+                              <MapPin size={10} className="shrink-0" />
+                              <span className="line-clamp-1">{event.location}</span>
+                            </p>
+                          </div>
+
+                          {/* TAGS */}
+                          {(event.tags || event.categories) && (event.tags || event.categories).length > 0 && (
+                            <div className="flex gap-1 mt-2 flex-wrap">
+                              {(event.tags || event.categories).slice(0, 2).map((tag, idx) => (
+                                <Badge
+                                  key={idx}
+                                  variant="outline"
+                                  className="text-[8px] bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border-neutral-300 dark:border-neutral-600 px-1.5 py-0"
+                                >
+                                  {typeof tag === "string" ? tag : tag.name}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
