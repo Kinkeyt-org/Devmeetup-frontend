@@ -19,8 +19,8 @@ export default function Tech() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const data = await getEvents("upcoming", 1, 10, { tag: "Technology" });
-        setEvents(Array.isArray(data.events) ? data.events : []);
+        const data = await getEvents("upcoming", 1, 9, { tag: "Technology" });
+        setEvents((Array.isArray(data.events) ? data.events : []).slice(0, 9));
       } catch (err) {
         console.error("Failed to fetch Technology events:", err);
       } finally {
@@ -81,7 +81,7 @@ export default function Tech() {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading &&
-            Array.from({ length: 6 }).map((_, i) => (
+            Array.from({ length: 9 }).map((_, i) => (
               <EventSkeleton key={`skeleton-${i}`} />
             ))}
 
