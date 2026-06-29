@@ -3,7 +3,6 @@ import { Bell, Ticket, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { getNotificationTargetPath } from "../lib/utils";
 
 // Converts an ISO timestamp (or legacy "Just now" string) to a relative label
 const formatTime = (time) => {
@@ -89,16 +88,6 @@ const Notifications = ({ className }) => {
     localStorage.setItem("notifications", JSON.stringify(updated));
   };
 
-  const handleNotificationClick = (notification) => {
-    markOneAsRead(notification.id);
-
-    const targetPath = getNotificationTargetPath(notification);
-    if (targetPath) {
-      setOpen(false);
-      navigate(targetPath);
-    }
-  };
-
   return (
     <div className={`relative ${className || ""}`} ref={dropdownRef}>
       {/* Bell */}
@@ -160,19 +149,15 @@ const Notifications = ({ className }) => {
                   No notifications yet
                 </div>
               ) : (
-                notifications.map((n) => {
-                  const targetPath = getNotificationTargetPath(n);
-
-                  return (
+                notifications.map((n) => (
                   <button
                     key={n.id}
-                    onClick={() => handleNotificationClick(n)}
+                    onClick={() => markOneAsRead(n.id)}
                     className={`
                       w-full text-left flex gap-3 px-4 py-3
                       border-b border-neutral-100 dark:border-neutral-800
                       hover:bg-neutral-50 dark:hover:bg-neutral-800/60 transition
                       ${!n.read ? "bg-neutral-50/40 dark:bg-neutral-800/30" : ""}
-                      ${targetPath ? "cursor-pointer" : "cursor-default"}
                     `}
                   >
                     {/* Icon */}
@@ -200,8 +185,7 @@ const Notifications = ({ className }) => {
                       <div className="w-2 h-2 rounded-full bg-blue-500 mt-2 shrink-0" />
                     )}
                   </button>
-                  );
-                })
+                ))
               )}
             </div>
 
