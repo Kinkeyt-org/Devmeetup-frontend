@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 import { initGA, trackPageView } from "./analytics";
+import { getNotificationTargetPath } from "./lib/utils";
 
 import AuthForm from "./pages/Authform";
 import Dashboard from "./pages/Dashboard";
@@ -102,6 +103,8 @@ const AppContent = () => {
             time: new Date().toISOString(),
             read: false,
             type: data.type || "live",
+            ...data,
+            event_id: data.event_id || data.eventId || data.event?.id || data.event?.event_id || data.data?.event_id || data.data?.eventId || data.data?.event?.id,
           };
 
           // Save to localStorage

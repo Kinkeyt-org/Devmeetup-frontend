@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Bell, Mail, Smartphone, Globe, Ticket, Trash2, ChevronDown, SlidersHorizontal } from "lucide-react";
+import { getNotificationTargetPath } from "../../lib/utils";
 
 // Converts an ISO timestamp (or legacy "Just now" string) to a relative label
 const formatTime = (time) => {
@@ -72,6 +73,10 @@ const SwipeableNotification = ({ n, onMarkRead, onDelete }) => {
       setIsOpen(false);
     } else {
       onMarkRead();
+      const targetPath = getNotificationTargetPath(n);
+      if (targetPath) {
+        window.location.assign(targetPath);
+      }
     }
   };
 
