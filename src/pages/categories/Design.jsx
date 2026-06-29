@@ -19,7 +19,7 @@ export default function Design() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const data = await getEvents("upcoming", 1, 12, { tag: "Design" });
+        const data = await getEvents("upcoming", 1, 11, { tag: "Design" });
         setEvents(Array.isArray(data.events) ? data.events : []);
       } catch (err) {
         console.error("Failed to fetch Design events:", err);

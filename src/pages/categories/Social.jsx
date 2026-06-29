@@ -19,7 +19,7 @@ export default function Social() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const data = await getEvents("upcoming", 1, 12, { tag: "Social" });
+        const data = await getEvents("upcoming", 1, 11, { tag: "Social" });
         setEvents(Array.isArray(data.events) ? data.events : []);
       } catch (err) {
         console.error("Failed to fetch Social events:", err);

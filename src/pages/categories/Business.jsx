@@ -19,7 +19,7 @@ export default function Business() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const data = await getEvents("upcoming", 1, 12, { tag: "Business" });
+        const data = await getEvents("upcoming", 1, 11, { tag: "Business" });
         setEvents(Array.isArray(data.events) ? data.events : []);
       } catch (err) {
         console.error("Failed to fetch Business events:", err);
