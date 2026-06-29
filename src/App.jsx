@@ -102,6 +102,9 @@ const AppContent = () => {
             time: new Date().toISOString(),
             read: false,
             type: data.type || "live",
+            event_id: data.event_id || data.eventId || data.event?.id || data.data?.event_id || null,
+            link: data.link || data.url || data.target_url || null,
+            data: data.data || null,
           };
 
           // Save to localStorage

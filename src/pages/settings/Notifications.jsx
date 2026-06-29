@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Bell, Mail, Smartphone, Globe, Ticket, Trash2, ChevronDown, SlidersHorizontal } from "lucide-react";
+import { getNotificationTargetPath } from "../../lib/utils";
 
 // Converts an ISO timestamp (or legacy "Just now" string) to a relative label
 const formatTime = (time) => {
@@ -14,7 +15,7 @@ const formatTime = (time) => {
 };
 
 // ─── Swipeable notification row (peek-and-tap) ────────────────────────────
-const SwipeableNotification = ({ n, onMarkRead, onDelete }) => {
+const SwipeableNotification = ({ n, onClick, onDelete }) => {
   const [offsetX, setOffsetX] = React.useState(0);
   const [isOpen, setIsOpen] = React.useState(false);
   const [dragging, setDragging] = React.useState(false);
@@ -71,7 +72,7 @@ const SwipeableNotification = ({ n, onMarkRead, onDelete }) => {
       setOffsetX(0);
       setIsOpen(false);
     } else {
-      onMarkRead();
+      onClick?.();
     }
   };
 
@@ -190,6 +191,15 @@ const Notifications = () => {
     localStorage.setItem("notifications", JSON.stringify(updated));
   };
 
+  const handleNotificationClick = (notification) => {
+    markOneAsRead(notification.id);
+
+    const targetPath = getNotificationTargetPath(notification);
+    if (targetPath) {
+      navigate(targetPath);
+    }
+  };
+
   const deleteOne = (id) => {
     const updated = notifications.filter((n) => n.id !== id);
     setNotifications(updated);
@@ -273,7 +283,7 @@ const Notifications = () => {
                     <SwipeableNotification
                       key={n.id}
                       n={n}
-                      onMarkRead={() => markOneAsRead(n.id)}
+                      onClick={() => handleNotificationClick(n)}
                       onDelete={() => deleteOne(n.id)}
                     />
                   ))
