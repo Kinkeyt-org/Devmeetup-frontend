@@ -3,7 +3,6 @@ import { Bell, Ticket, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { getNotificationTargetPath } from "../lib/utils";
 
 // Converts an ISO timestamp (or legacy "Just now" string) to a relative label
 const formatTime = (time) => {
@@ -89,15 +88,6 @@ const Notifications = ({ className }) => {
     localStorage.setItem("notifications", JSON.stringify(updated));
   };
 
-  const handleNotificationClick = (notification) => {
-    markOneAsRead(notification.id);
-    const targetPath = getNotificationTargetPath(notification);
-    if (targetPath) {
-      setOpen(false);
-      navigate(targetPath);
-    }
-  };
-
   return (
     <div className={`relative ${className || ""}`} ref={dropdownRef}>
       {/* Bell */}
@@ -162,7 +152,7 @@ const Notifications = ({ className }) => {
                 notifications.map((n) => (
                   <button
                     key={n.id}
-                    onClick={() => handleNotificationClick(n)}
+                    onClick={() => markOneAsRead(n.id)}
                     className={`
                       w-full text-left flex gap-3 px-4 py-3
                       border-b border-neutral-100 dark:border-neutral-800

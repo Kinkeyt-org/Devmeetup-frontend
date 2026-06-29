@@ -4,13 +4,15 @@ import { bookEvent } from '../api/ticket';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import { toast } from 'react-hot-toast';
 import {
-  ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon, MoreHorizontal, ExternalLink, Compass, Globe, Video,
+  ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon, MoreHorizontal, ExternalLink, Compass, Video,
   BadgeCheck
 } from 'lucide-react';
 import SEO from "../components/SEO";
 import EventDetailsSkeleton from '../components/EventDetailsSkeleton';
+import EventLocationMap from '../components/EventLocationMap';
+import MeetingLinkPreview from '../components/MeetingLinkPreview';
 import { generateCalendarLinks } from '../utils/calendar';
-import { getEventLocationLabel, getLinkPreviewData, getOnlineMeetingLink, isOnlineEvent as isEventOnline } from '../lib/utils';
+import { getOnlineMeetingLink, isOnlineEvent as detectOnlineEvent } from '../lib/utils';
 
 // EventDetails Component: This is the main page where users view all the info about a specific event.
 // It fetches the data, handles RSVPing, and figures out if we need to show a map or a virtual link!
@@ -26,6 +28,8 @@ const EventDetails = () => {
   const [isBooking, setIsBooking] = useState(false);
   // state for the map coordinates (latitude and longitude)
   const [coords, setCoords] = useState({ lat: null, lng: null });
+  // state to show a small loader while we translate a text location into map coordinates
+  const [isGeocoding, setIsGeocoding] = useState(false);
   // state to toggle the "Add to Calendar" dropdown menu
   const [showMenu, setShowMenu] = useState(false);
   const [follow, setFollow] = useState(false)
@@ -90,6 +94,7 @@ const EventDetails = () => {
     const geocodeLocation = async (locationName) => {
       const token = import.meta.env.VITE_MAPBOX_TOKEN;
       if (!token) return;
+      setIsGeocoding(true);
       try {
         const response = await fetch(
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(locationName)}.json?access_token=${token}&limit=1&country=ng`
@@ -101,6 +106,8 @@ const EventDetails = () => {
         }
       } catch (error) {
         console.error("Geocoding failed:", error);
+      } finally {
+        setIsGeocoding(false);
       }
     };
 
@@ -156,9 +163,8 @@ const EventDetails = () => {
     }
   };
 
-  const isOnlineEvent = isEventOnline(event, coords);
-  const meetingPreview = getLinkPreviewData(getOnlineMeetingLink(event));
-  const locationLabel = getEventLocationLabel(event, coords);
+  const isOnlineEvent = detectOnlineEvent(event, coords);
+  const meetingLink = getOnlineMeetingLink(event);
 
   // Loading skeleton
   if (loading) {
@@ -306,7 +312,7 @@ const EventDetails = () => {
               {/* META ROW — location or virtual / date / price / tags */}
               <div className="mt-6 space-y-3">
                 {[
-                  { Icon: MapPin, value: locationLabel },
+                  { Icon: MapPin, value: event.location || 'Online' },
                   { Icon: Calendar, value: event.event_date_human || 'TBA' },
                   {
                     Icon: Banknote,
@@ -408,7 +414,7 @@ const EventDetails = () => {
                 ) : null;
               })()}
 
-              {/* LOCATION SECTION — Preview card for virtual or physical events */}
+              {/* LOCATION SECTION — Map for physical, Join UI for online */}
               <div className="mt-8 lg:mt-10">
                 <div className="flex items-center gap-2 mb-3">
                   {isOnlineEvent ? (
@@ -417,62 +423,71 @@ const EventDetails = () => {
                     <Compass size={14} className="text-neutral-400 dark:text-white/40" />
                   )}
                   <span className="text-[11px] md:text-[13px] font-semibold text-neutral-500 dark:text-white/50 tracking-[0.06em] uppercase">
-                    {isOnlineEvent ? 'Virtual Event' : 'Venue'}
+                    {isOnlineEvent ? 'Virtual Event' : 'Location'}
                   </span>
                 </div>
 
-                <div className="rounded-2xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4 p-5">
-                  <div className="flex items-start gap-3">
-                    <div className="p-3 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 shrink-0">
-                      {isOnlineEvent ? <Video size={18} /> : <MapPin size={18} />}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold text-neutral-800 dark:text-white">
-                        {isOnlineEvent ? 'Online session' : 'Physical venue'}
-                      </p>
-                      <p className="text-xs text-neutral-500 dark:text-white/55 mt-1 break-all">
-                        {isOnlineEvent
-                          ? (meetingPreview?.host || event.location || 'Online meeting link')
-                          : (event.location || 'Venue details will be shared soon.')}
-                      </p>
-                    </div>
-                  </div>
+                {isOnlineEvent ? (
+                  <div className="space-y-4">
+                    {meetingLink ? (
+                      <MeetingLinkPreview link={meetingLink} actionLabel="Join" />
+                    ) : (
+                      <div className="rounded-xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4 p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-11 h-11 rounded-xl bg-neutral-900 dark:bg-white flex items-center justify-center shrink-0">
+                            <Video size={18} className="text-white dark:text-neutral-900" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-neutral-700 dark:text-white/80">
+                              This event is hosted online
+                            </p>
+                            <p className="text-xs text-neutral-400 dark:text-white/35 mt-1">
+                              The organizer will share the meeting link after RSVP.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
 
-                  <div className="mt-4 rounded-xl border border-neutral-200 dark:border-white/8 bg-white/70 dark:bg-white/5 p-3">
-                    <p className="text-[10px] uppercase tracking-[0.24em] text-neutral-500 dark:text-white/45">Details</p>
-                    <p className="text-sm text-neutral-600 dark:text-white/70 mt-1 leading-relaxed">
-                      {isOnlineEvent
-                        ? 'This event is hosted online. The organizer link will appear here and on your ticket after RSVP.'
-                        : 'The venue details are shared here so attendees can plan ahead without an embedded map preview.'}
-                    </p>
-                  </div>
-
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {isOnlineEvent && meetingPreview?.href && (
+                    {meetingLink && (
                       <a
-                        href={meetingPreview.href}
+                        href={meetingLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-xs font-semibold tracking-wide uppercase hover:opacity-90 transition-opacity active:scale-[0.98]"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-xs font-semibold tracking-wide uppercase hover:opacity-90 transition-opacity active:scale-[0.98]"
                       >
                         <ExternalLink size={13} />
-                        Open meeting link
-                      </a>
-                    )}
-
-                    {!isOnlineEvent && coords.lat && coords.lng && (
-                      <a
-                        href={`https://www.google.com/maps/search/?api=1&query=${coords.lat},${coords.lng}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-neutral-200 dark:border-white/10 text-xs font-semibold text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-white/10 transition-colors"
-                      >
-                        <Compass size={13} />
-                        Directions
+                        Join Event
                       </a>
                     )}
                   </div>
-                </div>
+                ) : (
+                  <div
+                    className="rounded-2xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4 overflow-hidden relative"
+                    style={{ height: 250 }}
+                  >
+                    {coords.lat && coords.lng ? (
+                      <EventLocationMap
+                        lat={coords.lat}
+                        lng={coords.lng}
+                        label={event.location || "Event location"}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        {isGeocoding ? (
+                          <div className="flex flex-col items-center gap-3">
+                            <div className="w-6 h-6 border-2 border-neutral-200 dark:border-white/10 border-t-neutral-500 dark:border-t-white/50 rounded-full animate-spin" />
+                            <p className="text-xs text-neutral-400 dark:text-white/35">Loading map...</p>
+                          </div>
+                        ) : (
+                          <p className="text-xs text-neutral-400 dark:text-white/35 px-6 text-center">
+                            {event.location || "Venue details will be shared soon."}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* RSVP BUTTON (Desktop/Tablet) */}
