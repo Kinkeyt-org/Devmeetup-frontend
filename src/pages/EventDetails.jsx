@@ -324,7 +324,7 @@ const EventDetails = () => {
                 </h1>
               </div>
 
-              {/* META ROW — location / date / price */}
+              {/* META ROW — location / date / price / tags */}
               <div className="mt-6 space-y-3">
                 {[
                   { Icon: MapPin, value: event.location || 'Online' },
@@ -336,9 +336,13 @@ const EventDetails = () => {
                       : `₦${Number(event.price || 0).toLocaleString()}`
                   },
                   {
-                    Icon: Globe,
-                    value:event.tags|| 'N/A'
+                    Icon: TagIcon,
+                    value: event.tags && (() => {
+                      const parsedTags = Array.isArray(event.tags) ? event.tags : (() => { try { return JSON.parse(event.tags); } catch { return []; } })();
+                      return parsedTags.length > 0 ? parsedTags.join(', ') : 'No tags';
+                    })()
                   },
+                  
                 ].map(({ Icon, value }, i) => (
                   <div key={i} className="flex items-center justify-between gap-2.5">
                     <div className="flex items-center gap-2.5">
