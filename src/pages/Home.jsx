@@ -3,6 +3,7 @@ import SEO from "../components/SEO";
 import { useNavigate } from "react-router-dom";
 import { getEvents } from "../api/event";
 import { ArrowRight, Calendar, MapPin } from "lucide-react";
+import { filterUpcomingEvents } from "../lib/utils";
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1596522354195-e84ae3c98731?q=80&w=2087&auto=format&fit=crop";
 
@@ -22,7 +23,8 @@ const Home = () => {
     const fetchEvents = async () => {
       try {
         const data = await getEvents("upcoming", 1); 
-        setFeaturedEvents(data.events.slice(0, 3));
+        const visibleEvents = filterUpcomingEvents(data.events || []);
+        setFeaturedEvents(visibleEvents.slice(0, 3));
       } catch (err) {
         console.error(err);
       } finally {
@@ -33,7 +35,8 @@ const Home = () => {
     const fetchSpecial = async () => {
       try {
         const data = await getEvents();
-        setSpecialEvents(data.events.slice(4, 5));
+        const visibleEvents = filterUpcomingEvents(data.events || []);
+        setSpecialEvents(visibleEvents.slice(4, 5));
       } catch (err) {
         console.error(err);
       } finally {
