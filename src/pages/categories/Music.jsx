@@ -19,7 +19,7 @@ export default function Music() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const data = await getEvents("upcoming", 1, 11, { tag: "Music" });
+        const data = await getEvents("upcoming", 1, 10, { tag: "Music" });
         setEvents(Array.isArray(data.events) ? data.events : []);
       } catch (err) {
         console.error("Failed to fetch Music events:", err);
