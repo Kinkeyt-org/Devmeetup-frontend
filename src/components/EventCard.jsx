@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   Ticket
 } from "lucide-react";
+import { getEventModeLabel, isOnlineEvent } from "../lib/utils";
 
 /* ================= EVENT CARD =================
    This component renders a single event card.
@@ -22,11 +23,8 @@ const EventCard = ({ event }) => {
   const navigate = useNavigate();
 
   /* Check if event is online */
-  const isVirtual =
-    event.type === "virtual" ||
-    event.type === "online" ||
-    event.is_online === true ||
-    event.is_virtual === true;
+  const isVirtual = isOnlineEvent(event);
+  const eventModeLabel = getEventModeLabel(event);
 
   const title = event.title || "Untitled Event";
 
@@ -65,9 +63,13 @@ const EventCard = ({ event }) => {
           {title}
         </h3>
 
-        <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mt-1 truncate">
-          {isVirtual ? "Virtual Event" : event.location}
-        </p>
+        <div className="mt-1 flex items-center gap-2 text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">
+          {isVirtual ? <Globe size={13} className="shrink-0" /> : <MapPin size={13} className="shrink-0" />}
+          <span className="truncate">{isVirtual ? "Online event" : event.location || "Venue to be announced"}</span>
+        </div>
+        <span className="mt-2 inline-flex w-fit items-center rounded-full border border-neutral-200 dark:border-white/10 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.2em] text-neutral-600 dark:text-neutral-300">
+          {eventModeLabel}
+        </span>
       </div>
     </div>
   );

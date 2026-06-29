@@ -5,7 +5,6 @@ import Fuse from "fuse.js";
 import { getEvents } from "../api/event"; 
 import EventCard from "../components/EventCard";
 import SEO from "../components/SEO";
-import { filterUpcomingEvents } from "../lib/utils";
 
 const Search = () => {
   const navigate = useNavigate();
@@ -25,7 +24,7 @@ const Search = () => {
     const fetchEvents = async () => {
       try {
         const data = await getEvents("upcoming", 1, 100);
-        setEvents(filterUpcomingEvents(data.events || []));
+        setEvents(data.events || []);
       } catch (err) {
         console.error("Failed to fetch events:", err);
       } finally {

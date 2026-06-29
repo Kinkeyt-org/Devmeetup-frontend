@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createEvent } from "../api/event";
 import SEO from "../components/SEO";
-import { motion, AnimatePresence } from "framer-motion";
+import { getLinkPreviewData } from "../lib/utils";
 import {
   MapPin,
   Globe,
@@ -85,6 +85,8 @@ const CreatePage = () => {
     image: null,
   });
 
+  const meetingPreview = eventType === "virtual" ? getLinkPreviewData(formData.location) : null;
+
   const handleChange = (e) => {
     setServerError("");
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -102,13 +104,6 @@ const CreatePage = () => {
     setFormData((prev) => ({ ...prev, image: file }));
     setImagePreview(URL.createObjectURL(file));
   };
-
-  const clearImage = (e) => {
-    e.stopPropagation();
-    setFormData(prev => ({ ...prev, image: null }));
-    setImagePreview(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  }
 
   // Automatically geocode the address as the user types (debounced)
   useEffect(() => {
@@ -151,7 +146,7 @@ const CreatePage = () => {
     }, 800);
 
     return () => clearTimeout(timeout);
-  }, [formData.location, eventType]);
+  }, [formData.location, eventType, userLocation]);
 
   const toggleTag = (tag) => {
     setServerError("");
@@ -195,7 +190,9 @@ const CreatePage = () => {
       }
 
       // Send event type so backend/frontend can distinguish physical vs virtual
-      payload.append("event_type", eventType);
+      payload.append("event_type", eventType === "virtual" ? "virtual" : "physical");
+      payload.append("is_online", eventType === "virtual" ? "1" : "0");
+      payload.append("is_virtual", eventType === "virtual" ? "1" : "0");
 
       //I send the coords from frontend to backend so it can save the exact location of the event
       if (eventType === "physical" && coords.lat && coords.lng) {
@@ -361,6 +358,30 @@ const CreatePage = () => {
                   ) : null}
                 </div>
               </div>
+
+              {eventType === "virtual" && formData.location && (
+                <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950/70 p-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Live link preview</p>
+                      <p className="text-sm font-medium text-neutral-900 dark:text-white">{meetingPreview?.host || "Meeting link"}</p>
+                    </div>
+                    {meetingPreview?.href && (
+                      <a
+                        href={meetingPreview.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-semibold text-neutral-700 dark:text-neutral-300"
+                      >
+                        Open
+                      </a>
+                    )}
+                  </div>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-2 break-all">
+                    {meetingPreview?.href || formData.location}
+                  </p>
+                </div>
+              )}
 
               {coords.lat && (
                 <motion.p

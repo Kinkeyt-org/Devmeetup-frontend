@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import QRCode from "react-qr-code";
-import { X, Printer, AlertTriangle } from "lucide-react";
-import { Helmet } from "react-helmet-async";
+import { X, Printer, AlertTriangle, ExternalLink, Globe, MapPin } from "lucide-react";
 import SEO from "../components/SEO";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { getMyTickets, cancelEventTicket } from "../api/ticket";
 import toast from "react-hot-toast";
+import { getLinkPreviewData, getOnlineMeetingLink, isOnlineEvent } from "../lib/utils";
 
 // react-qr-code exports differently depending on version — handle both
 const QRCodeComponent = QRCode.default ?? QRCode;
@@ -25,6 +25,9 @@ const QRCodeComponent = QRCode.default ?? QRCode;
  */
 const parseTicket = (t) => {
   const info = t.event_info || {};
+  const meetingLink = getOnlineMeetingLink(info);
+  const isOnline = isOnlineEvent(info);
+
   return {
     id: t.id,
     title: info.name || "Untitled Event",
@@ -33,6 +36,9 @@ const parseTicket = (t) => {
       "https://images.unsplash.com/photo-1492684223066-81342ee5ff30",
     date: info.event_date || "TBA",
     location: info.location || "Venue TBA",
+    meetingLink,
+    isOnline,
+    meetingPreview: getLinkPreviewData(meetingLink),
     isFree: info.is_free ?? true,
     price: info.price,
     // status comes uppercase from API — normalise to lowercase
@@ -165,9 +171,10 @@ const MyTickets = () => {
         <h3 className="text-base font-medium text-neutral-900 dark:text-white truncate mt-0.5">
           {t.title}
         </h3>
-        <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 truncate">
-          {t.location}
-        </p>
+        <div className="mt-1 flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+          {t.isOnline ? <Globe size={13} className="shrink-0" /> : <MapPin size={13} className="shrink-0" />}
+          <span className="truncate">{t.isOnline ? "Online event" : t.location}</span>
+        </div>
 
         <div className="flex flex-nowrap items-center justify-between gap-2 mt-3 pt-1 overflow-hidden">
           <span className="text-[10px] font-mono text-neutral-500 px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-white/5 truncate min-w-0">
@@ -260,6 +267,18 @@ const MyTickets = () => {
                 <p className="text-sm text-neutral-500">
                   {activeTicket.date} · {activeTicket.location}
                 </p>
+
+                {activeTicket.isOnline && activeTicket.meetingLink && (
+                  <a
+                    href={activeTicket.meetingLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 w-full mt-2 py-2 rounded-lg border border-neutral-200 dark:border-white/10 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-white/5 transition-colors"
+                  >
+                    <ExternalLink size={16} />
+                    Open meeting link
+                  </a>
+                )}
 
                 {/* Printed ticket specific details (visible on screen and print) */}
                 <div className="mt-4 pt-4 border-t border-dashed border-neutral-200 dark:border-white/10 text-left text-sm text-neutral-600 dark:text-neutral-400 space-y-1">

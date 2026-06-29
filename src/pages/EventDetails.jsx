@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '../context/ThemeContext';
 import { getEventDetails } from '../api/event';
 import { bookEvent } from '../api/ticket';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import { toast } from 'react-hot-toast';
 import {
-  ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon,  Share2, MoreHorizontal, ExternalLink, Compass, Globe, Video,
-  Plus, BadgeCheck
+  ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon, MoreHorizontal, ExternalLink, Compass, Globe, Video,
+  BadgeCheck
 } from 'lucide-react';
 import SEO from "../components/SEO";
 import EventDetailsSkeleton from '../components/EventDetailsSkeleton';
 import { generateCalendarLinks } from '../utils/calendar';
+import { getEventLocationLabel, getLinkPreviewData, getOnlineMeetingLink, isOnlineEvent as isEventOnline } from '../lib/utils';
 
 // EventDetails Component: This is the main page where users view all the info about a specific event.
 // It fetches the data, handles RSVPing, and figures out if we need to show a map or a virtual link!
 const EventDetails = () => {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -28,12 +26,8 @@ const EventDetails = () => {
   const [isBooking, setIsBooking] = useState(false);
   // state for the map coordinates (latitude and longitude)
   const [coords, setCoords] = useState({ lat: null, lng: null });
-  // state to show a small loader while we translate a text location into map coordinates
-  const [isGeocoding, setIsGeocoding] = useState(false);
   // state to toggle the "Add to Calendar" dropdown menu
   const [showMenu, setShowMenu] = useState(false);
-  // state to track when the Google Maps iframe finishes loading
-  const [mapLoaded, setMapLoaded] = useState(false);
   const [follow, setFollow] = useState(false)
   // Let's handle booking an event. We'll show a nice toast when it succeeds and redirect the user.
   const handleBookEvent = async () => {
@@ -96,7 +90,6 @@ const EventDetails = () => {
     const geocodeLocation = async (locationName) => {
       const token = import.meta.env.VITE_MAPBOX_TOKEN;
       if (!token) return;
-      setIsGeocoding(true);
       try {
         const response = await fetch(
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(locationName)}.json?access_token=${token}&limit=1&country=ng`
@@ -108,8 +101,6 @@ const EventDetails = () => {
         }
       } catch (error) {
         console.error("Geocoding failed:", error);
-      } finally {
-        setIsGeocoding(false);
       }
     };
 
@@ -165,21 +156,9 @@ const EventDetails = () => {
     }
   };
 
-  // Clever logic to detect if this is an online/virtual event.
-  // It checks explicit types, lack of coordinates, or known URL structures (like zoom.us)
-  const isOnlineEvent = (() => {
-    // If the event explicitly has an event_type field set to virtual
-    if (event?.event_type === 'virtual' || event?.event_type === 'online') return true;
-    // If there are exact map coordinates, it's definitely a physical event
-    if (coords.lat && coords.lng) return false;
-    // Check if the location string looks like a URL or contains known virtual platform keywords
-    const loc = (event?.location || '').toLowerCase().trim();
-    if (!loc) return false;
-    const urlPattern = /^https?:\/\//i;
-    const platformKeywords = ['zoom.us', 'meet.google', 'teams.microsoft', 'discord.gg', 'discord.com', 'twitch.tv', 'youtube.com', 'webex', 'whereby.com', 'streamyard', 'hopin.com'];
-    if (urlPattern.test(loc)) return true;
-    return platformKeywords.some(keyword => loc.includes(keyword));
-  })();
+  const isOnlineEvent = isEventOnline(event, coords);
+  const meetingPreview = getLinkPreviewData(getOnlineMeetingLink(event));
+  const locationLabel = getEventLocationLabel(event, coords);
 
   // Loading skeleton
   if (loading) {
@@ -327,20 +306,13 @@ const EventDetails = () => {
               {/* META ROW — location or virtual / date / price / tags */}
               <div className="mt-6 space-y-3">
                 {[
-                  { Icon: MapPin, value: event.location || 'Online' },
+                  { Icon: MapPin, value: locationLabel },
                   { Icon: Calendar, value: event.event_date_human || 'TBA' },
                   {
                     Icon: Banknote,
                     value: event.is_free
                       ? 'Free event'
                       : `₦${Number(event.price || 0).toLocaleString()}`
-                  },
-                  {
-                    Icon: TagIcon,
-                    value: event.tags && (() => {
-                      const parsedTags = Array.isArray(event.tags) ? event.tags : (() => { try { return JSON.parse(event.tags); } catch { return []; } })();
-                      return parsedTags.length > 0 ? parsedTags.join(', ') : 'No tags';
-                    })()
                   },
                   
                 ].map(({ Icon, value }, i) => (
@@ -436,7 +408,7 @@ const EventDetails = () => {
                 ) : null;
               })()}
 
-              {/* LOCATION SECTION — Map for physical, Join UI for online */}
+              {/* LOCATION SECTION — Preview card for virtual or physical events */}
               <div className="mt-8 lg:mt-10">
                 <div className="flex items-center gap-2 mb-3">
                   {isOnlineEvent ? (
@@ -445,92 +417,62 @@ const EventDetails = () => {
                     <Compass size={14} className="text-neutral-400 dark:text-white/40" />
                   )}
                   <span className="text-[11px] md:text-[13px] font-semibold text-neutral-500 dark:text-white/50 tracking-[0.06em] uppercase">
-                    {isOnlineEvent ? 'Virtual Event' : 'Location'}
+                    {isOnlineEvent ? 'Virtual Event' : 'Venue'}
                   </span>
                 </div>
 
-                {isOnlineEvent ? (
-                  /* ── ONLINE EVENT — Join UI ── */
-                  <div
-                    className="rounded-2xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4 overflow-hidden relative"
-                    style={{ height: 250 }}
-                  >
-                    <div className="w-full h-full flex flex-col items-center justify-center gap-5 px-6">
-                      {/* Animated rings background */}
-                      <div className="relative">
-                        <div className="absolute inset-0 -m-6 rounded-full border border-neutral-200/50 dark:border-white/5 animate-ping" style={{ animationDuration: '3s' }} />
-                        <div className="absolute inset-0 -m-3 rounded-full border border-neutral-200/30 dark:border-white/5 animate-ping" style={{ animationDuration: '3s', animationDelay: '0.5s' }} />
-                        <div className="w-14 h-14 rounded-full bg-neutral-900 dark:bg-white flex items-center justify-center">
-                          <Video size={22} className="text-white dark:text-neutral-900" />
-                        </div>
-                      </div>
-
-                      <div className="text-center">
-                        <p className="text-sm font-medium text-neutral-700 dark:text-white/80 mb-1">
-                          This event is hosted online
-                        </p>
-                        <p className="text-[11px] text-neutral-400 dark:text-white/35 max-w-[260px] leading-relaxed">
-                          Join from anywhere using the link provided by the organizer
-                        </p>
-                      </div>
-
-                      {/* Show the meeting link if it looks like a URL */}
-                      {event.location && /^https?:\/\//i.test(event.location.trim()) && (
-                        <a
-                          href={event.location.trim()}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-xs font-semibold tracking-wide uppercase hover:opacity-90 transition-opacity active:scale-[0.98]"
-                        >
-                          <ExternalLink size={13} />
-                          Join Event
-                        </a>
-                      )}
+                <div className="rounded-2xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4 p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="p-3 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 shrink-0">
+                      {isOnlineEvent ? <Video size={18} /> : <MapPin size={18} />}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-semibold text-neutral-800 dark:text-white">
+                        {isOnlineEvent ? 'Online session' : 'Physical venue'}
+                      </p>
+                      <p className="text-xs text-neutral-500 dark:text-white/55 mt-1 break-all">
+                        {isOnlineEvent
+                          ? (meetingPreview?.host || event.location || 'Online meeting link')
+                          : (event.location || 'Venue details will be shared soon.')}
+                      </p>
                     </div>
                   </div>
-                ) : (
-                  /* ── PHYSICAL EVENT — Map ── */
-                  <div
-                    className="rounded-2xl border border-neutral-200 dark:border-white/8 bg-neutral-50 dark:bg-white/4 overflow-hidden relative"
-                    style={{ height: 250 }}
-                  >
-                    {coords.lat && coords.lng ? (
-                      <>
-                        {!mapLoaded && (
-                          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-neutral-50 dark:bg-[#111118]">
-                            <div className="w-6 h-6 border-2 border-neutral-200 dark:border-white/10 border-t-neutral-500 dark:border-t-white/50 rounded-full animate-spin" />
-                            <p className="text-xs text-neutral-400 dark:text-white/35 mt-3">Loading map...</p>
-                          </div>
-                        )}
-                        <iframe
-                          title="Event Location"
-                          src={`https://maps.google.com/maps?q=${coords.lat},${coords.lng}&z=17&output=embed`}
-                          className={`w-full h-full border-0 transition-opacity duration-500 ${mapLoaded ? 'opacity-100' : 'opacity-0'}`}
-                          style={{
-                            filter: isDark
-                              ? 'grayscale(1) invert(1) brightness(0.85) contrast(1.15)'
-                              : 'grayscale(1) contrast(1.1)'
-                          }}
-                          onLoad={() => setMapLoaded(true)}
-                          allowFullScreen
-                          loading="lazy"
-                          referrerPolicy="no-referrer-when-downgrade"
-                        />
-                      </>
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        {isGeocoding ? (
-                          <div className="flex flex-col items-center gap-3">
-                            <div className="w-6 h-6 border-2 border-white/10 border-t-white/50 rounded-full animate-spin" />
-                            <p className="text-xs text-neutral-400 dark:text-white/35">Locating venue...</p>
-                          </div>
-                        ) : (
-                          <p className="text-xs text-neutral-300 dark:text-white/25">Map preview unavailable</p>
-                        )}
-                      </div>
+
+                  <div className="mt-4 rounded-xl border border-neutral-200 dark:border-white/8 bg-white/70 dark:bg-white/5 p-3">
+                    <p className="text-[10px] uppercase tracking-[0.24em] text-neutral-500 dark:text-white/45">Details</p>
+                    <p className="text-sm text-neutral-600 dark:text-white/70 mt-1 leading-relaxed">
+                      {isOnlineEvent
+                        ? 'This event is hosted online. The organizer link will appear here and on your ticket after RSVP.'
+                        : 'The venue details are shared here so attendees can plan ahead without an embedded map preview.'}
+                    </p>
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {isOnlineEvent && meetingPreview?.href && (
+                      <a
+                        href={meetingPreview.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-xs font-semibold tracking-wide uppercase hover:opacity-90 transition-opacity active:scale-[0.98]"
+                      >
+                        <ExternalLink size={13} />
+                        Open meeting link
+                      </a>
+                    )}
+
+                    {!isOnlineEvent && coords.lat && coords.lng && (
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${coords.lat},${coords.lng}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-neutral-200 dark:border-white/10 text-xs font-semibold text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-white/10 transition-colors"
+                      >
+                        <Compass size={13} />
+                        Directions
+                      </a>
                     )}
                   </div>
-                )}
+                </div>
               </div>
 
               {/* RSVP BUTTON (Desktop/Tablet) */}

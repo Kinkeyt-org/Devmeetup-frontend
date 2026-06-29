@@ -4,7 +4,6 @@ import { getEvents } from "../api/event";
 import SEO from "../components/SEO";
 import EventCard from "../components/EventCard";
 import EventSkeleton from "../components/EventSkeleton";
-import { filterUpcomingEvents } from "../lib/utils";
 // import FeaturedSlider from "../components/FeaturedSlider";
 import {
   Cpu,
@@ -54,7 +53,7 @@ const EventsPage = () => {
       const data = await getEvents("upcoming", 1, 9);
 
       // Ensure the response is an array before setting it in state to prevent crashes
-      const newEvents = filterUpcomingEvents(data.events || []);
+      const newEvents = Array.isArray(data.events) ? data.events : [];
       setEvents(newEvents.slice(0, 9)); // keep only the first 9
     } catch (err) {
       console.error(err);
