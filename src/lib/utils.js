@@ -82,16 +82,24 @@ export function getOnlineMeetingLink(event = {}) {
 }
 
 export function isOnlineEvent(event = {}, coords = null) {
-  const explicitType = String(event?.event_type || "").toLowerCase();
+  const explicitType = String(event?.event_type || event?.type || "").toLowerCase();
 
   if (["virtual", "online", "hybrid"].includes(explicitType)) return true;
   if (["physical", "offline"].includes(explicitType)) return false;
   if (event?.is_online || event?.is_virtual) return true;
   if (coords?.lat && coords?.lng) return false;
 
+  const category = String(event?.category || event?.event_category || "").trim().toLowerCase();
+  const tags = Array.isArray(event?.tags) ? event.tags : [];
+  const tagText = tags
+    .map((tag) => String(tag || "").trim().toLowerCase())
+    .join(" ");
   const location = String(event?.location || "").trim().toLowerCase();
-  if (!location) return false;
+  const categoryText = `${category} ${tagText}`.trim().toLowerCase();
+
+  if (!location && !categoryText) return false;
   if (["online", "virtual", "google meet", "zoom", "teams", "meet"].includes(location)) return true;
+  if (categoryText.includes("online") || categoryText.includes("virtual")) return true;
   if (/^https?:\/\//i.test(location)) return true;
 
   return ONLINE_KEYWORDS.some((keyword) => location.includes(keyword));
