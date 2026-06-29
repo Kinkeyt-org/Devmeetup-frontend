@@ -324,10 +324,10 @@ const EventDetails = () => {
                 </h1>
               </div>
 
-              {/* META ROW — location / date / price / tags */}
+              {/* META ROW — location or virtual / date / price / tags */}
               <div className="mt-6 space-y-3">
                 {[
-                  { Icon: MapPin, value: event.location || 'Online' },
+                  { Icon: isOnlineEvent ? Globe : MapPin, value: event.location || (isOnlineEvent ? 'Online' : 'TBA') },
                   { Icon: Calendar, value: event.event_date_human || 'TBA' },
                   {
                     Icon: Banknote,
@@ -342,7 +342,6 @@ const EventDetails = () => {
                       return parsedTags.length > 0 ? parsedTags.join(', ') : 'No tags';
                     })()
                   },
-                  
                 ].map(({ Icon, value }, i) => (
                   <div key={i} className="flex items-center justify-between gap-2.5">
                     <div className="flex items-center gap-2.5">
