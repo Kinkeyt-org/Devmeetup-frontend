@@ -115,8 +115,8 @@ const Dashboard = () => {
     handleFindNearbyEvents();
   }, [handleFindNearbyEvents]);
 
-  const onlineEvents = events.filter((event) => event.location === "Online");
-  console.log("Online events:", onlineEvents);
+]
+
   return (
     <>
       <SEO
@@ -290,65 +290,6 @@ const Dashboard = () => {
                         </div>
                       </div>
                     ))}
-                </div>
-              </div>
-
-              {/* ONLINE EVENTS */}
-              <div>
-                <div className="flex items-end justify-between mb-6">
-                  <div>
-                    <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-2">
-                      <Globe size={18} />
-                      Online Events
-                    </h2>
-                    <p className="text-neutral-500 text-sm mt-1">
-                      Discover virtual events happening around the world.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid grid-rows-2 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid sm:grid-cols-2 md:grid-cols-3 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
-                  {loadingEvents
-                    ? [...Array(6)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="flex-none w-[85vw] sm:w-full h-24 bg-neutral-100 dark:bg-neutral-900 rounded-2xl animate-pulse snap-start"
-                      />
-                    ))
-                    : events
-                        .filter(
-                          (event) =>
-                            event.type === "virtual" ||
-                            event.type === "online" ||
-                            event.is_online === true ||
-                            event.is_virtual === true
-                        )
-                        .map((event, i) => (
-                          <div
-                            key={event.id}
-                            onClick={() => navigate(`/events/${event.id}`)}
-                            className="flex-none w-[80vw] sm:w-full snap-start flex flex-row cursor-pointer rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 sm:hover:scale-[1.02] transition"
-                          >
-                            <img
-                              src={event.banner || event.image}
-                              alt={event.title}
-                              className="h-20 w-20 object-cover shrink-0 rounded-xl m-1"
-                            />
-
-                            <div className="p-2 flex-1 flex flex-col justify-center">
-                              <p className="text-[10px] text-neutral-500 mb-0.5">
-                                {event.event_date_human}
-                              </p>
-                              <h3 className="font-semibold line-clamp-1 text-sm">
-                                {event.title}
-                              </h3>
-                              <p className="text-[10px] text-neutral-500 mt-0.5 flex items-center gap-1">
-                                <Globe size={10} className="shrink-0" />
-                                <span className="line-clamp-1">{event.location}</span>
-                              </p>
-                            </div>
-                          </div>
-                        ))}
                 </div>
               </div>
             </div>
