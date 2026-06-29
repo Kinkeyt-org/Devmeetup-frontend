@@ -17,6 +17,7 @@ const Dashboard = () => {
 
   const [user, setUser] = useState(null);
   const [events, setEvents] = useState([]);
+  const [showOnlineOnly, setShowOnlineOnly] = useState(false);
 
   const [loadingEvents, setLoadingEvents] = useState(true);
 
@@ -48,7 +49,7 @@ const Dashboard = () => {
   /* ================= REAL-TIME EVENTS FEED ================= */
   useEffect(() => {
     if (window.Echo) {
-      const channel = window.Echo.channel("events")
+      window.Echo.channel("events")
         .listen(".event.created", (data) => {
           console.log("New Event Data Received:", data.event);
           const newEvent = data.event;
@@ -114,6 +115,15 @@ const Dashboard = () => {
   useEffect(() => {
     handleFindNearbyEvents();
   }, [handleFindNearbyEvents]);
+
+  const isOnlineEvent = (event) =>
+    event?.type === "virtual" ||
+    event?.type === "online" ||
+    event?.is_online === true ||
+    event?.is_virtual === true;
+
+  const onlineEvents = events.filter(isOnlineEvent);
+  const displayedTrendingEvents = showOnlineOnly ? onlineEvents : events;
 
   return (
     <>
@@ -209,7 +219,7 @@ const Dashboard = () => {
                   </div>
                 ) : (
                   <div className="grid grid-rows-2 grid-flow-col gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory sm:grid sm:grid-cols-2 md:grid-cols-3 sm:grid-rows-none sm:grid-flow-row sm:overflow-x-visible">
-                    {nearbyEvents.map((event, i) => (
+                    {nearbyEvents.map((event) => (
                       <div
                         key={event.id}
                         onClick={() => navigate(`/events/${event.id}`)}
@@ -242,15 +252,40 @@ const Dashboard = () => {
 
               {/* TRENDING */}
               <div>
-                <div className="flex items-end justify-between mb-6">
+                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
                   <div>
                     <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-2">
                       <TrendingUp size={18} />
                       Trending
                     </h2>
                     <p className="text-neutral-500 text-sm mt-1">
-                      What's popular around you.
+                      {showOnlineOnly ? "Only online events are shown right now." : "What's popular around you."}
                     </p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowOnlineOnly(false)}
+                      className={`px-3 py-1.5 rounded-full text-sm transition ${
+                        !showOnlineOnly
+                          ? "bg-black text-white dark:bg-white dark:text-black"
+                          : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
+                      }`}
+                    >
+                      All events
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowOnlineOnly(true)}
+                      className={`px-3 py-1.5 rounded-full text-sm transition flex items-center gap-1 ${
+                        showOnlineOnly
+                          ? "bg-black text-white dark:bg-white dark:text-black"
+                          : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
+                      }`}
+                    >
+                      <Globe size={14} /> Online only
+                    </button>
                   </div>
                 </div>
 
@@ -262,32 +297,42 @@ const Dashboard = () => {
                         className="flex-none w-[85vw] sm:w-full h-24 bg-neutral-100 dark:bg-neutral-900 rounded-2xl animate-pulse snap-start"
                       />
                     ))
-                    : events.map((event, i) => (
-                      <div
-                        key={event.id}
-                        onClick={() => navigate(`/events/${event.id}`)}
-                        className="flex-none w-[80vw] sm:w-full snap-start flex flex-row cursor-pointer rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 sm:hover:scale-[1.02] transition"
-                      >
-                        <img
-                          src={event.banner || event.image}
-                          alt={event.title}
-                          className="h-20 w-20 object-cover shrink-0 rounded-xl m-1"
-                        />
-
-                        <div className="p-2 flex-1 flex flex-col justify-center">
-                          <p className="text-[10px] text-neutral-500 mb-0.5">
-                            {event.event_date_human}
-                          </p>
-                          <h3 className="font-semibold line-clamp-1 text-sm">
-                            {event.title}
-                          </h3>
-                          <p className="text-[10px] text-neutral-500 mt-0.5 flex items-center gap-1">
-                            <MapPin size={10} className="shrink-0" />
-                            <span className="line-clamp-1">{event.location}</span>
-                          </p>
-                        </div>
+                    : displayedTrendingEvents.length === 0 ? (
+                      <div className="sm:col-span-2 md:col-span-3 border border-dashed border-neutral-200 dark:border-white/10 rounded-2xl p-8 text-center text-neutral-500">
+                        No online events found right now.
                       </div>
-                    ))}
+                    ) : (
+                      displayedTrendingEvents.map((event) => (
+                        <div
+                          key={event.id}
+                          onClick={() => navigate(`/events/${event.id}`)}
+                          className="flex-none w-[80vw] sm:w-full snap-start flex flex-row cursor-pointer rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 sm:hover:scale-[1.02] transition"
+                        >
+                          <img
+                            src={event.banner || event.image}
+                            alt={event.title}
+                            className="h-20 w-20 object-cover shrink-0 rounded-xl m-1"
+                          />
+
+                          <div className="p-2 flex-1 flex flex-col justify-center">
+                            <p className="text-[10px] text-neutral-500 mb-0.5">
+                              {event.event_date_human}
+                            </p>
+                            <h3 className="font-semibold line-clamp-1 text-sm">
+                              {event.title}
+                            </h3>
+                            <p className="text-[10px] text-neutral-500 mt-0.5 flex items-center gap-1">
+                              {isOnlineEvent(event) ? (
+                                <Globe size={10} className="shrink-0" />
+                              ) : (
+                                <MapPin size={10} className="shrink-0" />
+                              )}
+                              <span className="line-clamp-1">{event.location}</span>
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    )}
                 </div>
               </div>
 
@@ -313,40 +358,32 @@ const Dashboard = () => {
                         className="flex-none w-[85vw] sm:w-full h-24 bg-neutral-100 dark:bg-neutral-900 rounded-2xl animate-pulse snap-start"
                       />
                     ))
-                    : events
-                        .filter(
-                          (event) =>
-                            event.type === "virtual" ||
-                            event.type === "online" ||
-                            event.is_online === true ||
-                            event.is_virtual === true
-                        )
-                        .map((event, i) => (
-                          <div
-                            key={event.id}
-                            onClick={() => navigate(`/events/${event.id}`)}
-                            className="flex-none w-[80vw] sm:w-full snap-start flex flex-row cursor-pointer rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 sm:hover:scale-[1.02] transition"
-                          >
-                            <img
-                              src={event.banner || event.image}
-                              alt={event.title}
-                              className="h-20 w-20 object-cover shrink-0 rounded-xl m-1"
-                            />
+                    : onlineEvents.map((event) => (
+                      <div
+                        key={event.id}
+                        onClick={() => navigate(`/events/${event.id}`)}
+                        className="flex-none w-[80vw] sm:w-full snap-start flex flex-row cursor-pointer rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 sm:hover:scale-[1.02] transition"
+                      >
+                        <img
+                          src={event.banner || event.image}
+                          alt={event.title}
+                          className="h-20 w-20 object-cover shrink-0 rounded-xl m-1"
+                        />
 
-                            <div className="p-2 flex-1 flex flex-col justify-center">
-                              <p className="text-[10px] text-neutral-500 mb-0.5">
-                                {event.event_date_human}
-                              </p>
-                              <h3 className="font-semibold line-clamp-1 text-sm">
-                                {event.title}
-                              </h3>
-                              <p className="text-[10px] text-neutral-500 mt-0.5 flex items-center gap-1">
-                                <Globe size={10} className="shrink-0" />
-                                <span className="line-clamp-1">{event.location}</span>
-                              </p>
-                            </div>
-                          </div>
-                        ))}
+                        <div className="p-2 flex-1 flex flex-col justify-center">
+                          <p className="text-[10px] text-neutral-500 mb-0.5">
+                            {event.event_date_human}
+                          </p>
+                          <h3 className="font-semibold line-clamp-1 text-sm">
+                            {event.title}
+                          </h3>
+                          <p className="text-[10px] text-neutral-500 mt-0.5 flex items-center gap-1">
+                            <Globe size={10} className="shrink-0" />
+                            <span className="line-clamp-1">{event.location}</span>
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
