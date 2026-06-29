@@ -80,7 +80,7 @@ const SwipeableNotification = ({ n, onMarkRead, onDelete }) => {
       {/* Red delete button — fixed at right, always PEEK_WIDTH wide */}
       <button
         onClick={(e) => { e.stopPropagation(); onDelete(); }}
-        className="absolute inset-y-0 right-0 flex flex-col items-center justify-center gap-1 bg-red-500 active:bg-red-600 transition-colors"
+        className="absolute inset-y-0 right-0 hidden md:flex flex-col items-center justify-center gap-1 bg-red-500 active:bg-red-600 transition-colors"
         style={{ width: PEEK_WIDTH }}
         aria-label="Delete notification"
       >
@@ -133,7 +133,7 @@ const SwipeableNotification = ({ n, onMarkRead, onDelete }) => {
         {/* Desktop delete button (hover only) */}
         <button
           onClick={(e) => { e.stopPropagation(); onDelete(); }}
-          className="absolute right-6 top-6 p-2 rounded-lg text-neutral-400 hover:text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition opacity-0 group-hover:opacity-100 focus:opacity-100 shrink-0"
+          className="absolute right-6 top-6 hidden md:flex p-2 rounded-lg text-neutral-400 hover:text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition opacity-0 group-hover:opacity-100 focus:opacity-100 shrink-0 z-10"
           title="Delete notification"
         >
           <Trash2 className="w-4 h-4" />

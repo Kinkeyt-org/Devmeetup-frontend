@@ -335,6 +335,10 @@ const EventDetails = () => {
                       ? 'Free event'
                       : `₦${Number(event.price || 0).toLocaleString()}`
                   },
+                  {
+                    Icon: Globe,
+                    value:event.tags|| 'N/A'
+                  },
                 ].map(({ Icon, value }, i) => (
                   <div key={i} className="flex items-center justify-between gap-2.5">
                     <div className="flex items-center gap-2.5">
