@@ -232,9 +232,6 @@ const Dashboard = () => {
                             <MapPin size={10} className="shrink-0" />
                             <span className="line-clamp-1">{event.location}</span>
                           </p>
-                          <p className="text-[10px] text-green-600 dark:text-green-400 mt-1 font-semibold">
-                            {event.price ? `$${event.price}` : "Free"}
-                          </p>
                         </div>
                       </div>
                     ))}
@@ -287,9 +284,6 @@ const Dashboard = () => {
                           <p className="text-[10px] text-neutral-500 mt-0.5 flex items-center gap-1">
                             <MapPin size={10} className="shrink-0" />
                             <span className="line-clamp-1">{event.location}</span>
-                          </p>
-                          <p className="text-[10px] text-green-600 dark:text-green-400 mt-1 font-semibold">
-                            {event.price ? `$${event.price}` : "Free"}
                           </p>
                         </div>
                       </div>

@@ -6,8 +6,7 @@ import {
   Calendar,
   Loader2,
   CheckCircle2,
-  Ticket,
-  DollarSign
+  Ticket
 } from "lucide-react";
 
 /* ================= EVENT CARD =================
@@ -69,14 +68,6 @@ const EventCard = ({ event }) => {
         <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mt-1 truncate">
           {isVirtual ? "Virtual Event" : event.location}
         </p>
-
-        {/* PRICE */}
-        <div className="flex items-center gap-1 mt-2">
-          <DollarSign size={14} className="text-green-600 dark:text-green-400" />
-          <span className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-white">
-            {event.price ? `$${event.price}` : "Free"}
-          </span>
-        </div>
       </div>
     </div>
   );
