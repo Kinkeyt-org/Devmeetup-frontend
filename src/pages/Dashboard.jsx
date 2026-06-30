@@ -115,8 +115,6 @@ const Dashboard = () => {
     handleFindNearbyEvents();
   }, [handleFindNearbyEvents]);
 
-]
-
   return (
     <>
       <SEO
