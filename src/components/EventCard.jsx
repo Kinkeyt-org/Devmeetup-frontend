@@ -6,10 +6,8 @@ import {
   Calendar,
   Loader2,
   CheckCircle2,
-  Ticket,
-  Tag
+  Ticket
 } from "lucide-react";
-import { Badge } from "./ui/badge";
 
 /* ================= EVENT CARD =================
    This component renders a single event card.
@@ -18,7 +16,6 @@ import { Badge } from "./ui/badge";
    - Free/paid display
    - Online/physical badge
    - Booking state (reserved / get ticket)
-   - Event tags/categories
 ============================================= */
 
 const EventCard = ({ event }) => {
@@ -32,9 +29,6 @@ const EventCard = ({ event }) => {
     event.is_virtual === true;
 
   const title = event.title || "Untitled Event";
-
-  /* Extract tags from event */
-  const tags = event.tags || event.categories || [];
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -74,29 +68,6 @@ const EventCard = ({ event }) => {
         <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mt-1 truncate">
           {isVirtual ? "Virtual Event" : event.location}
         </p>
-
-        {/* TAGS SECTION */}
-        {tags.length > 0 && (
-          <div className="flex gap-1.5 mt-2 flex-wrap">
-            {tags.slice(0, 2).map((tag, idx) => (
-              <Badge
-                key={idx}
-                variant="outline"
-                className="text-[10px] bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border-neutral-300 dark:border-neutral-600"
-              >
-                {typeof tag === "string" ? tag : tag.name}
-              </Badge>
-            ))}
-            {tags.length > 2 && (
-              <Badge
-                variant="outline"
-                className="text-[10px] bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border-neutral-300 dark:border-neutral-600"
-              >
-                +{tags.length - 2}
-              </Badge>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );
