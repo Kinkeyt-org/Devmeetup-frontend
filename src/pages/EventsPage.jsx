@@ -150,13 +150,30 @@ const EventsPage = () => {
               <div
                 key={event.id}
                 onClick={() => navigate(`/events/${event.id}`)}
-                className="flex flex-row cursor-pointer rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition"
+                className="flex flex-col cursor-pointer rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition"
               >
                 <img
                   src={event.banner || event.image}
                   alt={event.title}
-                  className="h-20 w-20 object-cover shrink-0 rounded-xl m-1"
+                  className="h-32 w-full object-cover"
                 />
+                <div className="p-3 flex flex-col justify-between flex-1">
+                  <div>
+                    <p className="text-xs text-neutral-500 mb-1">
+                      {event.event_date_human}
+                    </p>
+                    <h3 className="font-semibold text-sm line-clamp-2">
+                      {event.title}
+                    </h3>
+                    <p className="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+                      <MapPin size={12} className="shrink-0" />
+                      <span className="line-clamp-1">{event.location}</span>
+                    </p>
+                  </div>
+                  <p className="text-sm text-green-600 dark:text-green-400 font-semibold mt-2">
+                    {event.price ? `$${event.price}` : "Free"}
+                  </p>
+                </div>
 
                 <div className="p-2 flex-1 flex flex-col justify-center">
                   <p className="text-[10px] text-neutral-500 mb-0.5">
