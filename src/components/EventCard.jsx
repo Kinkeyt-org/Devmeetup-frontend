@@ -100,10 +100,7 @@ const EventCard = ({ event }) => {
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           loading="lazy"
         />
-        {/* FREE / PAID BADGE OVERLAY */}
-        <span className="absolute top-1 left-1 inline-flex items-center px-1.5 py-0.5 rounded-md bg-orange-500 dark:bg-orange-600 backdrop-blur-sm text-white text-[8px] sm:text-[9px] font-semibold">
-          {isPaid ? `$${price}` : "Free"}
-        </span>
+        
       </div>
 
       {/* CONTENT SECTION */}
@@ -157,17 +154,7 @@ const EventCard = ({ event }) => {
 
           {/* Virtual / Location Badge */}
           <span className="flex items-center gap-0.5 text-[10px] sm:text-[11px] text-neutral-500 dark:text-neutral-400 shrink-0">
-            {isVirtual ? (
-              <>
-                <Globe size={11} className="text-neutral-400" />
-                <span>Public</span>
-              </>
-            ) : (
-              <>
-                <MapPin size={11} className="text-neutral-400" />
-                <span className="max-w-[60px] sm:max-w-[90px] truncate">{event.location || "Public"}</span>
-              </>
-            )}
+            {isPaid ? `${price}` : "Free"}
           </span>
         </div>
       </div>
