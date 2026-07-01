@@ -93,7 +93,7 @@ const EventCard = ({ event }) => {
       className="group flex flex-row items-center p-2.5 sm:p-3 cursor-pointer rounded-2xl border border-neutral-200 dark:border-white/10 hover:border-neutral-300 dark:hover:border-white/20 hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 bg-white dark:bg-neutral-900/50 transition-all gap-3 w-full"
     >
       {/* IMAGE SECTION */}
-      <div className="relative w-24 h-18 sm:w-28 sm:h-20 shrink-0 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800">
+      <div className="relative w-18 h-18 sm:w-28 sm:h-20 shrink-0 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800">
         <img
           src={event.banner || event.image}
           alt={`Event banner for ${title}`}

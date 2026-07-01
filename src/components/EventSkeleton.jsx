@@ -4,7 +4,7 @@ const EventSkeleton = () => {
   return (
     <div className="group flex flex-row items-center p-2.5 sm:p-3 animate-pulse rounded-2xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-neutral-900/50 gap-3 w-full">
       {/* Image Skeleton */}
-      <div className="w-24 h-18 sm:w-28 sm:h-20 shrink-0 bg-neutral-200 dark:bg-neutral-800 rounded-xl" />
+      <div className="w-18 h-18 sm:w-28 sm:h-20 shrink-0 bg-neutral-200 dark:bg-neutral-800 rounded-xl" />
       
       {/* Content Skeleton */}
       <div className="flex flex-col justify-between flex-1 min-w-0 self-stretch">
