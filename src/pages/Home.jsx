@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import SEO from "../components/SEO";
 import { useNavigate } from "react-router-dom";
 import { getEvents } from "../api/event";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Calendar, MapPin } from "lucide-react";
 import EventCard from "../components/EventCard";
 import EventSkeleton from "../components/EventSkeleton";
 
