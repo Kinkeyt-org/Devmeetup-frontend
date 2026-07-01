@@ -79,7 +79,7 @@ export default function Design() {
       <section className="max-w-7xl mx-auto px-6 py-12 lg:py-20 w-full">
         <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-8">Popular Design Events</h2>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {loading &&
             Array.from({ length: 9 }).map((_, i) => (
               <EventSkeleton key={`skeleton-${i}`} />

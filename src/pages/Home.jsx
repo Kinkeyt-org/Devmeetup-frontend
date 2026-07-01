@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import SEO from "../components/SEO";
 import { useNavigate } from "react-router-dom";
 import { getEvents } from "../api/event";
-import { ArrowRight, Calendar, MapPin } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import EventCard from "../components/EventCard";
+import EventSkeleton from "../components/EventSkeleton";
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1596522354195-e84ae3c98731?q=80&w=2087&auto=format&fit=crop";
 
@@ -196,94 +198,15 @@ const Home = () => {
             </div>
 
             {loading ? (
-              <div className="flex md:grid md:grid-cols-3 gap-5 overflow-x-auto md:overflow-visible scrollbar-hide snap-x snap-mandatory pb-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {[...Array(3)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="min-w-72 md:min-w-0 snap-start rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/5 bg-white dark:bg-neutral-900 animate-pulse flex-shrink-0"
-                  >
-                    <div className="h-44 w-full bg-neutral-200 dark:bg-neutral-800" />
-                    <div className="p-5 space-y-3">
-                      <div className="h-4 w-1/3 bg-neutral-200 dark:bg-neutral-800 rounded-full" />
-                      <div className="h-5 w-3/4 bg-neutral-200 dark:bg-neutral-800 rounded" />
-                      <div className="space-y-2 pt-1">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 bg-neutral-200 dark:bg-neutral-800 rounded-full" />
-                          <div className="h-3 w-1/2 bg-neutral-200 dark:bg-neutral-800 rounded" />
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 bg-neutral-200 dark:bg-neutral-800 rounded-full" />
-                          <div className="h-3 w-2/3 bg-neutral-200 dark:bg-neutral-800 rounded" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <EventSkeleton key={i} />
                 ))}
               </div>
             ) : (
-              <div className="flex md:grid md:grid-cols-3 gap-5 overflow-x-auto md:overflow-visible scrollbar-hide snap-x snap-mandatory pb-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {featuredEvents.map((event) => (
-                  <div
-                    key={event.id}
-                    role="link"
-                    tabIndex={0}
-                    onClick={() => navigate(`/events/${event.id}`)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") navigate(`/events/${event.id}`);
-                    }}
-                    className="group cursor-pointer min-w-72 md:min-w-0 snap-start rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/8 bg-white dark:bg-neutral-900/60 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex-shrink-0 flex flex-col"
-                  >
-                    {/* Card image with overlay */}
-                    <div className="relative h-44 overflow-hidden">
-                      <img
-                        src={event.banner || event.image}
-                        alt={event.title}
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      {/* Gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                      {/* Category / type badge */}
-                      {event.category && (
-                        <span className="absolute top-3 left-3 text-[10px] font-medium px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-md text-white border border-white/20">
-                          {event.category}
-                        </span>
-                      )}
-                      {/* Price badge */}
-                      <span className="absolute top-3 right-3 text-[10px] font-semibold px-2.5 py-1 rounded-full bg-amber-500/90 backdrop-blur-md text-white">
-                        {event.price === 0 || event.price === "0" || !event.price ? "Free" : `$${event.price}`}
-                      </span>
-                    </div>
-
-                    {/* Card body */}
-                    <div className="p-5 flex flex-col flex-1">
-                      <h3 className="font-semibold text-sm leading-snug text-neutral-900 dark:text-neutral-100 line-clamp-2 group-hover:text-amber-500 transition-colors duration-200">
-                        {event.title}
-                      </h3>
-
-                      <div className="mt-3 space-y-1.5 text-xs text-neutral-500 dark:text-neutral-400">
-                        <span className="flex items-center gap-1.5">
-                          <Calendar size={11} className="text-amber-500 flex-shrink-0" />
-                          <span className="truncate">{event.event_date_human}</span>
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <MapPin size={11} className="text-amber-500 flex-shrink-0" />
-                          <span className="truncate">
-                            {event.location?.length > 28 ? event.location.substring(0, 28) + "…" : event.location}
-                          </span>
-                        </span>
-                      </div>
-
-                      {/* Footer row */}
-                      <div className="mt-4 pt-4 border-t border-neutral-100 dark:border-white/5 flex items-center justify-between">
-                        <span className="text-[11px] text-neutral-400 dark:text-neutral-500">
-                          {event.attendees_count ? `${event.attendees_count} going` : "Open"}
-                        </span>
-                        <span className="flex items-center gap-1 text-[11px] font-medium text-amber-500 group-hover:gap-2 transition-all duration-200">
-                          View <ArrowRight size={11} />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  <EventCard key={event.id} event={event} />
                 ))}
               </div>
             )}

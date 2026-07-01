@@ -144,42 +144,16 @@ const EventsPage = () => {
               ))}
           </div>
 
-          {/* DESKTOP VIEW: We use a standard 3-column grid layout (md:grid-cols-3) for larger screens */}
-          <div className="hidden md:grid md:grid-cols-3 gap-3 pb-6">
+          {/* DESKTOP VIEW: We use a standard 2-column grid layout (md:grid-cols-2) for larger screens */}
+          <div className="hidden md:grid md:grid-cols-2 gap-4 pb-6">
             {events.map((event) => (
-              <div
-                key={event.id}
-                onClick={() => navigate(`/events/${event.id}`)}
-                className="flex flex-row cursor-pointer rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition"
-              >
-                <img
-                  src={event.banner || event.image}
-                  alt={event.title}
-                  className="h-20 w-20 object-cover shrink-0 rounded-xl m-1"
-                />
-
-                <div className="p-2 flex-1 flex flex-col justify-center">
-                  <p className="text-[10px] text-neutral-500 mb-0.5">
-                    {event.event_date_human}
-                  </p>
-                  <h3 className="font-semibold line-clamp-1 text-sm">
-                    {event.title}
-                  </h3>
-                  <p className="text-[10px] text-neutral-500 mt-0.5 flex items-center gap-1">
-                    <MapPin size={10} className="shrink-0" />
-                    <span className="line-clamp-1">{event.location}</span>
-                  </p>
-                </div>
-              </div>
+              <EventCard key={event.id} event={event} />
             ))}
 
             {/* DESKTOP LOADING SKELETONS */}
             {loading &&
-              Array.from({ length: 9 }).map((_, i) => (
-                <div
-                  key={`skeleton-${i}`}
-                  className="h-[88px] bg-neutral-100 dark:bg-neutral-900 rounded-2xl animate-pulse"
-                />
+              Array.from({ length: 8 }).map((_, i) => (
+                <EventSkeleton key={`skeleton-${i}`} />
               ))}
           </div>
 
