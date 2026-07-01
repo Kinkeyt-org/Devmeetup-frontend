@@ -49,12 +49,12 @@ const EventsPage = () => {
     }
 
     try {
-      // Fetch upcoming events from the API (page 1, up to 9 events)
-      const data = await getEvents("upcoming", 1, 9);
+      // Fetch upcoming events from the API (page 1, up to 10 events)
+      const data = await getEvents("upcoming", 1, 12);
 
       // Ensure the response is an array before setting it in state to prevent crashes
       const newEvents = Array.isArray(data.events) ? data.events : [];
-      setEvents(newEvents.slice(0, 9)); // keep only the first 9
+      setEvents(newEvents.slice(0, 12)); // keep only the first 12
     } catch (err) {
       console.error(err);
     } finally {
@@ -82,7 +82,7 @@ const EventsPage = () => {
                 return prevEvents;
               }
               const updated = [newEvent, ...prevEvents];
-              return updated.slice(0, 9); // Keep only the first 9 events
+              return updated.slice(0, 12); // Keep only the first 9 events
             });
           }
         });
