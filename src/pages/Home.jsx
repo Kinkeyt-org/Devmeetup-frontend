@@ -24,7 +24,7 @@ const Home = () => {
     const fetchEvents = async () => {
       try {
         const data = await getEvents("upcoming", 1); 
-        setFeaturedEvents(data.events.slice(0, 3));
+        setFeaturedEvents(data.events.slice(0, 6));
       } catch (err) {
         console.error(err);
       } finally {
@@ -42,7 +42,7 @@ const Home = () => {
         setSpecialLoading(false);
       }
     };
-
+    
     fetchEvents();
     fetchSpecial();
   }, []);
@@ -198,17 +198,39 @@ const Home = () => {
             </div>
 
             {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {[...Array(3)].map((_, i) => (
-                  <EventSkeleton key={i} />
-                ))}
-              </div>
+              <>
+                {/* Mobile Skeletons */}
+                <div className="md:hidden grid grid-rows-3 grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="w-[280px] sm:w-[350px] shrink-0">
+                      <EventSkeleton />
+                    </div>
+                  ))}
+                </div>
+                {/* Desktop Skeletons */}
+                <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {[...Array(6)].map((_, i) => (
+                    <EventSkeleton key={i} />
+                  ))}
+                </div>
+              </>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {featuredEvents.map((event) => (
-                  <EventCard key={event.id} event={event} />
-                ))}
-              </div>
+              <>
+                {/* Mobile View: Horizontal Swipe */}
+                <div className="md:hidden grid grid-rows-3 grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
+                  {featuredEvents.map((event) => (
+                    <div key={event.id} className="w-[280px] sm:w-[350px] shrink-0">
+                      <EventCard event={event} />
+                    </div>
+                  ))}
+                </div>
+                {/* Desktop View: Grid */}
+                <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {featuredEvents.map((event) => (
+                    <EventCard key={event.id} event={event} />
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </section>

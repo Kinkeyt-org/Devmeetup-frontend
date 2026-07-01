@@ -193,11 +193,22 @@ const Dashboard = () => {
                     </button>
                   </div>
                 ) : locationStatus === "loading" || loadingNearby ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {[...Array(6)].map((_, i) => (
-                      <EventSkeleton key={i} />
-                    ))}
-                  </div>
+                  <>
+                    {/* Mobile Skeletons */}
+                    <div className="md:hidden grid grid-rows-3 grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
+                      {[...Array(6)].map((_, i) => (
+                        <div key={i} className="w-[280px] sm:w-[350px] shrink-0">
+                          <EventSkeleton />
+                        </div>
+                      ))}
+                    </div>
+                    {/* Desktop Skeletons */}
+                    <div className="hidden md:grid md:grid-cols-2 gap-4">
+                      {[...Array(6)].map((_, i) => (
+                        <EventSkeleton key={i} />
+                      ))}
+                    </div>
+                  </>
                 ) : nearbyEvents.length === 0 ? (
                   <div className="border border-dashed border-neutral-200 dark:border-white/10 rounded-2xl p-10 text-center">
                     <p className="text-neutral-500">
@@ -205,11 +216,22 @@ const Dashboard = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {nearbyEvents.map((event) => (
-                      <EventCard key={event.id} event={event} />
-                    ))}
-                  </div>
+                  <>
+                    {/* Mobile View: Horizontal Swipe */}
+                    <div className="md:hidden grid grid-rows-3 grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
+                      {nearbyEvents.map((event) => (
+                        <div key={event.id} className="w-[280px] sm:w-[350px] shrink-0">
+                          <EventCard event={event} />
+                        </div>
+                      ))}
+                    </div>
+                    {/* Desktop View: Grid */}
+                    <div className="hidden md:grid md:grid-cols-2 gap-4">
+                      {nearbyEvents.map((event) => (
+                        <EventCard key={event.id} event={event} />
+                      ))}
+                    </div>
+                  </>
                 )}
               </div>
 
@@ -228,15 +250,41 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {loadingEvents
-                    ? [...Array(6)].map((_, i) => (
-                      <EventSkeleton key={i} />
-                    ))
-                    : events.map((event) => (
-                      <EventCard key={event.id} event={event} />
-                    ))}
-                </div>
+                {loadingEvents ? (
+                  <>
+                    {/* Mobile Skeletons */}
+                    <div className="md:hidden grid grid-rows-3 grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
+                      {[...Array(6)].map((_, i) => (
+                        <div key={i} className="w-[280px] sm:w-[350px] shrink-0">
+                          <EventSkeleton />
+                        </div>
+                      ))}
+                    </div>
+                    {/* Desktop Skeletons */}
+                    <div className="hidden md:grid md:grid-cols-2 gap-4">
+                      {[...Array(6)].map((_, i) => (
+                        <EventSkeleton key={i} />
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {/* Mobile View: Horizontal Swipe */}
+                    <div className="md:hidden grid grid-rows-3 grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
+                      {events.map((event) => (
+                        <div key={event.id} className="w-[280px] sm:w-[350px] shrink-0">
+                          <EventCard event={event} />
+                        </div>
+                      ))}
+                    </div>
+                    {/* Desktop View: Grid */}
+                    <div className="hidden md:grid md:grid-cols-2 gap-4">
+                      {events.map((event) => (
+                        <EventCard key={event.id} event={event} />
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 

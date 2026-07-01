@@ -149,7 +149,7 @@ const EventsPage = () => {
             {events.map((event) => (
               <div
                 key={event.id}
-                className="w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)] shrink-0"
+                className="w-[320px] lg:w-[360px] shrink-0"
               >
                 <EventCard event={event} />
               </div>
@@ -158,7 +158,7 @@ const EventsPage = () => {
             {/* DESKTOP LOADING SKELETONS */}
             {loading &&
               Array.from({ length: 8 }).map((_, i) => (
-                <div key={`skeleton-${i}`} className="w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)] shrink-0">
+                <div key={`skeleton-${i}`} className="w-[320px] lg:w-[360px] shrink-0">
                   <EventSkeleton />
                 </div>
               ))}
