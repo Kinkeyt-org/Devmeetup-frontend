@@ -144,16 +144,23 @@ const EventsPage = () => {
               ))}
           </div>
 
-          {/* DESKTOP VIEW: We use a standard 2-column grid layout (md:grid-cols-2) for larger screens */}
-          <div className="hidden md:grid md:grid-cols-2 gap-4 pb-6">
+          {/* DESKTOP VIEW: We use a swipeable grid layout with 2 rows and columns flowing horizontally, displaying 3 columns on desktop and 2 on tablet */}
+          <div className="hidden md:grid md:grid-rows-2 md:grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
             {events.map((event) => (
-              <EventCard key={event.id} event={event} />
+              <div
+                key={event.id}
+                className="w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)] shrink-0"
+              >
+                <EventCard event={event} />
+              </div>
             ))}
 
             {/* DESKTOP LOADING SKELETONS */}
             {loading &&
               Array.from({ length: 8 }).map((_, i) => (
-                <EventSkeleton key={`skeleton-${i}`} />
+                <div key={`skeleton-${i}`} className="w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)] shrink-0">
+                  <EventSkeleton />
+                </div>
               ))}
           </div>
 

@@ -90,10 +90,10 @@ const EventCard = ({ event }) => {
       aria-label={`Open event: ${title}`}
       onClick={() => navigate(`/events/${event.id}`)}
       onKeyDown={handleKeyDown}
-      className="group flex flex-row items-center p-3 sm:p-4 cursor-pointer rounded-2xl border border-neutral-200 dark:border-white/10 hover:border-neutral-300 dark:hover:border-white/20 hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 bg-white dark:bg-neutral-900/50 transition-all gap-4 w-full"
+      className="group flex flex-row items-center p-2.5 sm:p-3 cursor-pointer rounded-2xl border border-neutral-200 dark:border-white/10 hover:border-neutral-300 dark:hover:border-white/20 hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 bg-white dark:bg-neutral-900/50 transition-all gap-3 w-full"
     >
       {/* IMAGE SECTION */}
-      <div className="relative w-28 h-20 sm:w-36 sm:h-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800">
+      <div className="relative w-24 h-18 sm:w-28 sm:h-20 shrink-0 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800">
         <img
           src={event.banner || event.image}
           alt={`Event banner for ${title}`}
@@ -101,7 +101,7 @@ const EventCard = ({ event }) => {
           loading="lazy"
         />
         {/* FREE / PAID BADGE OVERLAY */}
-        <span className="absolute top-1.5 left-1.5 inline-flex items-center px-2 py-0.5 rounded-md bg-black/60 dark:bg-neutral-900/80 backdrop-blur-sm text-white text-[9px] font-semibold">
+        <span className="absolute top-1 left-1 inline-flex items-center px-1.5 py-0.5 rounded-md bg-black/60 dark:bg-neutral-900/80 backdrop-blur-sm text-white text-[8px] sm:text-[9px] font-semibold">
           {isPaid ? `$${price}` : "Free"}
         </span>
       </div>
@@ -109,63 +109,63 @@ const EventCard = ({ event }) => {
       {/* CONTENT SECTION */}
       <div className="flex flex-col justify-between flex-1 min-w-0 self-stretch">
         {/* DATE AND TIME & BOOKMARK */}
-        <div className="flex items-center justify-between gap-2">
-          <p className="text-xs text-neutral-500 dark:text-neutral-400 font-medium truncate">
+        <div className="flex items-center justify-between gap-1.5">
+          <p className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400 font-medium truncate">
             {event.event_date_human}
           </p>
           <button
             onClick={handleBookmarkClick}
-            className="p-1.5 -m-1.5 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 shrink-0"
+            className="p-1 -m-1 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 shrink-0"
             aria-label={isBookmarked ? "Remove bookmark" : "Bookmark event"}
           >
             <Bookmark
-              size={16}
+              size={14}
               className={isBookmarked ? "fill-neutral-950 dark:fill-white text-neutral-950 dark:text-white" : ""}
             />
           </button>
         </div>
 
         {/* TITLE */}
-        <h3 className="text-sm sm:text-base font-semibold text-neutral-900 dark:text-white line-clamp-1 sm:line-clamp-2 leading-snug my-1">
+        <h3 className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-white line-clamp-1 sm:line-clamp-2 leading-snug my-0.5">
           {title}
         </h3>
 
         {/* ATTENDEES & VIRTUAL/LOCATION STATUS */}
-        <div className="flex items-center justify-between gap-2 mt-auto pt-2 border-t border-neutral-100 dark:border-white/5">
+        <div className="flex items-center justify-between gap-2 mt-auto pt-1.5 border-t border-neutral-100 dark:border-white/5">
           {/* Attendees */}
-          <div className="flex items-center gap-1.5 min-w-0">
+          <div className="flex items-center gap-1 min-w-0">
             {displayAvatars.length > 0 && (
-              <div className="flex items-center -space-x-2 shrink-0">
+              <div className="flex items-center -space-x-1.5 shrink-0">
                 {displayAvatars.map((attendee, idx) => (
                   <img
                     key={idx}
                     src={attendee.avatar || attendee.profile_picture || `https://ui-avatars.com/api/?name=${attendee.name || "User"}&background=random`}
                     alt={attendee.name || "Attendee"}
-                    className="h-6 w-6 rounded-full border border-white dark:border-neutral-900 object-cover"
+                    className="h-5 w-5 rounded-full border border-white dark:border-neutral-900 object-cover"
                   />
                 ))}
               </div>
             )}
-            <span className="text-[11px] text-neutral-600 dark:text-neutral-400 font-medium truncate">
+            <span className="text-[10px] sm:text-[11px] text-neutral-600 dark:text-neutral-400 font-medium truncate">
               {attendeeCount > 0
                 ? attendeeCount === 1
                   ? "1 person registered"
-                  : `${attendeeCount}+ people registered`
-                : "No registrations yet"}
+                  : `${attendeeCount}+ registered`
+                : "No registrations"}
             </span>
           </div>
 
           {/* Virtual / Location Badge */}
-          <span className="flex items-center gap-1 text-[11px] text-neutral-500 dark:text-neutral-400 shrink-0">
+          <span className="flex items-center gap-0.5 text-[10px] sm:text-[11px] text-neutral-500 dark:text-neutral-400 shrink-0">
             {isVirtual ? (
               <>
-                <Globe size={13} className="text-neutral-400" />
+                <Globe size={11} className="text-neutral-400" />
                 <span>Public</span>
               </>
             ) : (
               <>
-                <MapPin size={13} className="text-neutral-400" />
-                <span className="max-w-[70px] sm:max-w-[100px] truncate">{event.location || "Public"}</span>
+                <MapPin size={11} className="text-neutral-400" />
+                <span className="max-w-[60px] sm:max-w-[90px] truncate">{event.location || "Public"}</span>
               </>
             )}
           </span>
