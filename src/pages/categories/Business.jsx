@@ -32,9 +32,9 @@ export default function Business() {
 
   return (
     <div className="w-full h-screen flex flex-col bg-neutral-50 dark:bg-[#111111] overflow-y-auto scrollbar-hide overflow-x-hidden relative">
-      <SEO 
-        title="Business Events" 
-        description="Discover professional business events, startup pitch nights, and networking meetups. Scale your career." 
+      <SEO
+        title="Business Events"
+        description="Discover professional business events, startup pitch nights, and networking meetups. Scale your career."
         url="https://devmeetup-frontend.vercel.app/categories/business"
         keywords="business events, networking, startup pitch, entrepreneurship, professional development"
       />
@@ -78,7 +78,7 @@ export default function Business() {
       {/* EVENTS LISTING */}
       <section className="max-w-7xl mx-auto px-6 py-12 lg:py-20 w-full">
         <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-8">Popular Business Events</h2>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {loading &&
             Array.from({ length: 9 }).map((_, i) => (

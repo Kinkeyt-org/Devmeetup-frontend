@@ -101,7 +101,7 @@ const EventCard = ({ event }) => {
           loading="lazy"
         />
         {/* FREE / PAID BADGE OVERLAY */}
-        <span className="absolute top-1 left-1 inline-flex items-center px-1.5 py-0.5 rounded-md bg-black/60 dark:bg-neutral-900/80 backdrop-blur-sm text-white text-[8px] sm:text-[9px] font-semibold">
+        <span className="absolute top-1 left-1 inline-flex items-center px-1.5 py-0.5 rounded-md bg-orange-500 dark:bg-orange-600 backdrop-blur-sm text-white text-[8px] sm:text-[9px] font-semibold">
           {isPaid ? `$${price}` : "Free"}
         </span>
       </div>
