@@ -126,7 +126,7 @@ const Dashboard = () => {
 
         {/* HERO */}
         <section className="pt-28 pb-10 px-6">
-          <div className="max-w-7xl md:mx-auto mx-0">
+          <div className="md:max-w-6xl md:mx-auto max-w-full mx-0">
 
             {/* HERO CONTENT */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -203,9 +203,11 @@ const Dashboard = () => {
                       ))}
                     </div>
                     {/* Desktop Skeletons */}
-                    <div className="hidden md:grid md:grid-cols-2 gap-4">
+                    <div className="hidden md:grid md:grid-rows-2 md:grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
                       {[...Array(6)].map((_, i) => (
-                        <EventSkeleton key={i} />
+                        <div key={i} className="w-[320px] lg:w-[360px] shrink-0">
+                          <EventSkeleton />
+                        </div>
                       ))}
                     </div>
                   </>
@@ -225,10 +227,12 @@ const Dashboard = () => {
                         </div>
                       ))}
                     </div>
-                    {/* Desktop View: Grid */}
-                    <div className="hidden md:grid md:grid-cols-2 gap-4">
+                    {/* Desktop View: Swipeable 2-row × 3-col */}
+                    <div className="hidden md:grid md:grid-rows-2 md:grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
                       {nearbyEvents.map((event) => (
-                        <EventCard key={event.id} event={event} />
+                        <div key={event.id} className="w-[320px] lg:w-[360px] shrink-0">
+                          <EventCard event={event} />
+                        </div>
                       ))}
                     </div>
                   </>
@@ -261,9 +265,11 @@ const Dashboard = () => {
                       ))}
                     </div>
                     {/* Desktop Skeletons */}
-                    <div className="hidden md:grid md:grid-cols-2 gap-4">
+                    <div className="hidden md:grid md:grid-rows-2 md:grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
                       {[...Array(6)].map((_, i) => (
-                        <EventSkeleton key={i} />
+                        <div key={i} className="w-[320px] lg:w-[360px] shrink-0">
+                          <EventSkeleton />
+                        </div>
                       ))}
                     </div>
                   </>
@@ -277,10 +283,12 @@ const Dashboard = () => {
                         </div>
                       ))}
                     </div>
-                    {/* Desktop View: Grid */}
-                    <div className="hidden md:grid md:grid-cols-2 gap-4">
+                    {/* Desktop View: Swipeable 2-row × 3-col */}
+                    <div className="hidden md:grid md:grid-rows-2 md:grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
                       {events.map((event) => (
-                        <EventCard key={event.id} event={event} />
+                        <div key={event.id} className="w-[320px] lg:w-[360px] shrink-0">
+                          <EventCard event={event} />
+                        </div>
                       ))}
                     </div>
                   </>
