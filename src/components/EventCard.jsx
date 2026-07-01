@@ -154,7 +154,7 @@ const EventCard = ({ event }) => {
 
           {/* Virtual / Location Badge */}
           <span className="flex items-center gap-0.5 text-[10px] sm:text-[11px] text-neutral-500 dark:text-neutral-400 shrink-0">
-            {isPaid ? `${price}` : "Free"}
+            {isPaid ? "Paid" : "Free"}
           </span>
         </div>
       </div>
