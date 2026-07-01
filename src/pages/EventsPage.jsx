@@ -144,15 +144,15 @@ const EventsPage = () => {
               ))}
           </div>
 
-          {/* DESKTOP VIEW: Static 3-column grid — 2 rows of 3 cards each */}
-          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 pb-6">
+          {/* DESKTOP VIEW: Static 3-column grid — 3 cols × 3 rows for up to 9 events */}
+          <div className="hidden md:grid md:grid-cols-3 gap-5 pb-6">
             {events.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
 
             {/* DESKTOP LOADING SKELETONS */}
             {loading &&
-              Array.from({ length: 6 }).map((_, i) => (
+              Array.from({ length: 9 }).map((_, i) => (
                 <EventSkeleton key={`skeleton-${i}`} />
               ))}
           </div>
