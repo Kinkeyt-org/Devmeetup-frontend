@@ -32,9 +32,9 @@ const Dashboard = () => {
     const fetchEvents = async () => {
       try {
         // Fetch up to 6 events for a 3x2 grid on desktop
-        const data = await getEvents("recent", 1, 12);
+        const data = await getEvents("recent", 1, 10);
         const eventsList = Array.isArray(data.events) ? data.events : [];
-        setEvents(eventsList.slice(0, 12));
+        setEvents(eventsList.slice(0, 10));
       } catch (err) {
         console.error(err);
       } finally {
@@ -59,7 +59,7 @@ const Dashboard = () => {
                 return prevEvents;
               }
               const updated = [newEvent, ...prevEvents];
-              return updated.slice(0, 12); // Keep only the first 12 events
+              return updated.slice(0, 10); // Keep only the first 12 events
             });
           }
         });
@@ -84,12 +84,12 @@ const Dashboard = () => {
       async (position) => {
         const { latitude, longitude } = position.coords;
         try {
-          const data = await getEvents("upcoming", 1, 12, {
+          const data = await getEvents("upcoming", 1, 10, {
             lat: latitude,
             lng: longitude,
           });
           const fetchedEvents = Array.isArray(data.events) ? data.events : [];
-          setNearbyEvents(fetchedEvents.slice(0, 12));
+          setNearbyEvents(fetchedEvents.slice(0, 10));
           setLocationStatus("success");
         } catch (err) {
           console.error(err);
