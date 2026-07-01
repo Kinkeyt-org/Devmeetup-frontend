@@ -18,7 +18,7 @@ const EventSkeleton = () => {
         <div className="h-3.5 w-3/4 bg-neutral-200 dark:bg-neutral-800 rounded my-0.5" />
         
         {/* Attendees & Status Skeleton */}
-        <div className="flex items-center justify-between gap-2 mt-auto pt-1.5 border-t border-neutral-100 dark:border-white/5">
+        <div className="flex items-center justify-between gap-2 mt-auto pt-1.5">
           <div className="h-3 w-24 bg-neutral-200 dark:bg-neutral-800 rounded" />
           <div className="h-3 w-10 bg-neutral-200 dark:bg-neutral-800 rounded shrink-0" />
         </div>
