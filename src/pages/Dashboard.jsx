@@ -123,7 +123,7 @@ const Dashboard = () => {
 
         {/* HERO SECTION */}
         <section className="pt-24 md:pt-28 pb-10">
-          <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-6xl mx-auto px-6">
             <h1 className="text-2xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white">
               {user?.name ? (
                 <>
@@ -150,7 +150,7 @@ const Dashboard = () => {
 
           {/* EVENTS NEAR YOU */}
           <section>
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-6xl mx-auto px-6">
               <div className="mb-6">
                 <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-2">
                   <Compass size={22} />Events Near You
@@ -228,7 +228,7 @@ const Dashboard = () => {
 
           {/* TRENDING SECTION */}
           <section>
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-6xl mx-auto px-6">
               <div className="mb-6">
                 <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-2">
                   <TrendingUp size={22} />Trending
