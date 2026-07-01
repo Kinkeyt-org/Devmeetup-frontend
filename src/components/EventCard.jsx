@@ -131,7 +131,7 @@ const EventCard = ({ event }) => {
         </h3>
 
         {/* ATTENDEES & VIRTUAL/LOCATION STATUS */}
-        <div className="flex items-center justify-between gap-2 mt-auto pt-1.5 border-t border-neutral-100 dark:border-white/5">
+        <div className="flex items-center justify-between gap-2 mt-auto pt-1.5">
           {/* Attendees */}
           <div className="flex items-center gap-1 min-w-0">
             {displayAvatars.length > 0 && (
