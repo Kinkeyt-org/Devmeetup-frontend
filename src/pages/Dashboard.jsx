@@ -126,7 +126,7 @@ const Dashboard = () => {
 
         {/* HERO */}
         <section className="pt-28 pb-10 px-6">
-          <div className="md:max-w-6xl md:mx-auto max-w-full mx-0">
+          <div className="max-w-7xl md:mx-auto mx-0">
 
             {/* HERO CONTENT */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
