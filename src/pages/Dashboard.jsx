@@ -11,6 +11,40 @@ import { getEvents } from "../api/event";
 import EventCard from "../components/EventCard";
 import EventSkeleton from "../components/EventSkeleton";
 
+// Pulls a usable date out of whatever shape the event object has,
+// then tells us whether that event is still upcoming (or happening today).
+const getEventDate = (event) => {
+  const raw =
+    event?.event_date ||
+    event?.date ||
+    event?.start_date ||
+    event?.startDate ||
+    event?.event_info?.date ||
+    event?.event_info?.event_date ||
+    event?.event_info?.start_date;
+
+  if (!raw) return null;
+
+  const parsed = new Date(raw);
+  return isNaN(parsed.getTime()) ? null : parsed;
+};
+
+const isUpcoming = (event) => {
+  const eventDate = getEventDate(event);
+  // If we can't determine a date, keep the event rather than hiding it silently.
+  if (!eventDate) return true;
+
+  const now = new Date();
+  // Treat date-only values as lasting the full day, so an event happening
+  // later today doesn't get filtered out just because the time is midnight.
+  const endOfEventDay = new Date(eventDate);
+  endOfEventDay.setHours(23, 59, 59, 999);
+
+  return endOfEventDay >= now;
+};
+
+const filterUpcoming = (list) => (Array.isArray(list) ? list.filter(isUpcoming) : []);
+
 const Dashboard = () => {
   const navigate = useNavigate();
 
@@ -32,7 +66,7 @@ const Dashboard = () => {
         // Fetch up to 9 events for a clean row balance matching EventsPage layout
         const data = await getEvents("recent", 1, 10);
         const eventsList = Array.isArray(data.events) ? data.events : [];
-        setEvents(eventsList.slice(0, 10));
+        setEvents(filterUpcoming(eventsList).slice(0, 10));
       } catch (err) {
         console.error(err);
       } finally {
@@ -47,11 +81,11 @@ const Dashboard = () => {
   useEffect(() => {
     if (window.Echo) {
       const channel = window.Echo.channel("events");
-      
+
       channel.listen(".event.created", (data) => {
         console.log("New Event Data Received:", data.event);
         const newEvent = data.event;
-        if (newEvent) {
+        if (newEvent && isUpcoming(newEvent)) {
           setEvents((prevEvents) => {
             if (prevEvents.some((e) => e.id === newEvent.id)) {
               return prevEvents;
@@ -86,7 +120,7 @@ const Dashboard = () => {
             lng: longitude,
           });
           const fetchedEvents = Array.isArray(data.events) ? data.events : [];
-          setNearbyEvents(fetchedEvents.slice(0, 10));
+          setNearbyEvents(filterUpcoming(fetchedEvents).slice(0, 10));
           setLocationStatus("success");
         } catch (err) {
           console.error(err);
@@ -194,7 +228,7 @@ const Dashboard = () => {
                           <EventCard event={event} />
                         </div>
                       ))}
-                      
+
                       {loadingNearby &&
                         Array.from({ length: 6 }).map((_, i) => (
                           <div key={`nearby-skeleton-mob-${i}`} className="w-[280px] sm:w-[350px] shrink-0">
