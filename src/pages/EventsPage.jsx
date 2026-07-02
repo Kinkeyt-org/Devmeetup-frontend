@@ -124,7 +124,7 @@ const EventsPage = () => {
         <div className="max-w-6xl mx-auto px-6">
 
           {/* MOBILE VIEW: We use a horizontal scrolling row (overflow-x-auto) so users can swipe through cards on small screens */}
-          <div className="md:hidden grid grid-rows-3 grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
+          <div className="md:hidden grid grid-rows-2 grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
             {/* Loop through the fetched events and render an EventCard for each one */}
             {events.map((event) => (
               <div
