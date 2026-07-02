@@ -246,7 +246,7 @@ const Dashboard = () => {
               )}
 
               {/* Mobile View: Horizontal Swipe */}
-              <div className="md:hidden grid grid-rows-3 grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
+              <div className="md:hidden grid grid-rows-2 grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
                 {events.map((event) => (
                   <div key={event.id} className="w-[280px] sm:w-[350px] shrink-0">
                     <EventCard event={event} />
