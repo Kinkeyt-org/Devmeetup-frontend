@@ -176,7 +176,7 @@ const EventsPage = () => {
 
       {/* CATEGORIES SECTION */}
       {/* This maps over the hardcoded CATEGORIES array to display clickable icons to filter events */}
-      <section className="mt-20  border-neutral-100 dark:border-white/5 pt-16">
+      <section className="mt-10  border-neutral-100 dark:border-white/5 pt-16">
         <div className="max-w-6xl mx-auto px-6">
           <div className="mb-8">
             <h2 className="text-xl md:text-2xl font-semibold mb-2">Browse by Category</h2>
