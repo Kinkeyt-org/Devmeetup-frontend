@@ -7,87 +7,154 @@ import {
   Calendar,
   MapPin,
   ArrowRight,
-
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-// Static slides data used by the slider
+import { getEvents } from "../api/event";
 
-const SLIDES = [
-  {
-    id: "fs1",
-    title: "NextGen AI & Tech Summit 2026",
-    category: "Technology",
-    date: "June 15 - 18, 2026",
-    location: "San Francisco, CA",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070",
-    description: "Join 10,000+ developers, innovators, and leaders defining the next decade of spatial computing, generative models, and decentralized systems.",
-  },
-  {
-    id: "fs2",
-    title: "Global Design Forum & Awards",
-    category: "Design",
-    date: "July 20 - 22, 2026",
-    location: "London, UK",
-    image: "https://images.unsplash.com/photo-1508962914676-134849a727f0?q=80&w=2070",
-    description: "The premier gathering for visual architects, brand thinkers, and product designers. Celebrating aesthetic excellence and future interactive trends.",
-  },
-  {
-    id: "fs3",
-    title: "Vanguard Music & Arts Festival",
-    category: "Music",
-    date: "August 12 - 15, 2026",
-    location: "Austin, TX",
-    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070",
-    description: "Experience three days of boundary-pushing audio-visual showcases, international headline acts, and immersive installation art.",
-  },
-  {
-    id: "fs4",
-    title: "World Business Innovation Congress",
-    category: "Business",
-    date: "September 05 - 08, 2026",
-    location: "New York, NY",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070",
-    description: "Reimagining business models for a sustainable tomorrow. Network with executive minds, venture capitals, and high-growth founders.",
-  }
-];
+/* ================= FEATURED SLIDER =================
+   Fetches featured/recent events from the API and
+   renders them as a full-width animated hero slider.
+   Falls back gracefully on load errors or empty data.
+ ==================================================== */
 
+/** Map a raw API event object to the shape this slider expects */
+function mapEventToSlide(event) {
+  // Resolve image: prefer banner, then image, then a neutral fallback
+  const image =
+    event.banner ||
+    event.image ||
+    "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070";
+
+  // Resolve category from the first tag, or a generic label
+  const category =
+    (Array.isArray(event.tags) && event.tags.length > 0
+      ? event.tags[0]?.name || event.tags[0]
+      : null) ||
+    event.category ||
+    "Event";
+
+  // Resolve human-readable date
+  const date =
+    event.event_date_human ||
+    event.date ||
+    event.start_date ||
+    "Date TBA";
+
+  // Resolve location
+  const location =
+    event.location ||
+    event.venue ||
+    (event.is_online || event.type === "virtual" ? "Online" : "TBA");
+
+  return {
+    id: event.id,
+    title: event.title || "Untitled Event",
+    category,
+    date,
+    location,
+    image,
+    description: event.description || event.short_description || "",
+  };
+}
+
+/* ==================== SKELETON ==================== */
+function SliderSkeleton() {
+  return (
+    <section className="max-w-7xl mx-auto p-5 pt-24 pb-6">
+      <div className="relative h-[300px] md:h-[420px] w-full rounded-3xl overflow-hidden border border-neutral-200 dark:border-neutral-900 bg-neutral-200 dark:bg-neutral-800 animate-pulse">
+        <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 md:p-12 md:max-w-xl space-y-3">
+          <div className="h-5 w-24 rounded-full bg-neutral-300 dark:bg-neutral-700" />
+          <div className="h-8 w-3/4 rounded-lg bg-neutral-300 dark:bg-neutral-700" />
+          <div className="h-4 w-full rounded bg-neutral-300 dark:bg-neutral-700" />
+          <div className="h-4 w-2/3 rounded bg-neutral-300 dark:bg-neutral-700" />
+          <div className="flex gap-4 pt-2">
+            <div className="h-4 w-28 rounded bg-neutral-300 dark:bg-neutral-700" />
+            <div className="h-4 w-24 rounded bg-neutral-300 dark:bg-neutral-700" />
+          </div>
+          <div className="pt-2 h-9 w-32 rounded-lg bg-neutral-300 dark:bg-neutral-700" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ==================== MAIN COMPONENT ==================== */
 export default function FeaturedSlider() {
   const navigate = useNavigate();
+
+  // Slider state
+  const [slides, setSlides] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(0); // -1 for left, 1 for right
+  const [direction, setDirection] = useState(0); // -1 left, 1 right
   const timerRef = useRef(null);
 
+  /* ---- Fetch featured events on mount ---- */
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchFeatured = async () => {
+      try {
+        setLoading(true);
+        // Use "featured" sort type; fall back to "recent" if the API doesn't support it
+        const data = await getEvents("featured", 1, 5);
+        let events = Array.isArray(data.events) ? data.events : [];
+
+        // If "featured" returned nothing, fall back to recent events
+        if (events.length === 0) {
+          const fallback = await getEvents("recent", 1, 5);
+          events = Array.isArray(fallback.events) ? fallback.events : [];
+        }
+
+        if (!cancelled) {
+          setSlides(events.slice(0, 5).map(mapEventToSlide));
+          setCurrent(0); // reset index whenever data refreshes
+        }
+      } catch (err) {
+        console.error("[FeaturedSlider] Failed to fetch events:", err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    fetchFeatured();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  /* ---- Auto-advance timer ---- */
   const startTimer = () => {
     stopTimer();
+    if (slides.length < 2) return; // no point cycling a single slide
     timerRef.current = setInterval(() => {
       setDirection(1);
-      setCurrent((prev) => (prev + 1) % SLIDES.length);
+      setCurrent((prev) => (prev + 1) % slides.length);
     }, 6000);
   };
 
   const stopTimer = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
+    if (timerRef.current) clearInterval(timerRef.current);
   };
 
+  // Start timer once slides are loaded
   useEffect(() => {
-    startTimer();
+    if (slides.length > 0) startTimer();
     return () => stopTimer();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [slides]);
 
   const handleNext = () => {
     stopTimer();
     setDirection(1);
-    setCurrent((prev) => (prev + 1) % SLIDES.length);
+    setCurrent((prev) => (prev + 1) % slides.length);
     startTimer();
   };
 
   const handlePrev = () => {
     stopTimer();
     setDirection(-1);
-    setCurrent((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
     startTimer();
   };
 
@@ -98,7 +165,7 @@ export default function FeaturedSlider() {
     startTimer();
   };
 
-  // Animation variants
+  /* ---- Animation variants ---- */
   const slideVariants = {
     enter: (dir) => ({
       x: dir > 0 ? "100%" : "-100%",
@@ -122,7 +189,11 @@ export default function FeaturedSlider() {
     }),
   };
 
-  const activeSlide = SLIDES[current];
+  /* ---- Render states ---- */
+  if (loading) return <SliderSkeleton />;
+  if (slides.length === 0) return null; // nothing to show
+
+  const activeSlide = slides[current];
 
   return (
     <section
@@ -153,22 +224,26 @@ export default function FeaturedSlider() {
           </motion.div>
         </AnimatePresence>
 
-        {/* CONTROLS (ARROWS) */}
-        <button
-          onClick={handlePrev}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center bg-black/30 hover:bg-white hover:text-black border border-white/10 text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 transform -translate-x-2 group-hover:translate-x-0 cursor-pointer"
-          aria-label="Previous Slide"
-        >
-          <ChevronLeft size={20} />
-        </button>
+        {/* CONTROLS (ARROWS) — only show if more than one slide */}
+        {slides.length > 1 && (
+          <>
+            <button
+              onClick={handlePrev}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center bg-black/30 hover:bg-white hover:text-black border border-white/10 text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 transform -translate-x-2 group-hover:translate-x-0 cursor-pointer"
+              aria-label="Previous Slide"
+            >
+              <ChevronLeft size={20} />
+            </button>
 
-        <button
-          onClick={handleNext}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center bg-black/30 hover:bg-white hover:text-black border border-white/10 text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0 cursor-pointer"
-          aria-label="Next Slide"
-        >
-          <ChevronRight size={20} />
-        </button>
+            <button
+              onClick={handleNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center bg-black/30 hover:bg-white hover:text-black border border-white/10 text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0 cursor-pointer"
+              aria-label="Next Slide"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </>
+        )}
 
         {/* CONTENT CARD OVERLAY */}
         <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 md:p-12 md:max-w-xl text-white">
@@ -180,7 +255,7 @@ export default function FeaturedSlider() {
             className="space-y-3"
           >
             {/* CATEGORY TAG */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[10px] font-semibold uppercase tracking-wider text-amber-400 backdrop-blur-sm">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[10px] font-semibold uppercase tracking-wider text-blue-400 backdrop-blur-sm">
               {activeSlide.category}
             </div>
 
@@ -190,18 +265,20 @@ export default function FeaturedSlider() {
             </h3>
 
             {/* DESCRIPTION */}
-            <p className="text-xs md:text-sm text-neutral-300 leading-relaxed font-normal line-clamp-2 md:line-clamp-none">
-              {activeSlide.description}
-            </p>
+            {activeSlide.description && (
+              <p className="text-xs md:text-sm text-neutral-300 leading-relaxed font-normal line-clamp-2 md:line-clamp-none">
+                {activeSlide.description}
+              </p>
+            )}
 
             {/* META ROW */}
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-2 text-[11px] md:text-xs text-neutral-400 font-medium">
               <span className="flex items-center gap-1.5">
-                <Calendar size={13} className="text-amber-500" />
+                <Calendar size={13} className="text-blue-500" />
                 {activeSlide.date}
               </span>
               <span className="flex items-center gap-1.5">
-                <MapPin size={13} className="text-amber-500" />
+                <MapPin size={13} className="text-blue-500" />
                 {activeSlide.location}
               </span>
             </div>
@@ -209,7 +286,7 @@ export default function FeaturedSlider() {
             {/* CTA BUTTON */}
             <div className="pt-4">
               <button
-                onClick={() => navigate(`/events`)} // Standard redirect or modal
+                onClick={() => navigate(`/events/${activeSlide.id}`)}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white hover:bg-neutral-200 text-black text-xs font-semibold uppercase tracking-wider transition-all duration-300 transform active:scale-95 cursor-pointer shadow-lg shadow-black/20"
               >
                 Learn More
@@ -219,20 +296,23 @@ export default function FeaturedSlider() {
           </motion.div>
         </div>
 
-        {/* DOTS INDICATORS */}
-        <div className="absolute bottom-4 right-1/2 translate-x-1/2 md:right-12 md:translate-x-0 z-20 flex gap-2">
-          {SLIDES.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => handleDotClick(index)}
-              className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${index === current
-                  ? "w-6 bg-white"
-                  : "w-2.5 bg-white/40 hover:bg-white/70"
+        {/* DOTS INDICATORS — only if more than one slide */}
+        {slides.length > 1 && (
+          <div className="absolute bottom-4 right-1/2 translate-x-1/2 md:right-12 md:translate-x-0 z-20 flex gap-2">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handleDotClick(index)}
+                className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  index === current
+                    ? "w-6 bg-white"
+                    : "w-2.5 bg-white/40 hover:bg-white/70"
                 }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
 
       </div>
     </section>
