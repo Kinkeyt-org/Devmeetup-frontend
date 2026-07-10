@@ -173,9 +173,9 @@ const Profile = () => {
 
         {/* ORGANIZER SECTION */}
         {isOrganizer ? (
-          <div className="bg-blue-50/50 dark:bg-blue-900/10 border border-purple-100 dark:border-blue-500/20 rounded-[1.5rem] p-5 md:p-6 mb-8 hover:shadow-lg hover:shadow-amber-500/5 transition-shadow">
+          <div className="bg-purple-50/50 dark:bg-purple-900/10 border border-purple-100 dark:border-purple-500/20 rounded-[1.5rem] p-5 md:p-6 mb-8 hover:shadow-lg hover:shadow-purple-500/5 transition-shadow">
             <div className="flex items-center gap-3 mb-5">
-              <div className="p-2.5 bg-blue-100 dark:bg-blue-500/20 rounded-xl text-amber-600 dark:text-amber-400">
+              <div className="p-2.5 bg-purple-100 dark:bg-purple-500/20 rounded-xl text-purple-600 dark:text-purple-400">
                 <Settings2 className="w-5 h-5" />
               </div>
               <div>
@@ -188,20 +188,20 @@ const Profile = () => {
                 onClick={() => navigate("/")}
                 className="group flex flex-col items-center justify-center gap-2 p-4 bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200/60 dark:border-white/5 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
               >
-                <CalendarDays className="w-5 h-5 text-neutral-600 dark:text-neutral-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors" />
+                <CalendarDays className="w-5 h-5 text-neutral-600 dark:text-neutral-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors" />
                 <span className="text-sm font-medium">Manage Events</span>
               </button>
               <button
                 onClick={() => navigate("/dashboard")}
                 className="group flex flex-col items-center justify-center gap-2 p-4 bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200/60 dark:border-white/5 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
               >
-                <BarChart className="w-5 h-5 text-neutral-600 dark:text-neutral-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors" />
+                <BarChart className="w-5 h-5 text-neutral-600 dark:text-neutral-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors" />
                 <span className="text-sm font-medium">Analytics</span>
               </button>
             </div>
             <button
               onClick={() => navigate("/events/create")}
-              className="mt-3 w-full py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-sm font-medium transition-colors shadow-sm"
+              className="mt-3 w-full py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-medium transition-colors shadow-sm"
             >
               Create New Event
             </button>

@@ -108,7 +108,7 @@ const EventsPage = () => {
 
       {/* HERO */}
       <section className="pt-20 md:pt-25 pb-10">
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-xl md:text-2xl font-semibold mb-2">Upcoming Events</h2>
 
           <p className="text-neutral-400 text-sm md:text-base mb-3">
@@ -119,7 +119,7 @@ const EventsPage = () => {
 
       {/* EVENTS SECTION */}
       <section>
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-6">
 
           {/* MOBILE VIEW: We use a horizontal scrolling row (overflow-x-auto) so users can swipe through cards on small screens */}
           <div className="md:hidden grid grid-rows-2 grid-flow-col gap-x-6 gap-y-4 overflow-x-auto scrollbar-hide pb-6">
@@ -175,7 +175,7 @@ const EventsPage = () => {
       {/* CATEGORIES SECTION */}
       {/* This maps over the hardcoded CATEGORIES array to display clickable icons to filter events */}
       <section className="mt-10  border-neutral-100 dark:border-white/5 pt-16">
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-6">
           <div className="mb-8">
             <h2 className="text-xl md:text-2xl font-semibold mb-2">Browse by Category</h2>
             <p className="text-neutral-500 text-sm">Find events that match your interests.</p>
