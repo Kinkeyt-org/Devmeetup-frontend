@@ -173,9 +173,9 @@ const Profile = () => {
 
         {/* ORGANIZER SECTION */}
         {isOrganizer ? (
-          <div className="bg-purple-50/50 dark:bg-purple-900/10 border border-purple-100 dark:border-purple-500/20 rounded-[1.5rem] p-5 md:p-6 mb-8 hover:shadow-lg hover:shadow-purple-500/5 transition-shadow">
+          <div className="bg-blue-50/50 dark:bg-blue-900/10 border border-purple-100 dark:border-blue-500/20 rounded-[1.5rem] p-5 md:p-6 mb-8 hover:shadow-lg hover:shadow-blue-500/5 transition-shadow">
             <div className="flex items-center gap-3 mb-5">
-              <div className="p-2.5 bg-purple-100 dark:bg-purple-500/20 rounded-xl text-purple-600 dark:text-purple-400">
+              <div className="p-2.5 bg-blue-100 dark:bg-blue-500/20 rounded-xl text-blue-600 dark:text-blue-400">
                 <Settings2 className="w-5 h-5" />
               </div>
               <div>
@@ -201,7 +201,7 @@ const Profile = () => {
             </div>
             <button
               onClick={() => navigate("/events/create")}
-              className="mt-3 w-full py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-medium transition-colors shadow-sm"
+              className="mt-3 w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-medium transition-colors shadow-sm"
             >
               Create New Event
             </button>
