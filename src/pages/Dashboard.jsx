@@ -123,7 +123,7 @@ const Dashboard = () => {
 
         {/* HERO SECTION */}
         <section className="pt-24 md:pt-28 pb-10">
-          <div className="max-w-6xl mx-auto px-6">
+          <div className="max-w-7xl mx-auto px-6">
             <h1 className="text-2xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white">
               {user?.name ? (
                 <>
