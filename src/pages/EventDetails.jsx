@@ -5,7 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import {
   ArrowLeft, Calendar, MapPin, Banknote, Tag as TagIcon, MoreHorizontal, ExternalLink, Compass, Video,
-  BadgeCheck
+  BadgeCheck, Globe
 } from 'lucide-react';
 import SEO from "../components/SEO";
 import EventDetailsSkeleton from '../components/EventDetailsSkeleton';
@@ -321,10 +321,11 @@ const EventDetails = () => {
                       : `₦${Number(event.price || 0).toLocaleString()}`
                   },
                   
-                ].map(({ Icon, value }, i) => (
+                // eslint-disable-next-line no-unused-vars
+                ].map(({ Icon: IconComponent, value }, i) => (
                   <div key={i} className="flex items-center justify-between gap-2.5">
                     <div className="flex items-center gap-2.5">
-                      <Icon
+                      <IconComponent
                         size={14}
                         strokeWidth={2}
                         className="text-neutral-400 dark:text-white/45 shrink-0"

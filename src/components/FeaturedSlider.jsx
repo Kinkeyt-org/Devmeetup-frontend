@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronLeft,
@@ -9,24 +10,7 @@ import {
 
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { getEvents } from "@/api/event";
-
-const [events, setEvents] = useState([]);
-
-const fetchFeaturedEvents = async () => {
-  try {
-    const data = await getEvents();
-    const featured = data.filter((item) => item.isFeatured);
-    setEvents(featured);
-  }
-  catch (err) {
-    console.log(err);
-  }
-}
-
-useEffect(() => {
-  fetchFeaturedEvents();
-}, []);
+// Static slides data used by the slider
 
 const SLIDES = [
   {
@@ -90,6 +74,7 @@ export default function FeaturedSlider() {
   useEffect(() => {
     startTimer();
     return () => stopTimer();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleNext = () => {

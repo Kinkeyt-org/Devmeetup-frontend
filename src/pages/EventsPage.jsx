@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getEvents } from "../api/event";
 import SEO from "../components/SEO";
 import EventCard from "../components/EventCard";
 import EventSkeleton from "../components/EventSkeleton";
-// import FeaturedSlider from "../components/FeaturedSlider";
+import FeaturedSlider from "../components/FeaturedSlider";
 import {
   Cpu,
   Palette,
@@ -35,10 +35,8 @@ const EventsPage = () => {
   const [events, setEvents] = useState([]);
   // state to track if we are currently fetching data (used to show skeletons)
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-
   // FILTER STATE
-  const [filter, setFilter] = useState("all");
+  const [filter] = useState("all");
 
 
   /* ================= FETCH EVENTS ================= */
@@ -105,8 +103,8 @@ const EventsPage = () => {
         url="https://devmeetup-frontend.vercel.app/events"
       />
 
-      {/* FEATURED EVENTS SLIDER
-      <FeaturedSlider /> */}
+      {/* FEATURED EVENTS SLIDER */}
+      <FeaturedSlider />
 
       {/* HERO */}
       <section className="pt-20 md:pt-25 pb-10">
