@@ -107,7 +107,7 @@ const EventsPage = () => {
       <FeaturedSlider />
 
       {/* HERO */}
-      <section className="pt-20 md:pt-25 pb-10">
+      <section className="pt-10 md:pt-15 pb-10">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-xl md:text-2xl font-semibold mb-2">Upcoming Events</h2>
 
