@@ -41,65 +41,75 @@ const EventsPage = () => {
 
   /* ================= FETCH EVENTS ================= */
   // This function hits the backend API to grab the latest upcoming events.
- const fetchEvents = async (isNewFilter = false) => {
-  if (isNewFilter) {
-    setLoading(true);
-  }
-
-  // Helper to convert "2026-04-11T12:00 AM" into a clean, parseable date object
-  const parseHybridDate = (str) => {
-    if (!str || typeof str !== "string") return new Date(str);
-
-    // Check if it matches the "YYYY-MM-DD[T or space]HH:MM AM/PM" pattern
-    const match = str.match(/^(\d{4}-\d{2}-\d{2})[T\s](\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-    
-    if (match) {
-      const [, datePart, hoursStr, minutes, ampm] = match;
-      let hours = parseInt(hoursStr, 10);
-
-      // Convert 12-hour format to 24-hour format
-      if (ampm.toUpperCase() === "PM" && hours < 12) hours += 12;
-      if (ampm.toUpperCase() === "AM" && hours === 12) hours = 0;
-
-      const formattedHours = String(hours).padStart(2, "0");
-      
-      // Rebuild into valid ISO-8601: "YYYY-MM-DDTHH:MM:00"
-      return new Date(`${datePart}T${formattedHours}:${minutes}:00`);
+  const fetchEvents = async (isNewFilter = false) => {
+    if (isNewFilter) {
+      setLoading(true); // show skeletons if we are loading fresh data
     }
 
-    // Fallback if the pattern doesn't match, clean space just in case
-    return new Date(str.includes(" ") && !str.includes("T") ? str.replace(" ", "T") : str);
-  };
+    // Helper to convert "2026-04-11T12:00 AM" into a clean, parseable date object
+    const parseHybridDate = (str) => {
+      if (!str || typeof str !== "string") return new Date(str);
 
-  try {
-    const data = await getEvents("upcoming", 1, 20);
-    const rawEvents = Array.isArray(data.events) ? data.events : [];
-    
-    const now = new Date();
+      // Check if it matches the "YYYY-MM-DD[T or space]HH:MM AM/PM" pattern
+      const match = str.match(/^(\d{4}-\d{2}-\d{2})[T\s](\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+      
+      if (match) {
+        const [, datePart, hoursStr, minutes, ampm] = match;
+        let hours = parseInt(hoursStr, 10);
 
-    const upcomingEvents = rawEvents.filter((event) => {
-      const dateString = event.date || event.start_date || event.event_date;
-      if (!dateString) return true;
+        // Convert 12-hour format to 24-hour format
+        if (ampm.toUpperCase() === "PM" && hours < 12) hours += 12;
+        if (ampm.toUpperCase() === "AM" && hours === 12) hours = 0;
 
-      // Clean and parse the backend's tricky date format
-      const eventDate = parseHybridDate(dateString);
-
-      if (isNaN(eventDate.getTime())) {
-        console.warn(`[EventsPage] Still could not parse date string: "${dateString}"`);
-        return true; // ultimate safety net
+        const formattedHours = String(hours).padStart(2, "0");
+        
+        // Rebuild into valid ISO-8601: "YYYY-MM-DDTHH:MM:00"
+        return new Date(`${datePart}T${formattedHours}:${minutes}:00`);
       }
 
-      // Now this comparison will accurately drop those past April events!
-      return eventDate >= now;
-    });
+      // Fallback if the pattern doesn't match, clean space just in case
+      return new Date(str.includes(" ") && !str.includes("T") ? str.replace(" ", "T") : str);
+    };
 
-    setEvents(upcomingEvents.slice(0, 10)); 
-  } catch (err) {
-    console.error(err);
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      // Request 20 events instead of 10 to give yourself a safety cushion 
+      // in case the API includes some past events.
+      const data = await getEvents("upcoming", 1, 20);
+
+      // Ensure the response is an array before processing
+      const rawEvents = Array.isArray(data.events) ? data.events : [];
+      
+      const now = new Date();
+
+      // Filter out past events entirely on the client side
+      const upcomingEvents = rawEvents.filter((event) => {
+        // Check whatever date property your API uses
+        const dateString = event.date || event.start_date || event.event_date;
+        if (!dateString) return true; // safety fallback
+
+        const eventDate = parseHybridDate(dateString);
+
+        // If parsing fails completely, keep the event so it doesn't break the UI
+        if (isNaN(eventDate.getTime())) {
+          return true; 
+        }
+
+        return eventDate >= now;
+      });
+
+      // FALLBACK LOGIC: If all available events are in the past, 
+      // show them anyway so the UI stays populated during development.
+      if (upcomingEvents.length === 0 && rawEvents.length > 0) {
+        setEvents(rawEvents.slice(0, 10));
+      } else {
+        setEvents(upcomingEvents.slice(0, 10)); 
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false); // turn off loading skeletons
+    }
+  };
   /* ================= TRIGGER FETCH ON PAGE/FILTER CHANGE ================= */
   // The useEffect hook runs when the component first loads, or whenever the 'filter' changes.
   useEffect(() => {
