@@ -18,6 +18,7 @@ import MyTickets from "./pages/MyTickets";
 import Search from "./pages/Search";
 import Navbar from "./components/Navbar";
 import EventsPage from "./pages/EventsPage";
+import Explore from "./pages/Explore";
 import EventDetails from "./pages/EventDetails";
 import Upgrade from "./pages/Upgrade";
 import OrganizerOnboarding from "./pages/OrganizerOnboarding";
@@ -167,6 +168,7 @@ const AppContent = () => {
           <Route path="/signup" element={<AuthForm />} />
           <Route path="/search" element={<Search />} />
           <Route path="/events/create" element={<CreatePage />} />
+          <Route path="/explore" element={<Explore />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/categories/tech" element={<Tech />} />
           <Route path="/categories/design" element={<Design />} />

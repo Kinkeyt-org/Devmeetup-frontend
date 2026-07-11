@@ -7,6 +7,7 @@ import SearchBar from "../components/SearchBar";
 import Notifications from "./Notifications";
 import {
   Home,
+  Globe,
   Search,
   Bell,
   Plus,
@@ -229,17 +230,17 @@ const Navbar = () => {
               <button
                 onClick={() => {
                   closeMenu();
-                  navigate("/events");
+                  navigate("/explore");
                 }}
                 className="w-full py-3 mb-4 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-black font-medium hover:opacity-90 transition flex items-center justify-center gap-2 text-sm"
               >
-                Explore Events <ArrowRight size={16} />
+                Explore <ArrowRight size={16} />
               </button>
 
               {/* LINKS */}
               <div className="grid grid-cols-2 gap-2 mb-3">
                 <MenuLink to="/" icon={Home} label="Home" onClick={closeMenu} current={location.pathname === "/" || location.pathname === "/home"} />
-                <MenuLink to="/search" icon={Search} label="Explore" onClick={closeMenu} current={location.pathname === "/search"} />
+                <MenuLink to="/explore" icon={Globe} label="Explore" onClick={closeMenu} current={location.pathname === "/explore"} />
                 <MenuLink to="/events/create" icon={Plus} label="Create" onClick={closeMenu} current={location.pathname === "/events/create"} />
                 <MenuLink to="/my-tickets" icon={TicketCheck} label="Tickets" onClick={closeMenu} current={location.pathname === "/my-tickets"} />
               </div>
