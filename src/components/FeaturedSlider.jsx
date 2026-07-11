@@ -24,32 +24,7 @@ function mapEventToSlide(event) {
     event.banner ||
     event.image ||
     "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070";
-
-  // Resolve category from the first tag, or a generic label.
-  // Guard: if the value looks like a Laravel validation rule (contains "|"),
-  // it means the backend sent a rule string instead of a real category — discard it.
-  const rawCategory =
-    (Array.isArray(event.tags) && event.tags.length > 0
-      ? event.tags[0]?.name || (typeof event.tags[0] === "string" ? event.tags[0] : null)
-      : null) ||
-    (typeof event.category === "string" && !event.category.includes("|")
-      ? event.category
-      : null);
-  const category = rawCategory || "Event";
-
-  // Resolve human-readable date
-  const date =
-    event.event_date_human ||
-    event.date ||
-    event.start_date ||
-    "Date TBA";
-
-  // Resolve location
-  const location =
-    event.location ||
-    event.venue ||
-    (event.is_online || event.type === "virtual" ? "Online" : "TBA");
-
+    
   return {
     id: event.id,
     title: event.title || "Untitled Event",
@@ -258,17 +233,6 @@ export default function FeaturedSlider() {
             transition={{ delay: 0.15, duration: 0.4 }}
             className="space-y-3"
           >
-            {/* META ROW */}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-2 text-[11px] md:text-xs text-neutral-400 font-medium">
-              <span className="flex items-center gap-1.5">
-                <Calendar size={13} className="text-amber-500" />
-                {activeSlide.date}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <MapPin size={13} className="text-amber-500" />
-                {activeSlide.location}
-              </span>
-            </div>
 
             {/* CTA BUTTON */}
             <div className="pt-4">
