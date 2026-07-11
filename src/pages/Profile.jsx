@@ -228,7 +228,7 @@ const Profile = () => {
         <h2 className="text-lg md:text-xl font-semibold text-neutral-900 dark:text-white mb-4 px-4">
           Account Settings
         </h2>
-        <div className="bg-white dark:bg-neutral-900/50 rounded-[1.5rem] border border-neutral-200/60 dark:border-neutral-800/60 overflow-hidden mb-8 shadow-sm">
+        <div className="bg-white dark:bg-neutral-900/50 rounded-[1.5rem] border border-neutral-200/60 dark:border-neutral-800/60 overflow-hidden mb-8">
           {MENU_ITEMS.map((item, index) => (
             <React.Fragment key={item.label}>
               <button 
@@ -254,7 +254,7 @@ const Profile = () => {
         <h2 className="text-lg md:text-xl font-semibold text-neutral-900 dark:text-white mb-4 px-4 mt-4">
           Support & About
         </h2>
-        <div className="bg-white dark:bg-neutral-900/50 rounded-[1.5rem] border border-neutral-200/60 dark:border-neutral-800/60 overflow-hidden mb-8 shadow-sm">
+        <div className="bg-white dark:bg-neutral-900/50 rounded-[1.5rem] border border-neutral-200/60 dark:border-neutral-800/60 overflow-hidden mb-8">
           {SUPPORT_ITEMS.map((item, index) => (
             <React.Fragment key={item.label}>
               <button 
@@ -280,7 +280,7 @@ const Profile = () => {
         <div className="px-2">
           <button
             onClick={handleLogout}
-            className="w-full py-4 flex items-center justify-center gap-2 rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-transparent dark:border-neutral-800/60 text-red-600 dark:text-red-500 text-[15px] font-semibold hover:bg-red-50 dark:hover:bg-red-500/10 hover:border-red-100 dark:hover:border-red-500/20 active:scale-[0.98] transition-all shadow-sm"
+            className="w-full py-4 flex items-center justify-center gap-2 rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-transparent dark:border-neutral-800/60 text-red-600 dark:text-red-500 text-[15px] font-semibold hover:bg-red-50 dark:hover:bg-red-500/10 hover:border-red-100 dark:hover:border-red-500/20 active:scale-[0.98] transition-all"
           >
             <LogOut className="w-5 h-5" />
             Log out
