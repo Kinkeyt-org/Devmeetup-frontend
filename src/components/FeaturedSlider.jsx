@@ -258,23 +258,6 @@ export default function FeaturedSlider() {
             transition={{ delay: 0.15, duration: 0.4 }}
             className="space-y-3"
           >
-            {/* CATEGORY TAG */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[10px] font-semibold uppercase tracking-wider text-amber-400 backdrop-blur-sm">
-              {activeSlide.category}
-            </div>
-
-            {/* TITLE */}
-            <h3 className="text-xl md:text-3.5xl font-bold leading-tight tracking-tight">
-              {activeSlide.title}
-            </h3>
-
-            {/* DESCRIPTION */}
-            {activeSlide.description && (
-              <p className="text-xs md:text-sm text-neutral-300 leading-relaxed font-normal line-clamp-2 md:line-clamp-none">
-                {activeSlide.description}
-              </p>
-            )}
-
             {/* META ROW */}
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-2 text-[11px] md:text-xs text-neutral-400 font-medium">
               <span className="flex items-center gap-1.5">
