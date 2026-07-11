@@ -4,8 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronLeft,
   ChevronRight,
-  Calendar,
-  MapPin,
   ArrowRight,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -24,15 +22,10 @@ function mapEventToSlide(event) {
     event.banner ||
     event.image ||
     "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070";
-    
+
   return {
     id: event.id,
-    title: event.title || "Untitled Event",
-    category,
-    date,
-    location,
     image,
-    description: event.description || event.short_description || "",
   };
 }
 
