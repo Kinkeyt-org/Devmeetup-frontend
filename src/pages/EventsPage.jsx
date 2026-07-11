@@ -41,38 +41,47 @@ const EventsPage = () => {
 
   /* ================= FETCH EVENTS ================= */
   // This function hits the backend API to grab the latest upcoming events.
- const fetchEvents = async (isNewFilter = false) => {
-  if (isNewFilter) {
-    setLoading(true); // show skeletons if we are loading fresh data
-  }
+  const fetchEvents = async (isNewFilter = false) => {
+    if (isNewFilter) {
+      setLoading(true);
+    }
 
-  try {
-    // Request 20 events instead of 10 to give yourself a safety cushion 
-    // in case the API includes some past events.
-    const data = await getEvents("upcoming", 1, 20);
+    try {
+      const data = await getEvents("upcoming", 1, 20);
+      const rawEvents = Array.isArray(data.events) ? data.events : [];
+      
+      const now = new Date();
 
-    // Ensure the response is an array before processing
-    const rawEvents = Array.isArray(data.events) ? data.events : [];
-    
-    const now = new Date();
+      const upcomingEvents = rawEvents.filter((event) => {
+        // 1. Resolve whichever raw date string the API provides
+        let dateString = event.date || event.start_date || event.event_date;
+        
+        if (!dateString) return true; // Safety fallback: keep it if no date exists
 
-    // Filter out past events entirely on the client side
-    const upcomingEvents = rawEvents.filter((event) => {
-      // Check whatever date property your API uses
-      const dateString = event.date || event.start_date || event.event_date;
-      if (!dateString) return true; // safety fallback
+        // 2. Clean up common SQL/Laravel formats (e.g., replace spaces with 'T' for ISO conformity)
+        if (typeof dateString === "string" && dateString.includes(" ") && !dateString.includes("T")) {
+          dateString = dateString.replace(" ", "T");
+        }
 
-      return new Date(dateString) >= now;
-    });
+        const eventDate = new Date(dateString);
 
-    // Now safely take exactly the top 10 remaining fresh events!
-    setEvents(upcomingEvents.slice(0, 10)); 
-  } catch (err) {
-    console.error(err);
-  } finally {
-    setLoading(false); // turn off loading skeletons
-  }
-};
+        // 3. Fail-safe: If the browser fails to parse it, keep the event rather than breaking the UI
+        if (isNaN(eventDate.getTime())) {
+          console.warn(`[EventsPage] Could not parse date string: "${dateString}" for event ID ${event.id}`);
+          return true; 
+        }
+
+        // 4. Return true only if it's scheduled for right now or in the future
+        return eventDate >= now;
+      });
+
+      setEvents(upcomingEvents.slice(0, 10)); 
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   /* ================= TRIGGER FETCH ON PAGE/FILTER CHANGE ================= */
   // The useEffect hook runs when the component first loads, or whenever the 'filter' changes.
