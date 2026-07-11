@@ -30,7 +30,7 @@ const Dashboard = () => {
     const fetchEvents = async () => {
       try {
         // Fetch up to 9 events for a clean row balance matching EventsPage layout
-        const data = await getEvents("recent", 1, 10);
+        const data = await getEvents("recent", 3, 10);
         const eventsList = Array.isArray(data.events) ? data.events : [];
         setEvents(eventsList.slice(0, 10));
       } catch (err) {
@@ -146,12 +146,12 @@ const Dashboard = () => {
         </section>
 
         {/* CONTENT SECTIONS CONTAINER */}
-        <div className="space-y-16">
+        <div className="space-y-15">
 
           {/* EVENTS NEAR YOU */}
           <section>
             <div className="max-w-7xl mx-auto px-6">
-              <div className="mb-6">
+              <div className="mb-5">
                 <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-2">
                   <Compass size={22} />Events Near You
                 </h2>
