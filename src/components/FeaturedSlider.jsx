@@ -111,7 +111,7 @@ export default function FeaturedSlider() {
         }
 
         if (!cancelled) {
-          setSlides(events.slice(11, 15).map(mapEventToSlide));
+          setSlides(events.slice(0, 5).map(mapEventToSlide));
           setCurrent(0); // reset index whenever data refreshes
         }
       } catch (err) {
