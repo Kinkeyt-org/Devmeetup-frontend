@@ -230,11 +230,11 @@ const Navbar = () => {
               <button
                 onClick={() => {
                   closeMenu();
-                  navigate("/explore");
+                  navigate("/events");
                 }}
                 className="w-full py-3 mb-4 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-black font-medium hover:opacity-90 transition flex items-center justify-center gap-2 text-sm"
               >
-                Explore <ArrowRight size={16} />
+                Explore Events <ArrowRight size={16} />
               </button>
 
               {/* LINKS */}
