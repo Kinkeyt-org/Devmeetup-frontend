@@ -101,16 +101,16 @@ export default function FeaturedSlider() {
       try {
         setLoading(true);
         // Use "featured" sort type; fall back to "recent" if the API doesn't support it
-        const data = await getEvents("featured", 1, 5);
+        const data = await getEvents("featured", 3, 5);
         let events = Array.isArray(data.events) ? data.events : [];
 
         // If "featured" returned nothing, fall back to recent events
         if (events.length === 0) {
-          const fallback = await getEvents("recent", 1, 5);
+          const fallback = await getEvents("recent", 3, 5);
           events = Array.isArray(fallback.events) ? fallback.events : [];
         }
 
-        if (!cancelled) {
+        if (!cancelled) { 
           setSlides(events.slice(0, 5).map(mapEventToSlide));
           setCurrent(0); // reset index whenever data refreshes
         }
